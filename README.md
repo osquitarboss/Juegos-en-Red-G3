@@ -2,6 +2,14 @@
 Repositorio para la practica de Juegos en Red del grupo 3 compuesto por Marcos Matutes, Fernando Pin, Claudia Porcuna, Óscar Rodríguez y Javier Ruibal.
 ## GDD 
 
+### Índice   
+1. [Introducción](#introducción)
+2. [Narrativa](#narrativa)
+3. [Jugabilidad](#jugabilidad)
+4. [Diseño](#diseño)
+5. [Sonido](#sonido)
+6. [Diagrama de flujo](#diagrama-de-flujo)
+
 ### Introducción
 XXXXX es un juego de puzzles y plataformar en 2D en el que el que los jugadores deberán colaborar para resolver acertijos y avanzar por una mansión. En este juego los jugadores podrán elegir entre un detective que se encargará de los retos físicos o una fantasma atada al limbo. Este juego estará dirigido a todos los públicos además de que será accesible desde la web. 
 
@@ -31,5 +39,24 @@ XXXXX es un juego de puzzles y plataformar en 2D en el que el que los jugadores 
 ### Sonido
 - __Banda sonora:__ Como banda sonora se estará compuesta por melodías tétricas inspiradas en los temas del Pueblo Lavanda de la saga de juegos Pokemon.
 - __Efectos sonoros:__ Además de música el juego contará con efectos de sonido que acompañen la jugabilidad.
- 
+
+### Diagrama de flujo
+Diagrama de flujo sobre las diferentes pantallas y menús que dispondrá el juego, sujeto a cambios dependiendo del número de niveles que se implementen. 
+```mermaid
+
+  stateDiagram-v2
+    [*] --> MenuInicial
+    MenuInicial --> Ajustes
+    MenuInicial --> Créditos
+    MenuInicial --> SeleccionNivel
+    SeleccionNivel --> Nivel
+    Nivel --> MenuPausa
+    Nivel --> Nivel: GameOver
+    Nivel --> PantallaVictoria: CondicionVictoria
+    PantallaVictoria --> MenuInicial
+    MenuPausa --> Nivel
+    MenuPausa --> Ajustes
+    MenuPausa --> MenuInicial
+    
+```
 
