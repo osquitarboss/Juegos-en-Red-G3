@@ -35,24 +35,24 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 - __Controles:__ El jugador 1 puede controlar al detective con las teclas de A y D para moverse y W para saltar, además puede usar la tecla Q para interactuar con objetos físicos. El jugador 2 puede controlar a la chica fantasma, pudiendo usar las teclas de las flechas para moverse y saltar además de mantener la flecha hacia arriba para realizar una caida lenta y poder flotar, por último el jugador 2 puede usar el Shift Derecho para meterse en dispositivos eléctronicos para progresar mediante puzzles.
 
-- __Mecánicas:__ El detective puede interactuar con objetos físicos como puertas y cables mientras que la chica fantasma puede meterse en dispositivos electrónicos. Ambos deberán usar sus habilidades y trabajar en equipo para avanzar en cada nivel.
+- __Mecánicas:__ El detective puede interactuar con objetos físicos como puertas y cables mientras que la chica fantasma puede meterse en dispositivos electrónicos. Ambos deberán usar sus habilidades y trabajar en equipo para avanzar en cada nivel. Por otro lado, parte de la dinámica del juego es que habrá enemigos que ataquen a Arthur los cuales solo podrán ser derrotados por Lucy; además de fantasmas que atacarán a Lucy y solo Arthur podrá acabar con ellos. 
 
-Arthur: Iluminar fantasmas para defender a Lucy, objetos en la oscuridad para poder interactuar o iluminar caminos para que Lucy pueda pasar por la oscuridad.
+Arthur: Iluminar con una linterna fantasmas para defender a Lucy, objetos en la oscuridad para poder interactuar o iluminar caminos para que Lucy pueda pasar por la oscuridad.
 
-Lucy: Hacer saltos más largos, atravesar algunas paredes, poseer y empujar objetos para asistir a Arthur.
+Lucy: Hacer saltos más largos, atravesar algunas paredes, poseer y empujar objetos para asistir a Arthur. Proteger a Arthur de otros enemigos que le atacarán con ataques cuerpo a cuerpo.
 
 - __Físicas:__ Gravedad que afecta a cajas, salto del personaje, personajes interactuan con cajas.
 
 - __Calidad del Escenario:__ 
 
 ### Diseño
-- __Estilo Visual:__ El juego tendrá un estilo visual 2D cartoon inspirado en juegos como Fireboy & Watergirl, con una estetica tétrica siguiendo la temática del juego. 
+- __Estilo Visual:__ El juego tendrá un estilo visual 2D cartoon inspirado en los primeros dibujos animados, con una estetica tétrica siguiendo la temática del juego. 
 
-- __Color:__ Se usará una paleta con los colores blanco negro y grises siguendo la estética del cine noir
+- __Color:__ Se usará una paleta con los colores blanco negro y grises siguendo la estética del cine noir.
 
 - __Cámara:__  Estará situada en el costado similar a los juegos de plataformas 2D de scroll lateral.
 
-- __Inspiraciones:__ Tanto juegos de navegador como Fireboy & Watergirl como el cine noir y de misterio.
+- __Inspiraciones:__ Tanto juegos de navegador como Fireboy & Watergirl, como el cine noir y de misterio, como la estática de los dibujos animados más antiguos.
 
 ### Sonido
 - __Banda sonora:__ Como banda sonora se estará compuesta por melodías tétricas inspiradas en los temas del Pueblo Lavanda de la saga de juegos Pokemon.
