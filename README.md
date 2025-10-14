@@ -21,6 +21,10 @@ __URL del repositorio:__ https://github.com/osquitarboss/Juegos-en-Red-G3
 5. [Sonido](#sonido)
 6. [Diagrama de flujo](#diagrama-de-flujo)
 
+## Noir Studios Presents: BM Confidential
+
+![Logo](Imagenes/logoJuegosEnRedFondoBlanco.png)
+
 ### Introducción
 BM Confidential es un juego de puzzles y plataformas en 2D en el que el que los jugadores deberán colaborar para resolver acertijos y avanzar por una mansión. En este juego los jugadores podrán elegir entre un detective que se encargará de los retos físicos o una fantasma atada al limbo. Este juego estará dirigido a todos los públicos además de que será accesible desde la web. 
 
