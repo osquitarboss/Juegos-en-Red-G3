@@ -66,6 +66,7 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 - __Cámara:__  Estará situada en el costado similar a los juegos de plataformas 2D de scroll lateral.
 
 - __Inspiraciones:__ Tanto juegos de navegador como Fireboy & Watergirl, como el cine noir y de misterio con ejemplos como LA Confidential o El Halcón Maltés, así como la estética de las Caricaturas de los años 30 (Oswald y Pooch).
+
 <img src="https://play-lh.googleusercontent.com/6N_ON50BZiEAe-ll2lM92NrVrgp5I5Ha6VI0a4Usw7uPmgEjL6tgJR6jWYUkkYgx2LM=w240-h480-rw" width = "275" height = "275">    <img src="https://m.media-amazon.com/images/I/81bldr+0gzL._SY445_.jpg" width = "300" height = "400">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/The_Maltese_Falcon_%281941_film_poster%29.jpg" width = "275" height = "400">  <img src="https://i.pinimg.com/1200x/d7/f4/fc/d7f4fc7d29495c601453c731d6c159a4.jpg" width = "275" height = "400">
 
