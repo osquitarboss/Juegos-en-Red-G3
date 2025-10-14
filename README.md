@@ -20,6 +20,7 @@ __URL del repositorio:__ https://github.com/osquitarboss/Juegos-en-Red-G3
 4. [Diseño](#diseño)
 5. [Sonido](#sonido)
 6. [Diagrama de flujo](#diagrama-de-flujo)
+7. [Marketing](#marketing)
 
 ## Noir Studios Presents: BM Confidential
 
@@ -58,7 +59,7 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 - __Físicas:__ Gravedad que afecta a cajas, salto del personaje, personajes interactuan con cajas.
 
-- __Calidad del Escenario:__ 
+- __Escenario:__ El juego estará ambientado en una mansión de los años 50 en la que habrá diferentes puzles.
 
 - __Gameplay Loop:__ Por todo esto, el gameplay loop sería entrar en la casa y exporar los alrederdores en un scroll lateral que progresa de izquierda a derecha. Mientras tanto, irán apareciendo enemigos por el mapa que atacarán a los jugadores. Además, para atravesar ciertos lugares se deberá cooperar para resolver algún puzzle. Finalmente, al acabar el nivel se harán descubrimientos que irán alimentando la historia y la relación de los personajes. 
 
@@ -81,13 +82,6 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 - __Efectos sonoros:__ Además de música el juego contará con efectos de sonido que acompañen la jugabilidad.
 
-
-### Marketing
-- __Método de uso:__ En nuestro juego aplicaremos el método de uso Free 2 Play, al ser de uso en red. Por lo que perfectamente, con la distribución de videojuegos mediante las redes sociales, se beneficiaría de la capacidad de difusión viral típica de estas plataformas, sin necesidad de promoción publicitaria.
-
-- __Modelo de Negocio:__ Usaremos un modelo Lean Canvas básico, sin el compromiso de organizar una empresa. Simplemente feedback o mejoría del juego.
-
-
 ### Diagrama de flujo
 Diagrama de flujo sobre las diferentes pantallas y menús que dispondrá el juego, sujeto a cambios dependiendo del número de niveles que se implementen. 
 ```mermaid
@@ -107,3 +101,11 @@ Diagrama de flujo sobre las diferentes pantallas y menús que dispondrá el jueg
     MenuPausa --> MenuInicial
     
 ```
+
+### Marketing
+- __Método de uso:__ En nuestro juego aplicaremos el método de uso Free 2 Play, al ser de uso en red. Por lo que perfectamente, con la distribución de videojuegos mediante las redes sociales, se beneficiaría de la capacidad de difusión viral típica de estas plataformas, sin necesidad de promoción publicitaria.
+
+- __Modelo de Negocio:__ Usaremos un modelo Lean Canvas básico, sin el compromiso de organizar una empresa. Simplemente feedback o mejoría del juego.
+
+
+
