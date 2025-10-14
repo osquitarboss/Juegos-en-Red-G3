@@ -11,9 +11,23 @@ Repositorio para la practica de Juegos en Red del grupo 3 compuesto por Marcos M
 6. [Diagrama de flujo](#diagrama-de-flujo)
 
 ### Introducción
-XXXXX es un juego de puzzles y plataformar en 2D en el que el que los jugadores deberán colaborar para resolver acertijos y avanzar por una mansión. En este juego los jugadores podrán elegir entre un detective que se encargará de los retos físicos o una fantasma atada al limbo. Este juego estará dirigido a todos los públicos además de que será accesible desde la web. 
+BM Confidential es un juego de puzzles y plataformas en 2D en el que el que los jugadores deberán colaborar para resolver acertijos y avanzar por una mansión. En este juego los jugadores podrán elegir entre un detective que se encargará de los retos físicos o una fantasma atada al limbo. Este juego estará dirigido a todos los públicos además de que será accesible desde la web. 
 
 ### Narrativa
+
+- __Historia del juego:__
+Birmingham, Noviembre de 1953, 27 años después del asesinato del matrimonio Felton y nadie se atreve a entrar a la casa. Arthur Kentley es un detective determinado a resolver el enigma que la envuelve, impulsado por una extraña obsesión. Cuenta con la ayuda de Lucy, uno de los fantasmas residentes en la mansión. 
+
+Tras la resolución de puzzles y pistas por la mansión Felton, se descubre que Lucy es la madre de Arthur, (quien en realidad es un Fleton), y fue ella quien le protegió de los acontecimientos 27 años atrás.  
+
+- __Desarrollo de personajes:__ 
+
+Arthur Kentley: siempre ha tenido un sentimiento de anhelo por la incógnita que rodea su infancia. Siendo adoptado por la familia Kentley a los 3 años. Se convierte en detective para tratar de satisfacer su ansia de respuestas.
+Finalmente descubre su relación con el asesinato de los Felton, sus padres, y como su madre Lucy consiguió salvarlo a cambio de su propia vida. 
+
+
+Lucy: Sentimentalmemte atrapada en la mansión donde fue asesinada, espera la llegada de su hijo Arthur mediante la conexión metal que ambos comparten. 
+Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en la que se separaron para siempre, consigue ascender hacia el más allá, ahora segura de que Arthur podrá tener un futuro veliz atrás de los horrores que han protagonizado toda su vida.
 
 ### Jugabilidad
 
@@ -23,18 +37,22 @@ XXXXX es un juego de puzzles y plataformar en 2D en el que el que los jugadores 
 
 - __Mecánicas:__ El detective puede interactuar con objetos físicos como puertas y cables mientras que la chica fantasma puede meterse en dispositivos electrónicos. Ambos deberán usar sus habilidades y trabajar en equipo para avanzar en cada nivel.
 
-- __Físicas:__ 
+Arthur: Iluminar fantasmas para defender a Lucy, objetos en la oscuridad para poder interactuar o iluminar caminos para que Lucy pueda pasar por la oscuridad.
+
+Lucy: Hacer saltos más largos, atravesar algunas paredes, poseer y empujar objetos para asistir a Arthur.
+
+- __Físicas:__ Gravedad que afecta a cajas, salto del personaje, personajes interactuan con cajas.
 
 - __Calidad del Escenario:__ 
 
 ### Diseño
 - __Estilo Visual:__ El juego tendrá un estilo visual 2D cartoon inspirado en juegos como Fireboy & Watergirl, con una estetica tétrica siguiendo la temática del juego. 
 
-- __Color:__ Se usarán especialmente colores fríos y poco saturados ya sean tonos azulados poco saturados como grises y otros tonos similares para generar  una sensación de frialdad y hostilidad.
+- __Color:__ Se usará una paleta con los colores blanco negro y grises siguendo la estética del cine noir
 
 - __Cámara:__  Estará situada en el costado similar a los juegos de plataformas 2D de scroll lateral.
 
-- __Inspiraciones:__ Tanto juegos de navegador como Fireboy & Watergirl.
+- __Inspiraciones:__ Tanto juegos de navegador como Fireboy & Watergirl como el cine noir y de misterio.
 
 ### Sonido
 - __Banda sonora:__ Como banda sonora se estará compuesta por melodías tétricas inspiradas en los temas del Pueblo Lavanda de la saga de juegos Pokemon.
@@ -60,3 +78,4 @@ Diagrama de flujo sobre las diferentes pantallas y menús que dispondrá el jueg
     
 ```
 
+![foto birmingham](https://img.lavdg.com/sc/mltvgauTIKz88mgnU53N5cRM_eo=/768x/2016/01/29/00121454076903340112942/Foto/.jpg)
