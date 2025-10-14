@@ -5,9 +5,9 @@
 ##### Este proyecto ha sido realizado por el grupo 3. 
 ##### Integrantes: 
 ##### Marcos Matutes Rapún (m.matutes.2023@alumnos.urjc.es, malkoom) 
-##### Fernando Pin Cubero(f.pin.2021@alumnos.urjc.es fernan1221) 
+##### Fernando Pin Cubero(f.pin.2021@alumnos.urjc.es, fernan1221) 
 ##### Claudia Porcuna Rivas(c.porcuna.2022@alumnos.urjc.es, Clauprr) 
-##### Óscar Rodríguez(o.rodriguez.2023@alumnos.urjc.es,Osquitarboss) 
+##### Óscar Rodríguez(o.rodriguez.2023@alumnos.urjc.es, Osquitarboss) 
 ##### Javier Ruibal Piñero(j.ruibal.2023@alumnos.urjc.es, HeadDoctr)
 
 __URL del repositorio:__ https://github.com/osquitarboss/Juegos-en-Red-G3 
