@@ -1,5 +1,5 @@
 {
-  "name": "practice",
+  "name": "bmconfidencial",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,11 +12,11 @@
   },
   "keywords": [
     "game",
-    "pong"
+    "BM Confidential"
   ],
-  "author": "Ruben Rodriguez",
+  "author": "Javier Ruibal, Oscar Rodriguez, Claudia Porcuna, Fernando Pin y Marcos Matutes",
   "license": "Apache-2.0",
-  "description": "A pong game with Phaser3",
+  "description": "A BM Confidential game with Phaser3",
   "dependencies": {
     "express": "^5.1.0",
     "phaser": "^3.90.0"
