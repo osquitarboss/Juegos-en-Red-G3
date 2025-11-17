@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import { Paddle } from "../entities/Paddle.js";
+import { Player } from "../entities/Player.js";
+
 
 export class GameScene extends Phaser.Scene{
     constructor() {
@@ -9,167 +10,68 @@ export class GameScene extends Phaser.Scene{
     init() {
         this.players = new Map();
         this.inputsMapping = [];
-        this.ball = null;
         this.isPaused = false;
         this.escWasDown = false;
-        this.playing = false;
-    } 
+    }
 
     create() {
-        for (let i = 0; i < 17;i++){
-            this.add.rectangle(400, i * 50 + 25, 10, 30, 0xffffff);
-        }
+        this.setUpPlayers();
 
-        // Score texts
-        this.scoreLeft = this.add.text(100, 50, '0', {
-            fontSize: '48px',
-            color: '#00ff00'
-        })
+        const plataformas = this.physics.add.staticGroup();
+        
+        const suelo1 = this.add.rectangle(400, 580, 800, 40, 0xffffff);
+        const suelo2 = this.add.rectangle(200, 450, 200, 30, 0xffffff);
 
-        this.scoreRight = this.add.text(700, 50, '0', {
-            fontSize: '48px',
-            color: '#00ff00'
-        })
-        this.createBounds();
-        this.createBall();
-        this.launchBall();
-        this.setUpPLayers();
+        this.physics.add.existing(suelo1, true);
+        this.physics.add.existing(suelo2, true);
+        
+        plataformas.add(suelo1);
+        plataformas.add(suelo2);
 
-        this.players.forEach(paddle => {
-            this.physics.add.collider(this.ball, paddle.sprite);
-        });
+        this.physics.add.collider(this.players.get('player1').sprite, plataformas);
+        this.physics.add.collider(this.players.get('player2').sprite, plataformas);
 
-        this.physics.add.overlap(this.ball, this.leftGoal, this.scoreRightGoal, null, this);
-        this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
 
-    setUpPLayers() {
-        const leftPaddle = new Paddle(this, 'player1', 50, 300);
-        const rightPaddle = new Paddle(this, 'player2', 750, 300);
-        this.players.set('player1', leftPaddle);
-        this.players.set('player2', rightPaddle);
+    setUpPlayers() {
 
+        const player1 = new Player(this, 'player1', 50, 300);
+        const player2 = new Player(this, 'player2', 750, 300);
+        this.players.set('player1', player1);
+        this.players.set('player2', player2);
+        
         const InputConfig = [
             {
                 playerId: 'player1',
+                leftKey: 'A',
+                rightKey: 'D',
                 upKey: 'W',
                 downKey: 'S',
-            }, 
+            },
             {
                 playerId: 'player2',
+                leftKey: 'LEFT',
+                rightKey: 'RIGHT',
                 upKey: 'UP',
                 downKey: 'DOWN',
             }
         ];
+
         this.inputsMapping = InputConfig;
         this.inputsMapping = this.inputsMapping.map(config => {
             return {
                 playerId: config.playerId,
+                leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey]),
+                rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
                 upKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.upKey]),
                 downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
             }
         });
+        
     }
 
-    scoreRightGoal() {
-        if (!this.playing) return;
-        this.playing = false;
-        const player2 = this.players.get('player2');
-        player2.score += 1;
-        this.scoreRight.setText(player2.score.toString());
-
-        if (player2.score >= 2) {
-            this.endGame("player2");
-        } else {
-            this.resetBall();
-        }
-    }
-
-    scoreLeftGoal() {
-        if (!this.playing) return;
-        this.playing = false;
-        const player1 = this.players.get('player1');
-        player1.score += 1;
-        this.scoreLeft.setText(player1.score.toString());
-
-        if (player1.score >= 2) {
-            this.endGame("player1");
-        } else {
-            this.resetBall();
-        }
-    }
-
-    endGame(winnerId) {
-        this.ball.setVelocity(0, 0);
-        this.players.forEach(paddle => {
-            paddle.sprite.setVelocity(0, 0);
-        });
-        this.physics.pause();
-
-        const winnerText = winnerId === 'player1' ? 'Left Player Wins!' : 'Right Player Wins!';
-        this.add.text(400, 250, winnerText, {
-            fontSize: '64px',
-            color: '#00ff00'
-        }).setOrigin(0.5);
-
-        const menuBtn = this.add.text(400, 350, 'Return to Menu', {
-            fontSize: '32px',
-            color: '#ffffff'
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerover', () => menuBtn.setColor('#cccccc'))
-        .on('pointerout', () => menuBtn.setColor('#ffffff'))
-        .on('pointerdown', () => {
-            this.scene.start('MenuScene');
-        });
-    }
-
-
-    resetBall() {
-        this.ball.setVelocity(0, 0);
-        this.ball.setPosition(400, 300);
-        this.time.delayedCall(1000, () => {
-            this.launchBall();
-        });
-    }
-
-    createBounds() {
-        this.leftGoal = this.physics.add.sprite(0, 300, null);
-        this.leftGoal.setDisplaySize(10, 600);
-        this.leftGoal.body.setSize(10, 600);
-        this.leftGoal.setImmovable(false);
-        this.leftGoal.setVisible(false);
-
-        this.rightGoal = this.physics.add.sprite(800, 300, null);
-        this.rightGoal.setDisplaySize(10, 600);
-        this.rightGoal.body.setSize(10, 600);
-        this.rightGoal.setImmovable(false);
-        this.rightGoal.setVisible(false);
-    }
-
-    createBall() {
-        const graphics = this.add.graphics();
-        graphics.fillStyle(0xffffff);
-        graphics.fillCircle(8, 8, 8);
-        graphics.generateTexture('ball', 16, 16);
-        graphics.destroy();
-
-        this.ball = this.physics.add.image(400, 300, 'ball');
-        this.ball.setCollideWorldBounds(true);
-        this.ball.setBounce(1);
-    }
-
-    launchBall() {
-        const angle = Phaser.Math.Between(-30, 30);
-        const speed = 600;
-        const direction = Math.random() < 0.5 ? 1 : -1; 
-        this.playing = true;
-        this.ball.setVelocity(
-            Math.cos(Phaser.Math.DegToRad(angle)) * speed * direction,
-            Math.sin(Phaser.Math.DegToRad(angle)) * speed
-        )
-    }
+    
 
     setPauseState(isPaused) {
         this.isPaused = isPaused;
@@ -196,14 +98,14 @@ export class GameScene extends Phaser.Scene{
         }
 
         this.inputsMapping.forEach(mapping => {
-            const paddle = this.players.get(mapping.playerId);
+            const player = this.players.get(mapping.playerId);
 
-            if (mapping.upKeyObj.isDown) {
-                paddle.sprite.setVelocityY(-paddle.baseSpeed);
-            } else if (mapping.downKeyObj.isDown) {
-                paddle.sprite.setVelocityY(+paddle.baseSpeed);
+            if (mapping.leftKeyObj.isDown) {
+                player.sprite.setVelocityX(-player.baseSpeed);
+            } else if (mapping.rightKeyObj.isDown) {
+                player.sprite.setVelocityX(+player.baseSpeed);
             } else {
-                paddle.sprite.setVelocityY(0);
+                player.sprite.setVelocityX(0);
             }
         });
     }
