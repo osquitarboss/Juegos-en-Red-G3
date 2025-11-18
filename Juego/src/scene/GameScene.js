@@ -25,6 +25,12 @@ export class GameScene extends Phaser.Scene{
         this.players.set('player2', this.lucy);
         this.inputManager.players = this.players;
 
+        this.setUpWorldCollisions();
+        this.setUpEnemyCollisions();
+
+    }
+
+    setUpWorldCollisions() {
         //Set up platforms and collisions
 
         const plataformas = this.physics.add.staticGroup();
@@ -38,15 +44,21 @@ export class GameScene extends Phaser.Scene{
         plataformas.add(suelo1);
         plataformas.add(suelo2);
 
-        this.physics.add.collider(this.players.get('player1').sprite, plataformas, () => {
-            this.players.get('player1').canJump = true;
-        });
-        this.physics.add.collider(this.players.get('player2').sprite, plataformas, () => {
-            this.players.get('player2').canJump = true;
-        });
+        for (let player of this.players.values()) {
+            this.physics.add.collider(player.sprite, plataformas, () => {
+                player.canJump = true;
+            });
+        }
+
         this.physics.add.collider(this.enemy1.sprite, plataformas);
     }
 
+    setUpEnemyCollisions() {
+        this.physics.add.collider(this.enemy1.sprite, this.players.get('player1').sprite, () => {
+            this.arthur.getHit(50);
+        });
+
+    }
 
     update() {
         this.inputManager.update();
