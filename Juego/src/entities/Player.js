@@ -11,6 +11,7 @@ export class Player {
         this.canJump = false;
         this.health = 100;
         this.invulnerable = false;
+        this.authority = 'LOCAL';
 
         const graphics = this.scene.add.graphics();
         graphics.fillStyle(0x00ff00);
