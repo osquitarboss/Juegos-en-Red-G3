@@ -9,14 +9,14 @@ export class PlayerMovmentInputCommand extends Command {
     }
 
     execute() {
-        if (this.action === 'up') {
-            this.player.setVelocityY(-this.baseSpeed - 100); // Magic number to jump higher
+        if (this.action === 'up' && this.player.canJump()) {
+            this.player.sprite.setVelocityY(-this.baseSpeed - 100); // Magic number to jump higher
         } else if (this.action === 'left') {
-            this.player.setVelocityX(-this.baseSpeed);
+            this.player.sprite.setVelocityX(-this.baseSpeed);
         } else if (this.action === 'right') {
-            this.player.setVelocityX(this.baseSpeed);
+            this.player.sprite.setVelocityX(this.baseSpeed);
         } else { 
-            this.player.setVelocity(0);
+            this.player.sprite.setVelocityX(0);
         }
     }
 

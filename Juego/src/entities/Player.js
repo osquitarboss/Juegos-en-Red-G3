@@ -4,11 +4,9 @@ export class Player {
         this.id = id;
         this.scene = scene;
         
-
         this.baseHeight = 50;
         this.baseWidth = 50;
         this.baseSpeed = 300;
-        this.canJump = false;
         this.health = 100;
         this.invulnerable = false;
         this.authority = 'LOCAL';
@@ -44,5 +42,9 @@ export class Player {
 
     checkAlive() {
         return this.health > 0;
+    }
+
+    canJump() {
+        return this.sprite.body.touching.down;
     }
 }

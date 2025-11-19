@@ -39,11 +39,9 @@ export class CommandProcessor {
         switch(data.type) {
             case 'PlayerMovmentInputCommand':
                 return new PlayerMovmentInputCommand(player, data.action, data.baseSpeed);
-                //return new MovePaddleCommand(player, data.direction);
 
             case 'SHOOT':
                 return null;
-                //return new ShootCommand(player, data.x, data.y);
             
             default:
                 console.warn('Comando desconocido:', data.type);

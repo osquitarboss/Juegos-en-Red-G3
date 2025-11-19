@@ -2,16 +2,18 @@ import Phaser from "phaser";
 import { Player } from "../entities/Player.js";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
+import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
 
 export class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene')
+        this.commandProcessor = new CommandProcessor();
     }
 
     init() {
         this.players = new Map();
         this.isPaused = false;
-        this.inputManager = new InputManager(this, this.input);
+        this.inputManager = new InputManager(this, this.input, this.commandProcessor);
 
         this.arthur = new Player(this, 'player1', 50, 300, 600);
         this.lucy = new Player(this, 'player2', 750, 300, 500);
@@ -45,9 +47,7 @@ export class GameScene extends Phaser.Scene{
         plataformas.add(suelo2);
 
         for (let player of this.players.values()) {
-            this.physics.add.collider(player.sprite, plataformas, () => {
-                player.canJump = true;
-            });
+            this.physics.add.collider(player.sprite, plataformas);
         }
 
         this.physics.add.collider(this.enemy1.sprite, plataformas);

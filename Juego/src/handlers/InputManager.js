@@ -1,18 +1,23 @@
+import { Command } from '../command-pattern/Command';
+import { PlayerMovmentInputCommand } from '../command-pattern/PlayerMovmentInputCommand';
+import { CommandProcessor } from '../command-pattern/CommandProcessor';
 import Phaser from 'phaser';
 
 export class InputManager {
 
-    constructor(scene, input) {
+    constructor(scene, input, commandProcessor) {
+        this.commandProcessor = new CommandProcessor();
         this.scene = scene;
         this.input = input;
+        this.commandProcessor = commandProcessor;
         this.players = new Map();
         this.inputsMapping = [];
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-        this.setUpPlayers();
+        this.setUpInputs();
     }
 
-    setUpPlayers() {
+    setUpInputs() {
     
         
             
@@ -71,20 +76,21 @@ export class InputManager {
 
         // Handle player movements
         this.inputsMapping.forEach(mapping => {
+            let command = new Command();
             const player = this.players.get(mapping.playerId);
 
             if (mapping.leftKeyObj.isDown) {
-                player.sprite.setVelocityX(-player.baseSpeed);
+                command = new PlayerMovmentInputCommand(player, 'left');
             } else if (mapping.rightKeyObj.isDown) {
-                player.sprite.setVelocityX(+player.baseSpeed);
+                command = new PlayerMovmentInputCommand(player, 'right');
             } else if (mapping.upKeyObj.isDown) {
-                if (player.canJump) {
-                    player.sprite.setVelocityY(-player.baseSpeed - 100); // Magic nu,mber to make jump feel better
-                    player.canJump = false;
-                }
+                    command = new PlayerMovmentInputCommand(player, 'up');    
             } else {
                 player.sprite.setVelocityX(0);
             }
+
+            // Procesar (ejecuta local y envía a red)
+            this.commandProcessor.process(command);
         });
     }
 }
