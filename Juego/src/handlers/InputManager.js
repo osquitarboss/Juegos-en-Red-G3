@@ -74,23 +74,32 @@ export class InputManager {
             this.togglePause();
         }
 
-        // Handle player movements
         this.inputsMapping.forEach(mapping => {
-            let command = new Command();
-            const player = this.players.get(mapping.playerId);
+    let player = this.players.get(mapping.playerId);
 
-            if (mapping.leftKeyObj.isDown) {
-                command = new PlayerMovmentInputCommand(player, 'left');
-            } else if (mapping.rightKeyObj.isDown) {
-                command = new PlayerMovmentInputCommand(player, 'right');
-            } else if (mapping.upKeyObj.isDown) {
-                    command = new PlayerMovmentInputCommand(player, 'up');    
-            } else {
-                player.sprite.setVelocityX(0);
-            }
+    let command = new Command();
 
-            // Procesar (ejecuta local y envía a red)
-            this.commandProcessor.process(command);
-        });
+    // SALTO
+    if (mapping.upKeyObj.isDown) {
+        this.commandProcessor.process(
+            new PlayerMovmentInputCommand(player, 'up')
+        );
+    }
+
+    // MOVIMIENTO
+    if (mapping.leftKeyObj.isDown) {
+        this.commandProcessor.process(
+            new PlayerMovmentInputCommand(player, 'left')
+        );
+    } else if (mapping.rightKeyObj.isDown) {
+        this.commandProcessor.process(
+            new PlayerMovmentInputCommand(player, 'right')
+        );
+    } else {
+        player.sprite.setVelocityX(0);
+    }
+
+    this.commandProcessor.process(command);
+    });
     }
 }

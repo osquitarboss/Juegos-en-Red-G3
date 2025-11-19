@@ -9,16 +9,24 @@ export class PlayerMovmentInputCommand extends Command {
     }
 
     execute() {
-        if (this.action === 'up' && this.player.canJump()) {
-            this.player.sprite.setVelocityY(-this.baseSpeed - 100); // Magic number to jump higher
-        } else if (this.action === 'left') {
-            this.player.sprite.setVelocityX(-this.baseSpeed);
-        } else if (this.action === 'right') {
-            this.player.sprite.setVelocityX(this.baseSpeed);
-        } else { 
-            this.player.sprite.setVelocityX(0);
-        }
+
+    // --- SALTO ---
+    if (this.action === 'up' && this.player.canJump()) {
+        this.player.sprite.setVelocityY(-this.baseSpeed - 100);
     }
+
+    // --- MOVIMIENTO ---
+    if (this.action === 'left') {
+        this.player.sprite.setVelocityX(-this.baseSpeed);
+    } 
+    else if (this.action === 'right') {
+        this.player.sprite.setVelocityX(this.baseSpeed);
+    } 
+    else {
+        // solo parar si no estás moviéndote horizontalmente
+        this.player.sprite.setVelocityX(0);
+    }
+}
 
     serialize() {
         return {
