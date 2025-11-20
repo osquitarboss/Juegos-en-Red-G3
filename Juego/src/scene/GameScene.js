@@ -15,8 +15,8 @@ export class GameScene extends Phaser.Scene{
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.input, this.commandProcessor);
 
-        this.arthur = new Player(this, 'player1', 50, 300, 600);
-        this.lucy = new Player(this, 'player2', 750, 300, 300);
+        this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100);
+        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100);
 
         //this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
     }
@@ -26,6 +26,14 @@ export class GameScene extends Phaser.Scene{
         this.players.set('player1', this.arthur);
         this.players.set('player2', this.lucy);
         this.inputManager.players = this.players;
+
+        this.light = this.add.graphics();
+        this.light.fillStyle(0xff0000, 0.5); // color + alpha
+        this.light.fillCircle(0, 0, 50); // radio del círculo
+
+        this.lightOn = false;
+
+        this.keyF = this.input.keyboard.addKey('F');
 
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
@@ -62,6 +70,17 @@ export class GameScene extends Phaser.Scene{
 
     update() {
         this.inputManager.update();
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyF)) {  
+            this.lightIsOn = !this.lightIsOn;
+        }
+
+        this.light.clear();
+        if(this.lightIsOn){
+            this.light.fillStyle(0xffffff, 0.5);
+            this.light.fillCircle(this.arthur.sprite.x, this.arthur.sprite.y, 75);
+        }
+        
         //this.enemy1.update();
     }
 }

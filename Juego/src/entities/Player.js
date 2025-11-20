@@ -1,6 +1,6 @@
 export class Player {
 
-    constructor(scene, id, x, y, gravity) {
+    constructor(scene, id, x, y, gravity, xPos, yPos) {
         this.id = id;
         this.scene = scene;
         
@@ -10,6 +10,8 @@ export class Player {
         this.health = 100;
         this.invulnerable = false;
         this.authority = 'LOCAL';
+        this.xPos = xPos;
+        this.yPos = yPos;
 
         const graphics = this.scene.add.graphics();
         graphics.fillStyle(0x00ff00);
