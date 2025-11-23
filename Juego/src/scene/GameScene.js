@@ -70,7 +70,8 @@ export class GameScene extends Phaser.Scene{
 
     update() {
         this.inputManager.update();
-
+        
+        //Deberíamos cambiar lo de light a una propia clase Light y luego moverlo al input manager
         if (Phaser.Input.Keyboard.JustDown(this.keyF)) {  
             this.lightIsOn = !this.lightIsOn;
         }
