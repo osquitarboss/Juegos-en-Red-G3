@@ -18,7 +18,7 @@ export class GameScene extends Phaser.Scene{
         this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100);
         this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100);
 
-        //this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
+        this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
     }
 
     create() {
@@ -58,13 +58,13 @@ export class GameScene extends Phaser.Scene{
             this.physics.add.collider(player.sprite, plataformas);
         }
 
-        //this.physics.add.collider(this.enemy1.sprite, plataformas);
+        this.physics.add.collider(this.enemy1.sprite, plataformas);
     }
 
     setUpEnemyCollisions() {
-        /*this.physics.add.collider(this.enemy1.sprite, this.players.get('player1').sprite, () => {
+        this.physics.add.collider(this.enemy1.sprite, this.players.get('player1').sprite, () => {
             this.arthur.getHit(50);
-        });*/
+        });
 
     }
 
@@ -81,6 +81,6 @@ export class GameScene extends Phaser.Scene{
             this.light.fillCircle(this.arthur.sprite.x, this.arthur.sprite.y, 75);
         }
         
-        //this.enemy1.update();
+        this.enemy1.update();
     }
 }

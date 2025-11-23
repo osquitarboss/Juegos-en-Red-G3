@@ -17,27 +17,38 @@ export class Enemy {
 
         this.sprite = this.scene.physics.add.sprite(x, y, `enemy-${id}`);
         this.sprite.setCollideWorldBounds(true);
-        this.sprite.body.allowGravity = true;
+        this.sprite.body.allowGravity = false;
         this.sprite.body.setGravityY(500);
     }
 
-    enemyMovment() {
+    enemyMovement() {
         // move only horizontally towards the player
         const targetX = this.player.sprite.x;
         const enemyX = this.sprite.x;
         const dx = targetX - enemyX;
+
+        const targetY = this.player.sprite.y;
+        const enemyY = this.sprite.y;
+        const dy = targetY - enemyY;
 
         // parar al llegar cerca
         if (Math.abs(dx) < 4) {
             this.sprite.setVelocityX(0);
             return;
         }
+
+        if (Math.abs(dy) < 4) {
+            this.sprite.setVelocityY(0);
+            return;
+        }
         
-        const dir = Math.sign(dx);
-        this.sprite.setVelocityX(dir * this.baseSpeed);
+        const dirX = Math.sign(dx);
+        const dirY = Math.sign(dy);
+        this.sprite.setVelocityX(dirX * this.baseSpeed);
+        this.sprite.setVelocityY(dirY * this.baseSpeed);
     }
 
     update() {
-        this.enemyMovment();
+        this.enemyMovement();
     }
 }
