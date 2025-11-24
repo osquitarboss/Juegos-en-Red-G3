@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { Player } from "../entities/Player.js";
+import { Light } from "../entities/Light.js";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
 import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
@@ -18,6 +19,8 @@ export class GameScene extends Phaser.Scene{
         this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100);
         this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100);
 
+        this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
+
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
     }
 
@@ -27,13 +30,13 @@ export class GameScene extends Phaser.Scene{
         this.players.set('player2', this.lucy);
         this.inputManager.players = this.players;
 
-        this.light = this.add.graphics();
+        /*this.light = this.add.graphics();
         this.light.fillStyle(0xff0000, 0.5); // color + alpha
         this.light.fillCircle(0, 0, 50); // radio del círculo
 
         this.lightOn = false;
 
-        this.keyF = this.input.keyboard.addKey('F');
+        this.keyF = this.input.keyboard.addKey('F');*/
 
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
@@ -72,7 +75,7 @@ export class GameScene extends Phaser.Scene{
         this.inputManager.update();
         
         //Deberíamos cambiar lo de light a una propia clase Light y luego moverlo al input manager
-        if (Phaser.Input.Keyboard.JustDown(this.keyF)) {  
+        /*if (Phaser.Input.Keyboard.JustDown(this.keyF)) {  
             this.lightIsOn = !this.lightIsOn;
         }
 
@@ -80,8 +83,8 @@ export class GameScene extends Phaser.Scene{
         if(this.lightIsOn){
             this.light.fillStyle(0xffffff, 0.5);
             this.light.fillCircle(this.arthur.sprite.x, this.arthur.sprite.y, 75);
-        }
-        
+        }*/
+        this.light.update();
         this.enemy1.update();
     }
 }
