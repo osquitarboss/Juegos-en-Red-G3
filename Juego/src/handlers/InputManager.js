@@ -13,6 +13,13 @@ export class InputManager {
         this.players = new Map();
         this.inputsMapping = [];
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
+        // Detectar F solo cuando se presiona (evento)
+        this.input.keyboard.on('keydown-F', () => {
+            
+                this.players.get('player1').action.perform();
+        });
 
         this.setUpInputs();
     }
@@ -75,31 +82,30 @@ export class InputManager {
         }
 
         this.inputsMapping.forEach(mapping => {
-    let player = this.players.get(mapping.playerId);
+            let player = this.players.get(mapping.playerId);
 
-    let command = new Command();
+            let command = new Command();
 
-    // SALTO
-    if (mapping.upKeyObj.isDown) {
-        this.commandProcessor.process(
-            new PlayerMovmentInputCommand(player, 'up')
-        );
-    }
+            // SALTO
+            if (mapping.upKeyObj.isDown) {
+                this.commandProcessor.process(
+                    new PlayerMovmentInputCommand(player, 'up')
+                );
+            }
 
-    // MOVIMIENTO
-    if (mapping.leftKeyObj.isDown) {
-        this.commandProcessor.process(
-            new PlayerMovmentInputCommand(player, 'left')
-        );
-    } else if (mapping.rightKeyObj.isDown) {
-        this.commandProcessor.process(
-            new PlayerMovmentInputCommand(player, 'right')
-        );
-    } else {
-        player.sprite.setVelocityX(0);
-    }
-
-    this.commandProcessor.process(command);
-    });
-    }
+            // MOVIMIENTO
+            if (mapping.leftKeyObj.isDown) {
+                this.commandProcessor.process(
+                    new PlayerMovmentInputCommand(player, 'left')
+                );
+            } else if (mapping.rightKeyObj.isDown) {
+                this.commandProcessor.process(
+                    new PlayerMovmentInputCommand(player, 'right')
+                );
+            } else {
+                player.sprite.setVelocityX(0);
+            }
+            this.commandProcessor.process(command);
+            });
+        }
 }

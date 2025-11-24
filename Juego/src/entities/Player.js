@@ -12,6 +12,7 @@ export class Player {
         this.authority = 'LOCAL';
         this.xPos = xPos;
         this.yPos = yPos;
+        this.action = null;
 
         const graphics = this.scene.add.graphics();
         graphics.fillStyle(0x00ff00);
