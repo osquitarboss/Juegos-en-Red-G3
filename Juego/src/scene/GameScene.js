@@ -16,17 +16,25 @@ export class GameScene extends Phaser.Scene{
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.input, this.commandProcessor);
 
-        this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100);
+        this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100, 'spritesheet-arthur');
         this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
 
         this.arthur.action = this.light;
 
-        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100);
+        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-arthur');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
     }
 
+    preload() {
+        this.arthur.preload(600, 800);
+        this.lucy.preload(600, 800);
+    }
+
     create() {
+        //Create the animations 
+        this.arthur.create();
+        this.lucy.create();
         // Set up input and players
         this.players.set('player1', this.arthur);
         this.players.set('player2', this.lucy);

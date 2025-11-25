@@ -1,11 +1,13 @@
+import { Animator } from "../Components/Animator";
+
 export class Player {
 
-    constructor(scene, id, x, y, gravity, xPos, yPos) {
+    constructor(scene, id, x, y, gravity, xPos, yPos, spriteSheet = null) {
         this.id = id;
         this.scene = scene;
-        
-        this.baseHeight = 50;
-        this.baseWidth = 50;
+        this.gravity = gravity;
+        this.baseHeight = 0.15;
+        this.baseWidth = 0.15;
         this.baseSpeed = 300;
         this.health = 100;
         this.invulnerable = false;
@@ -14,17 +16,28 @@ export class Player {
         this.yPos = yPos;
         this.action = null;
 
-        const graphics = this.scene.add.graphics();
-        graphics.fillStyle(0x00ff00);
-        graphics.fillRect(0, 0, this.baseWidth, this.baseHeight);
-        graphics.generateTexture(`player-${id}`, this.baseWidth, this.baseHeight);
-        graphics.destroy();
+        this.animator = new Animator(this.scene, spriteSheet);        
+    }
 
-        
-        this.sprite = this.scene.physics.add.sprite(x, y, `player-${id}`);
+    preload(width, height) {
+        this.animator.preload(width, height);
+    }
+
+    create() {
+        // Crear las animaciones del jugador aquí
+        this.sprite = this.animator.assignSpriteToPlayer(this.xPos, this.yPos);
+        this.animator.createAnimation('idle', 0, 2, 5);
+        this.animator.createAnimation("walk", 3, 6, 5)
+
+        this.sprite.setScale(this.baseWidth, this.baseHeight);
+
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.allowGravity = true;
-        this.sprite.body.setGravityY(gravity);
+        this.sprite.body.setGravityY(this.gravity);
+        this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
+        this.sprite.body.setOffset(150, 270);
+        
+        this.sprite.play('walk', true);
     }
 
     getHit(damage) {
