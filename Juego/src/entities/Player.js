@@ -127,4 +127,8 @@ export class Player {
     canJump() {
         return this.sprite.body.onFloor() && this.checkAlive();
     }
+
+    attack() {
+        return null; // Implementar en las clases hijas
+    }
 }
