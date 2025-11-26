@@ -1,32 +1,34 @@
 import { Command } from './Command.js';
 
 export class PlayerMovmentInputCommand extends Command {
-    constructor(player, action, baseSpeed = 300) {
+    constructor(player, action) {
         super();
         this.player = player;
         this.action = action; // 'left', 'right', 'up'
-        this.baseSpeed = baseSpeed;
+        this.baseSpeed = player.baseSpeed;
     }
 
     execute() {
 
-    // --- SALTO ---
-    if (this.action === 'up' && this.player.canJump()) {
-        this.player.sprite.setVelocityY(-this.baseSpeed - 100);
+        const player = this.player;
+
+        // 
+        if (this.action === 'up') {
+            player.jump();
+        }
+
+        // 
+        if (this.action === 'left' || this.action === 'right') {
+            player.horizontalMove(this.action);
+            return;
+        }
+
+        // 
+        if (this.action === 'idle') {
+            player.idle();
+        }
     }
 
-    // --- MOVIMIENTO ---
-    if (this.action === 'left') {
-        this.player.sprite.setVelocityX(-this.baseSpeed);
-    } 
-    else if (this.action === 'right') {
-        this.player.sprite.setVelocityX(this.baseSpeed);
-    } 
-    else {
-        // solo parar si no estás moviéndote horizontalmente
-        this.player.sprite.setVelocityX(0);
-    }
-}
 
     serialize() {
         return {

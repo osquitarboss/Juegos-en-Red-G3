@@ -103,7 +103,9 @@ export class InputManager {
                     new PlayerMovmentInputCommand(player, 'right')
                 );
             } else {
-                player.sprite.setVelocityX(0);
+                this.commandProcessor.process(
+                    new PlayerMovmentInputCommand(player, 'idle')
+                );
             }
             this.commandProcessor.process(command);
             });
