@@ -13,7 +13,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: {y: 1},
-            debug: true,        // ← ACTIVAR DEBUG
+            debug: true,        //ACTIVAR DEBUG
             debugShowBody: true,
             debugShowStaticBody: true
         } 

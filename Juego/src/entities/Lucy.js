@@ -32,7 +32,7 @@ export class Lucy extends Player {
                 }
             }
         });
-        // En el create de la escena configurar los overlaps con los enemigos
+        // En el create de la escena configurar los OVERLAPS con los enemigos
     }
 
     updateHitbox() {

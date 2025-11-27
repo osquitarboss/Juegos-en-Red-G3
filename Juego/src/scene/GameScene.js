@@ -21,7 +21,9 @@ export class GameScene extends Phaser.Scene{
 
         this.arthur.action = this.light;
 
+        // Cambiatr a Lucy con otro sprite cuando esté disponible !!!!!!!!!!!!!!!!!!!
         this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-arthur');
+        //this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
     }
