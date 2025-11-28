@@ -14,16 +14,14 @@ export class GameScene extends Phaser.Scene{
     init() {
         this.players = new Map();
         this.isPaused = false;
-        this.inputManager = new InputManager(this, this.input, this.commandProcessor);
+        this.inputManager = new InputManager(this, this.scene, this.input, this.commandProcessor);
 
         this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100, 'spritesheet-arthur');
         this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
 
         this.arthur.action = this.light;
 
-        // Cambiatr a Lucy con otro sprite cuando esté disponible !!!!!!!!!!!!!!!!!!!
         this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-arthur');
-        //this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
     }
