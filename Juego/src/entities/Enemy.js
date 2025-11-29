@@ -19,6 +19,7 @@ export class Enemy {
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.allowGravity = false;
         this.sprite.body.setGravityY(500);
+        this.sprite.setDepth(10);
     }
 
     enemyMovement() {

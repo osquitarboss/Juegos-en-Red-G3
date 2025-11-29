@@ -15,7 +15,6 @@ export class GameScene extends Phaser.Scene{
         this.players = new Map();
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.scene, this.input, this.commandProcessor);
-
         this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100, 'spritesheet-arthur');
         this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
 
@@ -24,14 +23,23 @@ export class GameScene extends Phaser.Scene{
         this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-arthur');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
+        
     }
 
     preload() {
         this.arthur.preload(600, 800);
         this.lucy.preload(600, 800);
+
+        this.load.image('fondo', 'assets/FondoHorizontal.png');
     }
 
     create() {
+        
+
+        this.fondo = this.add.image(0, 0, 'fondo').setOrigin(0, 0.2);
+        this.fondo.setScale(0.3); // reducir tamaño
+        this.fondo.setScrollFactor(0.2); // parallax (más pequeño = se mueve más lento)
+
         //Create the animations 
         this.arthur.create();
         this.lucy.create();
@@ -47,9 +55,17 @@ export class GameScene extends Phaser.Scene{
         this.lightOn = false;
 
         this.keyF = this.input.keyboard.addKey('F');*/
-
+        
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
+
+        this.physics.world.setBounds(0, 0, 10000, 600);
+        this.cameras.main.setBounds(0, 0, 10000, 600);
+
+        //this.cameras.main.startFollow(this.arthur.sprite, true);
+
+        // Cosa opcional de suavizado
+        this.cameras.main.setLerp(0.1, 0.1);
 
     }
 
@@ -86,6 +102,32 @@ export class GameScene extends Phaser.Scene{
         
        
         this.light.update();
-        this.enemy1.update();
+        //this.enemy1.update();
+
+        const camera = this.cameras.main;
+
+        const camLeft = camera.scrollX;
+        const camRight = camera.scrollX + camera.width;
+        const margin = 20;
+
+        this.arthur.sprite.x = Phaser.Math.Clamp(this.arthur.sprite.x, camLeft + margin, camRight - margin);
+        this.lucy.sprite.x   = Phaser.Math.Clamp(this.lucy.sprite.x,   camLeft + margin, camRight - margin);
+
+        const midX = (this.arthur.sprite.x + this.lucy.sprite.x) / 2;
+
+        const targetLeft  = midX - camera.width * 0.5;
+        const targetRight = midX + camera.width * 0.5;
+
+        const arthurInsideAfterMove = 
+            this.arthur.sprite.x > targetLeft + margin &&
+            this.arthur.sprite.x < targetRight - margin;
+
+        const lucyInsideAfterMove =
+            this.lucy.sprite.x > targetLeft + margin &&
+            this.lucy.sprite.x < targetRight - margin;
+
+        if (arthurInsideAfterMove && lucyInsideAfterMove) {
+            camera.pan(midX, camera.midPoint.y, 100);
+        }
     }
 }
