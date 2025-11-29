@@ -6,8 +6,8 @@ export class Player {
         this.id = id;
         this.scene = scene;
         this.gravity = gravity;
-        this.baseHeight = 0.15;
-        this.baseWidth = 0.15;
+        this.baseHeight = 0.17;
+        this.baseWidth = 0.17;
         this.baseSpeed = 300;
         this.jumpForce = 450; 
         this.health = 100;
@@ -31,14 +31,14 @@ export class Player {
     create() {
         // Crear las animaciones del jugador aquí
         this.sprite = this.animator.assignSpriteToPlayer(this.xPos, this.yPos);
-        this.animator.createAnimation('idle', 0, 3, 5);
-        this.animator.createAnimation("walk", 4, 7, 5);
-        this.animator.createAnimation("jump", 8, 10, 5, 0);
+        this.animator.createAnimation(`idle-${this.id}`, 0, 3, 5);
+        this.animator.createAnimation(`walk-${this.id}`, 4, 7, 5);
+        this.animator.createAnimation(`jump-${this.id}`, 8, 10, 5, 0);
 
         this.sprite.on("animationcomplete", (anim) => {
-            if (anim.key === "jump") {               
+            if (anim.key === `jump-${this.id}`) {               
                 if (this.sprite.body.onFloor()) {
-                    this.playAnim("idle");
+                    this.playAnim(`idle-${this.id}`);
                 } 
                 else {
                     this.currentAnim = null;
@@ -56,7 +56,7 @@ export class Player {
         this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
         this.sprite.body.setOffset(150, 270);
         
-        this.sprite.play("idle");
+        this.sprite.play(`idle-${this.id}`);
     }
 
     playAnim(key) {
@@ -75,8 +75,8 @@ export class Player {
         this.sprite.setVelocityX(direction === 'left' ? -this.baseSpeed : this.baseSpeed);
 
         
-        if (this.sprite.body.onFloor() && this.currentAnim !== "jump") {
-            this.playAnim("walk");
+        if (this.sprite.body.onFloor() && this.currentAnim !== `jump-${this.id}`) {
+            this.playAnim(`walk-${this.id}`);
         }
     }
 
@@ -84,15 +84,15 @@ export class Player {
         if (this.canJump()) {
 
             this.sprite.setVelocityY(-this.jumpForce);
-            this.playAnim("jump");
+            this.playAnim(`jump-${this.id}`);
         }
     }
 
     idle() {
         this.sprite.setVelocityX(0);
         // No poner idle si estás en el aire
-        if (this.sprite.body.onFloor() && this.currentAnim !== "jump") {
-            this.playAnim("idle");
+        if (this.sprite.body.onFloor() && this.currentAnim !== `jump-${this.id}`) {
+            this.playAnim(`idle-${this.id}`);
             this.currentDirection = 'idle';
         }
     }

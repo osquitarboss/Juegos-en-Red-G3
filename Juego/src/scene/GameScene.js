@@ -4,25 +4,28 @@ import { Light } from "../entities/Light.js";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
 import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
+import { Camera } from "../Components/Camera.js";
 
 export class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene')
-        this.commandProcessor = new CommandProcessor();
+        
     }
 
     init() {
+        this.commandProcessor = new CommandProcessor();
         this.players = new Map();
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.scene, this.input, this.commandProcessor);
         this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100, 'spritesheet-arthur');
         this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
-
         this.arthur.action = this.light;
 
-        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-arthur');
+        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
+
+        this.camera = new Camera(this, this.players);
         
     }
 
@@ -35,38 +38,31 @@ export class GameScene extends Phaser.Scene{
 
     create() {
         
+        
 
-        this.fondo = this.add.image(0, 0, 'fondo').setOrigin(0, 0.2);
-        this.fondo.setScale(0.3); // reducir tamaño
-        this.fondo.setScrollFactor(0.2); // parallax (más pequeño = se mueve más lento)
-
+        this.fondo = this.add.tileSprite(0, 0, 8000, 2000, 'fondo')
+            .setOrigin(0, 0)
+            .setScrollFactor(0.2)
+            .setScale(0.3);
+        
         //Create the animations 
         this.arthur.create();
         this.lucy.create();
+
         // Set up input and players
         this.players.set('player1', this.arthur);
         this.players.set('player2', this.lucy);
         this.inputManager.players = this.players;
 
-        /*this.light = this.add.graphics();
-        this.light.fillStyle(0xff0000, 0.5); // color + alpha
-        this.light.fillCircle(0, 0, 50); // radio del círculo
-
-        this.lightOn = false;
-
-        this.keyF = this.input.keyboard.addKey('F');*/
-        
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
 
         this.physics.world.setBounds(0, 0, 10000, 600);
-        this.cameras.main.setBounds(0, 0, 10000, 600);
+        this.camera.camera.setBounds(0, 0, 10000, 600);
 
-        //this.cameras.main.startFollow(this.arthur.sprite, true);
 
         // Cosa opcional de suavizado
-        this.cameras.main.setLerp(0.1, 0.1);
-
+        this.camera.camera.setLerp(0.1, 0.1);
     }
 
     setUpWorldCollisions() {
@@ -98,36 +94,13 @@ export class GameScene extends Phaser.Scene{
     }
 
     update() {
+        this.fondo.tilePositionX = this.cameras.main.scrollX * 0.2;
+
+        this.camera.update();
         this.inputManager.update();
         
        
         this.light.update();
         //this.enemy1.update();
-
-        const camera = this.cameras.main;
-
-        const camLeft = camera.scrollX;
-        const camRight = camera.scrollX + camera.width;
-        const margin = 20;
-
-        this.arthur.sprite.x = Phaser.Math.Clamp(this.arthur.sprite.x, camLeft + margin, camRight - margin);
-        this.lucy.sprite.x   = Phaser.Math.Clamp(this.lucy.sprite.x,   camLeft + margin, camRight - margin);
-
-        const midX = (this.arthur.sprite.x + this.lucy.sprite.x) / 2;
-
-        const targetLeft  = midX - camera.width * 0.5;
-        const targetRight = midX + camera.width * 0.5;
-
-        const arthurInsideAfterMove = 
-            this.arthur.sprite.x > targetLeft + margin &&
-            this.arthur.sprite.x < targetRight - margin;
-
-        const lucyInsideAfterMove =
-            this.lucy.sprite.x > targetLeft + margin &&
-            this.lucy.sprite.x < targetRight - margin;
-
-        if (arthurInsideAfterMove && lucyInsideAfterMove) {
-            camera.pan(midX, camera.midPoint.y, 100);
-        }
     }
 }
