@@ -24,6 +24,7 @@ export class GameScene extends Phaser.Scene{
         this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
+        this.enemies = [this.enemy1];
 
         this.camera = new Camera(this, this.players);
         
@@ -48,6 +49,7 @@ export class GameScene extends Phaser.Scene{
         //Create the animations 
         this.arthur.create();
         this.lucy.create();
+        this.arthur.action.create(); // Create de la luz
 
         // Set up input and players
         this.players.set('player1', this.arthur);
@@ -83,12 +85,30 @@ export class GameScene extends Phaser.Scene{
             this.physics.add.collider(player.sprite, plataformas);
         }
 
-        this.physics.add.collider(this.enemy1.sprite, plataformas);
+        for (let enemy of this.enemies) {
+            this.physics.add.collider(enemy.sprite, plataformas);
+        }
     }
 
     setUpEnemyCollisions() {
-        this.physics.add.collider(this.enemy1.sprite, this.players.get('player1').sprite, () => {
+        this.physics.add.collider(this.enemies[0].sprite, this.players.get('player1').sprite, () => {
             this.arthur.getHit(50);
+        });
+
+        this.physics.add.overlap(this.enemies[0].sprite, this.light.colliderCircle, () => { // Hacemos que el enemigo se debilite si la luz está activa pero q despues de un tiempo vuelva a la normalidad
+            if (this.light.isOn) {
+                this.enemies[0].setWeakened(true);
+                this.time.delayedCall(2000, () => {
+                    this.enemies[0]?.setWeakened(false);
+                });
+            }
+        });
+
+        this.physics.add.overlap(this.enemies[0].sprite, this.players.get('player2').sprite, () => {
+            if (this.enemies[0].weakened) {
+                this.enemies[0].destroy();
+                this.enemies[0] = null;
+            }
         });
 
     }
@@ -101,6 +121,10 @@ export class GameScene extends Phaser.Scene{
         
        
         this.light.update();
-        //this.enemy1.update();
+        for (let enemy of this.enemies) {
+            if (enemy) {
+                enemy.update();
+            }
+        }
     }
 }

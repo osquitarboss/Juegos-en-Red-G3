@@ -9,6 +9,8 @@ export class Enemy {
         this.baseWidth = 50;
         this.baseSpeed = 100;
 
+        this.weakened = false;
+
         const graphics = this.scene.add.graphics();
         graphics.fillStyle(0xff0000);
         graphics.fillRect(0, 0, this.baseWidth, this.baseHeight);
@@ -49,6 +51,23 @@ export class Enemy {
         this.sprite.setVelocityY(dirY * this.baseSpeed);
     }
 
+    destroy() {
+        this.sprite.destroy();
+        this.sprite = null;
+    }
+
+    setWeakened(value) {
+        this.weakened = value;
+        if (value) {
+            this.baseSpeed = 0;
+            this.sprite.setTint('#ff00ff');
+        } else {
+            this.baseSpeed = 100;
+            this.sprite.clearTint();
+        }
+    }
+
+    
     update() {
         this.enemyMovement();
     }
