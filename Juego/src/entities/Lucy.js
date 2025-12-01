@@ -11,27 +11,26 @@ export class Lucy extends Player {
         this.attackHitbox = this.scene.physics.add.sprite(0, 0, null)
             .setSize(40, 20)
             .setVisible(false)
-            .setImmovable(true)
-            .setActive(false);
+            .setImmovable(true);
 
-        this.sprite.on('animationcomplete', (anim) => {
-            if (anim.key === "attack") {
+        this.isAttacking = false;
+
+
+        this.sprite.on("animationcomplete", (anim) => {
+            if (anim.key === `attack-${this.id}`) {
                 this.isAttacking = false;
-                this.playAnim("idle"); // o walk si te mueves
+                this.playAnim(`idle-${this.id}`); // o walk si te mueves
+                this.attackHitbox.setPosition(-100, -100); // sacar el hitbox de la pantalla
+                
             }
         });
 
-        this.sprite.on('animationupdate', (anim, frame) => {
-            if (anim.key === "attack") {
-
-                // Frames que hacen daño:
-                if (frame.index >= 3 && frame.index <= 5) { 
-                    this.attackHitbox.setActive(true).setVisible(false);
-                } else {
-                    this.attackHitbox.setActive(false);
-                }
+        this.sprite.on("animationupdate", (anim) => {
+            if (anim.key === `attack-${this.id}`) {
+                this.updateHitbox();
             }
         });
+
         // En el create de la escena configurar los OVERLAPS con los enemigos
     }
 
@@ -49,6 +48,6 @@ export class Lucy extends Player {
         this.updateHitbox();
         this.isAttacking = true;
         this.sprite.setVelocityX(0); // opcional
-        this.sprite.play("attack");
+        this.playAnim(`attack-${this.id}`);
     }
 }

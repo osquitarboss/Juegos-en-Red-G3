@@ -27,7 +27,7 @@ export class InputManager {
         // Detectar F solo cuando se presiona (evento)
         this.input.keyboard.on('keydown-F', () => {
             
-            this.players.get('player1').action.perform();
+            this.players.get('player1').attack();
         });
             
         const InputConfig = [
@@ -37,6 +37,7 @@ export class InputManager {
                 rightKey: 'D',
                 upKey: 'W',
                 downKey: 'S',
+                attackKey: 'F'
             },
             {
                 playerId: 'player2',
@@ -44,6 +45,7 @@ export class InputManager {
                 rightKey: 'RIGHT',
                 upKey: 'UP',
                 downKey: 'DOWN',
+                attackKey: 'ENTER'
             }
         ];
     
@@ -55,6 +57,7 @@ export class InputManager {
                 rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
                 upKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.upKey]),
                 downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
+                attackKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.attackKey])
             }
         });
             
@@ -94,6 +97,11 @@ export class InputManager {
                     new PlayerMovmentInputCommand(player, 'idle')
                 );
             }
+
+            if (mapping.attackKeyObj.isDown) {
+                player.attack();
+            }
+
             this.commandProcessor.process(command);
             });
         }

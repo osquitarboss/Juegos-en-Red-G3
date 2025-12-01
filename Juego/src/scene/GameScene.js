@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { Player } from "../entities/Player.js";
+import { Lucy } from "../entities/Lucy.js";
 import { Light } from "../entities/Light.js";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
@@ -21,7 +22,7 @@ export class GameScene extends Phaser.Scene{
         this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
         this.arthur.action = this.light;
 
-        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
+        this.lucy = new Lucy(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
         this.enemies = [this.enemy1];
@@ -34,6 +35,9 @@ export class GameScene extends Phaser.Scene{
         this.arthur.preload(600, 800);
         this.lucy.preload(600, 800);
 
+        for (let enemy of this.enemies) {
+            enemy.preload();
+        }
         this.load.image('fondo', 'assets/FondoHorizontal.png');
     }
 
@@ -46,18 +50,24 @@ export class GameScene extends Phaser.Scene{
             .setScrollFactor(0.2)
             .setScale(0.3);
         
-        //Create the animations 
+        //Create tplayers and enemies 
         this.arthur.create();
         this.lucy.create();
         this.arthur.action.create(); // Create de la luz
+    
+        for (let enemy of this.enemies) {
+            enemy.create();
+        }
 
-        // Set up input and players
+        // Set up input and players - IMPORTANTE: poblamos el Map ANTES de crear colisiones
         this.players.set('player1', this.arthur);
         this.players.set('player2', this.lucy);
         this.inputManager.players = this.players;
 
+        // Ahora sí creamos las colisiones con el Map ya poblado
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
+        this.setUpReviveCollision();
 
         this.physics.world.setBounds(0, 0, 10000, 600);
         this.camera.camera.setBounds(0, 0, 10000, 600);
@@ -65,6 +75,16 @@ export class GameScene extends Phaser.Scene{
 
         // Cosa opcional de suavizado
         this.camera.camera.setLerp(0.1, 0.1);
+    }
+
+    setUpReviveCollision() {
+        this.physics.add.overlap(this.players.get('player1').sprite, this.players.get('player2').sprite, () => {
+            if (this.players.get('player1').health <= 0 && this.players.get('player2').health > 0) {
+                this.players.get('player1').revive();
+            } else if (this.players.get('player2').health <= 0 && this.players.get('player1').health > 0) {
+                this.players.get('player2').revive();
+            }
+        });
     }
 
     setUpWorldCollisions() {
@@ -97,16 +117,16 @@ export class GameScene extends Phaser.Scene{
 
         this.physics.add.overlap(this.enemies[0].sprite, this.light.colliderCircle, () => { // Hacemos que el enemigo se debilite si la luz está activa pero q despues de un tiempo vuelva a la normalidad
             if (this.light.isOn) {
-                this.enemies[0].setWeakened(true);
+                this.enemies[0]?.setWeakened(true);
                 this.time.delayedCall(2000, () => {
                     this.enemies[0]?.setWeakened(false);
                 });
             }
         });
 
-        this.physics.add.overlap(this.enemies[0].sprite, this.players.get('player2').sprite, () => {
-            if (this.enemies[0].weakened) {
-                this.enemies[0].destroy();
+        this.physics.add.overlap(this.enemies[0].sprite, this.players.get('player2').attackHitbox, () => {
+            if (this.enemies[0]?.weakened && this.players.get('player2').isAttacking) {
+                this.enemies[0].die();
                 this.enemies[0] = null;
             }
         });
@@ -121,10 +141,10 @@ export class GameScene extends Phaser.Scene{
         
        
         this.light.update();
-        for (let enemy of this.enemies) {
-            if (enemy) {
-                enemy.update();
-            }
-        }
+        this.enemies = this.enemies.filter(enemy => {
+            if (!enemy) return false;
+            enemy.update();
+            return true;
+        });
     }
 }
