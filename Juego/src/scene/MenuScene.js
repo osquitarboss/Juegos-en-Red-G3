@@ -7,20 +7,15 @@ export class MenuScene extends Phaser.Scene {
 
     preload()
     {
-        this.load.image('background', 'assets/menu-inicio-fondo.png');
+        this.load.image('background', 'assets/menuJR.png');
     }
 
     create() {
         this.add.image(400, 300, 'background').
         setOrigin(0.5);
 
-        this.add.text(400,100, 'BM Confidential',
-        {   fontSize: '64px',
-            color: '#4f2b02ff',
-            backgroundColor: '#ffffff43',
-        }).setOrigin(0.5);
 
-        const localBtn = this.add.text(400, 550, 'Local Play', {
+        const localBtn = this.add.text(550, 450, 'Local Play', {
             fontSize: '24px', 
             color: '#3e2606ff',
             backgroundColor: '#ffffffff',

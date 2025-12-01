@@ -5,13 +5,24 @@ import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
 import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
 import { Camera } from "../Components/Camera.js";
+import { Platform } from "../entities/Platform.js";
+
 
 export class GameScene extends Phaser.Scene{
     constructor() {
         super('GameScene')
         
     }
+    preload() {
+        this.arthur.preload(600, 800);
+        this.lucy.preload(600, 800);
 
+        this.load.image('fondo', 'assets/FondoHorizontal.png');
+        this.load.image('p1', 'assets/plataforma1.png');
+        this.load.image('suelo', 'assets/suelo.png');
+
+    }
+    
     init() {
         this.commandProcessor = new CommandProcessor();
         this.players = new Map();
@@ -29,16 +40,9 @@ export class GameScene extends Phaser.Scene{
         
     }
 
-    preload() {
-        this.arthur.preload(600, 800);
-        this.lucy.preload(600, 800);
-
-        this.load.image('fondo', 'assets/FondoHorizontal.png');
-    }
+    
 
     create() {
-        
-        
 
         this.fondo = this.add.tileSprite(0, 0, 8000, 2000, 'fondo')
             .setOrigin(0, 0)
@@ -61,7 +65,7 @@ export class GameScene extends Phaser.Scene{
         this.camera.camera.setBounds(0, 0, 10000, 600);
 
 
-        // Cosa opcional de suavizado
+        // Coso opcional de suavizado
         this.camera.camera.setLerp(0.1, 0.1);
     }
 
@@ -70,15 +74,23 @@ export class GameScene extends Phaser.Scene{
 
         const plataformas = this.physics.add.staticGroup();
         
-        const suelo1 = this.add.rectangle(400, 580, 800, 40, 0xffffff);
-        const suelo2 = this.add.rectangle(200, 450, 200, 30, 0xffffff);
-
-        this.physics.add.existing(suelo1, true);
-        this.physics.add.existing(suelo2, true);
+        this.suelo1 = new Platform(this, 'suelo', 400, 580, 800, 40, 'suelo');
+        this.suelo2 = new Platform(this, 'p1', 200, 450, 200, 30, 'p1');
+        //this.physics.add.existing(this.suelo1, true);
+        //this.physics.add.existing(suelo2, true);
         
-        plataformas.add(suelo1);
-        plataformas.add(suelo2);
+        //plataformas.add(suelo1);
+        //plataformas.add(suelo2);
+        //tiene q haber una forma de q funcione con el anterior sistema
+        this.physics.add.collider(this.arthur.sprite, this.suelo1.sprite);
+        this.physics.add.collider(this.lucy.sprite, this.suelo1.sprite);
+        this.physics.add.collider(this.enemy1.sprite, this.suelo1.sprite);
 
+        this.physics.add.collider(this.arthur.sprite, this.suelo2.sprite);
+        this.physics.add.collider(this.lucy.sprite, this.suelo2.sprite);
+        this.physics.add.collider(this.enemy1.sprite, this.suelo2.sprite);
+
+        
         for (let player of this.players.values()) {
             this.physics.add.collider(player.sprite, plataformas);
         }
@@ -90,7 +102,6 @@ export class GameScene extends Phaser.Scene{
         this.physics.add.collider(this.enemy1.sprite, this.players.get('player1').sprite, () => {
             this.arthur.getHit(50);
         });
-
     }
 
     update() {
