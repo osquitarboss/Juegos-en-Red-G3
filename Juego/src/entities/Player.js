@@ -33,13 +33,20 @@ export class Player {
         this.sprite = this.animator.assignSpriteToPlayer(this.xPos, this.yPos);
         this.animator.createAnimation(`idle-${this.id}`, 0, 3, 4);
         this.animator.createAnimation(`walk-${this.id}`, 4, 7, 5);
-        this.animator.createAnimation(`jump-${this.id}`, 8, 8, 2, 0);
-        this.animator.createAnimation(`air-${this.id}`, 9, 9, 5, );
+        this.animator.createAnimation(`jump-${this.id}`, 8, 8, 4, 0);
+        this.animator.createAnimation(`air-${this.id}`, 9, 9, 5, 0 );
         this.animator.createAnimation(`fall-${this.id}`, 10, 10, 2, 0);
         this.animator.createAnimation(`attack-${this.id}`, 12, 13, 10, 0);
 
         this.sprite.on("animationcomplete", (anim) => {
-            if (anim.key === `jump-${this.id}`) {               
+            if (anim.key === `jump-${this.id}`&& !this.sprite.body.onFloor()) {
+                   this.playAnim(`air-${this.id}`);
+                }
+                else if(anim.key === `air-${this.id}`&& this.sprite.body.onFloor()){
+                    this.playAnim(`fall-${this.id}`);
+                }
+
+            else if (anim.key === `jump-${this.id}`) {               
                 if (this.sprite.body.onFloor()) {
                     this.playAnim(`idle-${this.id}`);
                 } 
@@ -88,19 +95,23 @@ export class Player {
             this.sprite.setVelocityY(-this.jumpForce);
             this.playAnim(`jump-${this.id}`);
 
-            this.sprite.once("animationcomplete", (anim) => {
+            this.sprite.on("animationcomplete", (anim) => {
                 if (anim.key === `jump-${this.id}`&& !this.sprite.body.onFloor()) {
                    this.playAnim(`air-${this.id}`);
                 }
-            
+                else if(anim.key === `air-${this.id}`&& this.sprite.body.onFloor()){
+                    this.playAnim(`fall-${this.id}`);
+                }
             });
+            
         }
-    }
+}
+
 
     idle() {
         this.sprite.setVelocityX(0);
         // No poner idle si estás en el aire
-        if (this.sprite.body.onFloor() && this.currentAnim !== `jump-${this.id}` && this.currentAnim !== `attack-${this.id}` && !this.isDead) {
+        if (this.sprite.body.onFloor() && this.currentAnim !== `jump-${this.id}` && this.currentAnim !== `fall-${this.id}` && this.currentAnim !== `attack-${this.id}` && !this.isDead) {
             this.playAnim(`idle-${this.id}`);
             this.currentDirection = 'idle';
         }

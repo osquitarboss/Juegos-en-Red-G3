@@ -70,13 +70,13 @@ export class Enemy {
         if (value) {
             this.sprite.anims.play(`black-to-white-${this.id}`);
 
-            this.sprite.once("animationcomplete", (anim) => {
+            this.sprite.on("animationcomplete", (anim) => {
                 if (anim.key === `black-to-white-${this.id}`) {
                     this.sprite.anims.play(`idle-white-${this.id}`);
                 }   
             });
         } else {
-            
+
             this.sprite.anims.play(`idle-black-${this.id}`);
                 }   
           
