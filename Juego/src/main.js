@@ -9,18 +9,21 @@ const config = {
     width: 800,
     height: 600,
     parent: 'game-container',
+
     physics: {
         default: 'arcade',
         arcade: {
             gravity: {y: 1},
-            debug: true,        //ACTIVAR DEBUG
+            debug: true,
             debugShowBody: true,
-            debugShowStaticBody: true
+            debugShowStaticBody: true,
         } 
     },
+  
 
     scene: [MenuScene, GameScene, PauseScene],
     backgroundColor: '#360246ff'
 }
 
 const game = new Phaser.Game(config);
+
