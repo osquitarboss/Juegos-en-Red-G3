@@ -34,26 +34,23 @@ export class Player {
         this.animator.createAnimation(`idle-${this.id}`, 0, 3, 4);
         this.animator.createAnimation(`walk-${this.id}`, 4, 7, 5);
         this.animator.createAnimation(`jump-${this.id}`, 8, 8, 4, 0);
-        this.animator.createAnimation(`air-${this.id}`, 9, 9, 5, 0 );
-        this.animator.createAnimation(`fall-${this.id}`, 10, 10, 2, 0);
+        this.animator.createAnimation(`air-${this.id}`, 9, 10, 1, 0);
+        this.animator.createAnimation(`fall-${this.id}`, 10, 10, 1, 0);
         this.animator.createAnimation(`attack-${this.id}`, 12, 13, 10, 0);
 
         this.sprite.on("animationcomplete", (anim) => {
-            if (anim.key === `jump-${this.id}`&& !this.sprite.body.onFloor()) {
-                   this.playAnim(`air-${this.id}`);
-                }
-                else if(anim.key === `air-${this.id}`&& this.sprite.body.onFloor()){
-                    this.playAnim(`fall-${this.id}`);
-                }
+            if (anim.key === `jump-${this.id}`) {     
 
-            else if (anim.key === `jump-${this.id}`) {               
-                if (this.sprite.body.onFloor()) {
-                    this.playAnim(`idle-${this.id}`);
-                } 
-                else {
-                    this.currentAnim = null;
-                    this.sprite.anims.stop();
-                    this.sprite.setFrame(anim.frames.at(0).frame);
+                if (!this.sprite.body.onFloor()) {
+                    this.playAnim(`air-${this.id}`);
+                }
+            }
+        });
+
+        this.sprite.on("animationupdate", (anim) => {
+            if (anim.key === `air-${this.id}`) {
+                if (this.sprite.body.onFloor()){
+                    this.playAnim(`fall-${this.id}`);
                 }
             }
         });
@@ -93,19 +90,9 @@ export class Player {
     jump() {
         if (this.canJump()) {
             this.sprite.setVelocityY(-this.jumpForce);
-            this.playAnim(`jump-${this.id}`);
-
-            this.sprite.on("animationcomplete", (anim) => {
-                if (anim.key === `jump-${this.id}`&& !this.sprite.body.onFloor()) {
-                   this.playAnim(`air-${this.id}`);
-                }
-                else if(anim.key === `air-${this.id}`&& this.sprite.body.onFloor()){
-                    this.playAnim(`fall-${this.id}`);
-                }
-            });
-            
+            this.playAnim(`jump-${this.id}`);          
         }
-}
+    }
 
 
     idle() {
