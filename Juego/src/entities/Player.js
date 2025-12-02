@@ -35,7 +35,7 @@ export class Player {
         this.animator.createAnimation(`jump-${this.id}`, 8, 8, 4, 0);
         this.animator.createAnimation(`air-${this.id}`, 9, 10, 1, 0);
         this.animator.createAnimation(`fall-${this.id}`, 10, 10, 1, 0);
-        this.animator.createAnimation(`attack-${this.id}`, 12, 13, 10, 0);
+        this.animator.createAnimation(`attack-${this.id}`, 12, 13, 2, 0);
 
         this.sprite.on("animationcomplete", (anim) => {
             if (anim.key === `jump-${this.id}`) {
