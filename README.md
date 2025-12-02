@@ -24,7 +24,7 @@ __URL del repositorio:__ https://github.com/osquitarboss/Juegos-en-Red-G3
 
 ## Noir Studios Presents: BM Confidential
 
-![Logo](Imagenes/logoJuegosEnRedFondoBlanco.png)
+![Logo](Imagenes/menuJR.png)
 
 ### Introducción
 BM Confidential es un juego de puzzles y plataformas en 2D en el que el que los jugadores deberán colaborar para resolver acertijos y avanzar por una mansión. En este juego los jugadores podrán elegir entre un detective que se encargará de los retos físicos o una fantasma atada al limbo. Este juego estará dirigido a todos los públicos además de que será accesible desde la web. 
@@ -75,8 +75,29 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 <img src="https://play-lh.googleusercontent.com/6N_ON50BZiEAe-ll2lM92NrVrgp5I5Ha6VI0a4Usw7uPmgEjL6tgJR6jWYUkkYgx2LM=w240-h480-rw" width = "275" height = "275">    <img src="https://m.media-amazon.com/images/I/81bldr+0gzL._SY445_.jpg" width = "300" height = "400">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/The_Maltese_Falcon_%281941_film_poster%29.jpg" width = "275" height = "400">  <img src="https://i.pinimg.com/1200x/d7/f4/fc/d7f4fc7d29495c601453c731d6c159a4.jpg" width = "275" height = "400">
 
+
+
+
+## ARTE
+### Logo
+#### Desarrollo del logo:
+<img src="Imagenes/logoJuegosEnRedFondoBlanco.png" width = "300" height = "300">
+<img src="Imagenes/menuJR.png" width = "400" height = "300">
+
+
+#### Escenario:
+<img src="Imagenes/FondoHorizontal.png" width = "400" height = "300">
+
 #### Diseño de personajes: Detective y fantasma
 ![Diseño Personajes](Imagenes/Detective_y_Fantasma.jpg)
+### Sprites:
+#### Sprites del Detective:
+![Sprites Detective](Imagenes/spritesheet-arthur.png)
+#### Sprites de la Fantasma:
+![Sprites Fantasma](Imagenes/spritesheet-lucy.png)
+#### Sprites de los Enemigos:
+![Sprites Enemigos](Imagenes/spritesheet-enemigo.png)
+
 ### Sonido
 - __Banda sonora:__ Como banda sonora se estará compuesta por melodías tétricas inspiradas en los temas del Pueblo Lavanda de la saga de juegos Pokemon.
 
