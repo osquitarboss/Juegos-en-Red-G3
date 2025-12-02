@@ -13,7 +13,7 @@ export class Platform {
 
         // Dibujo visual para depurar colisión
         this.g = scene.add.graphics();
-        this.g.fillStyle(0x000000, 0.1);
+        this.g.fillStyle(0x000000, 0.0);
         this.g.fillRect(x - width/2, y - height/2, width - 10, height - 10);
         this.g.setDepth(0);
 

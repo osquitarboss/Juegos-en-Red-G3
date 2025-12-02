@@ -61,7 +61,7 @@ export class Player {
         this.sprite.body.setGravityY(this.gravity);
         this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
         this.sprite.body.setOffset(150, 270);
-
+        this.sprite.setDepth(5);
         this.sprite.play(`idle-${this.id}`);
     }
 
