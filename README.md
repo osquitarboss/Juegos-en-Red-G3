@@ -47,21 +47,21 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 ### Jugabilidad
 
-- __Objetivo del juego:__ Llegar al final de cada nivel superando obstáculos y resolviendo puzzles para avanzar al siguiente.
+- __Objetivo del juego:__ Llegar al final de cada nivel superando obstáculos y eliminando enemigos para avanzar al siguiente.
 
-- __Controles:__ El jugador 1 puede controlar al detective con las teclas de A y D para moverse y W para saltar, puede usar la tecla Q para interactuar con objetos físicos además de a F para encender y apagar la lámpara. El jugador 2 puede controlar a la chica fantasma, pudiendo usar las teclas de las flechas para moverse y saltar además de mantener la flecha hacia arriba para realizar una caida lenta y poder flotar, por último el jugador 2 puede usar el Shift Derecho para interactuar con objetos y atacar enemigos.
+- __Controles:__ El jugador 1 puede controlar al detective con las teclas de A y D para moverse y W para saltar, puede usar la tecla Q para interactuar con objetos físicos además de a F para encender la lámpara durante un corto periodo de tiempo. El jugador 2 puede controlar a la chica fantasma, pudiendo usar las teclas de las flechas para moverse y saltar más alto de lo normal, por último el jugador 2 puede usar el enter para atacar enemigos.
 
-- __Mecánicas:__ El detective puede interactuar con objetos físicos como puertas y cables mientras que la chica fantasma puede meterse en dispositivos electrónicos. Ambos deberán usar sus habilidades y trabajar en equipo para avanzar en cada nivel. Por otro lado, parte de la dinámica del juego es que habrá enemigos que ataquen a Arthur los cuales solo podrán ser derrotados por Lucy; además de fantasmas que atacarán a Lucy y solo Arthur podrá acabar con ellos. 
+- __Mecánicas:__ El detective puede iluminar enemigos que se volverán vulnerables, durante el periodo de tiempo que se vuelvan vulnerables el jugador 2 deberá atacarlos para eliminarlos. Ambos deberán usar sus habilidades y trabajar en equipo para avanzar en cada nivel. 
 
-- Arthur: Iluminar con una lámpara fantasmas para defender a Lucy y abrirla paso por zonas oscuras. Interactuar con los objetos que Lucy no puede.
+- Arthur: Iluminar con una lámpara fantasmas para volverlos vulnerables.
 
-- Lucy: Hacer saltos más largos, atravesar algunas paredes, poseer y empujar objetos para asistir a Arthur. Proteger a Arthur de otros enemigos que le atacarán con ataques cuerpo a cuerpo.
+- Lucy: Hacer saltos más largos y atacar a los enemigos vulnerables
 
-- __Físicas:__ Gravedad que afecta a cajas, salto del personaje, personajes interactuan con cajas.
+- __Físicas:__ Gravedad que afecta a al salto del personaje.
 
-- __Escenario:__ El juego estará ambientado en una mansión de los años 50 en la que habrá diferentes puzles.
+- __Escenario:__ El juego estará ambientado en una mansión de los años 50 en la que habrá varias plataformas y enemigos..
 
-- __Gameplay Loop:__ Por todo esto, el gameplay loop sería entrar en la casa y exporar los alrederdores en un scroll lateral que progresa de izquierda a derecha. Mientras tanto, irán apareciendo enemigos por el mapa que atacarán a los jugadores. Además, para atravesar ciertos lugares se deberá cooperar para resolver algún puzzle. Finalmente, al acabar el nivel se harán descubrimientos que irán alimentando la historia y la relación de los personajes. 
+- __Gameplay Loop:__ Por todo esto, el gameplay loop sería entrar en la casa y exporar los alrederdores en un scroll lateral que progresa de izquierda a derecha. Mientras tanto, irán apareciendo enemigos por el mapa que atacarán a los jugadores. Además al acabar el nivel se harán descubrimientos que irán alimentando la historia y la relación de los personajes. 
 
 ### Diseño
 - __Estilo Visual:__ El juego tendrá un estilo visual 2D cartoon inspirado en los primeros dibujos animados, con una estetica tétrica siguiendo la temática del juego. 
@@ -86,12 +86,12 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 
 #### Escenario:
-<img src="Imagenes/FondoHorizontal.png" width = "400" height = "300">
+<img src="Imagenes/FondoHorizontal.png" width = "1000" height = "562">
 
 #### Diseño de personajes: Detective y fantasma
 ![Diseño Personajes](Imagenes/Detective_y_Fantasma.jpg)
 ### Sprites:
-#### Sprites del Detective:
+#### Sprites del Detective: 
 ![Sprites Detective](Imagenes/spritesheet-arthur.png)
 #### Sprites de la Fantasma:
 ![Sprites Fantasma](Imagenes/spritesheet-lucy.png)
