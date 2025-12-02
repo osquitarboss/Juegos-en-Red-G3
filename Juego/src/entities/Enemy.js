@@ -26,7 +26,7 @@ export class Enemy {
         this.sprite = this.animator.assignSpriteToPlayer(this.x, this.y);
         this.animator.createAnimation(`idle-black-${this.id}`, 0, 2, 5);
         this.animator.createAnimation(`idle-white-${this.id}`, 3, 5, 5);
-        this.animator.createAnimation(`die-${this.id}`, 6, 11, 10, 0);
+        this.animator.createAnimation(`die-${this.id}`, 10, 11, 12,0);
 
         this.sprite.on("animationcomplete", (anim) => {
             if (anim.key === `die-${this.id}`) {               
