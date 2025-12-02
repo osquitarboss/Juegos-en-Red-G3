@@ -26,7 +26,9 @@ export class Enemy {
         this.sprite = this.animator.assignSpriteToPlayer(this.x, this.y);
         this.animator.createAnimation(`idle-black-${this.id}`, 0, 2, 5);
         this.animator.createAnimation(`idle-white-${this.id}`, 3, 5, 5);
-        this.animator.createAnimation(`die-${this.id}`, 10, 11, 12,0);
+        this.animator.createAnimation(`black-to-white-${this.id}`, 6, 8, 8,0);
+        this.animator.createAnimation(`white-to-black-${this.id}`, 6, 8, 8,0);
+        this.animator.createAnimation(`die-${this.id}`, 9, 11, 8,0);
 
         this.sprite.on("animationcomplete", (anim) => {
             if (anim.key === `die-${this.id}`) {               
@@ -66,10 +68,18 @@ export class Enemy {
     setWeakened(value) {
         this.weakened = value;
         if (value) {
-            this.sprite.anims.play(`idle-white-${this.id}`);
+            this.sprite.anims.play(`black-to-white-${this.id}`);
+
+            this.sprite.once("animationcomplete", (anim) => {
+                if (anim.key === `black-to-white-${this.id}`) {
+                    this.sprite.anims.play(`idle-white-${this.id}`);
+                }   
+            });
         } else {
+            
             this.sprite.anims.play(`idle-black-${this.id}`);
-        }
+                }   
+          
     }
 
     

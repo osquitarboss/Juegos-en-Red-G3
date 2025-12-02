@@ -31,9 +31,11 @@ export class Player {
     create() {
         // Crear las animaciones del jugador aquí
         this.sprite = this.animator.assignSpriteToPlayer(this.xPos, this.yPos);
-        this.animator.createAnimation(`idle-${this.id}`, 0, 3, 5);
+        this.animator.createAnimation(`idle-${this.id}`, 0, 3, 4);
         this.animator.createAnimation(`walk-${this.id}`, 4, 7, 5);
-        this.animator.createAnimation(`jump-${this.id}`, 8, 10, 5, 0);
+        this.animator.createAnimation(`jump-${this.id}`, 8, 8, 2, 0);
+        this.animator.createAnimation(`air-${this.id}`, 9, 9, 5, );
+        this.animator.createAnimation(`fall-${this.id}`, 10, 10, 2, 0);
         this.animator.createAnimation(`attack-${this.id}`, 12, 13, 10, 0);
 
         this.sprite.on("animationcomplete", (anim) => {
@@ -83,9 +85,15 @@ export class Player {
 
     jump() {
         if (this.canJump()) {
-
             this.sprite.setVelocityY(-this.jumpForce);
             this.playAnim(`jump-${this.id}`);
+
+            this.sprite.once("animationcomplete", (anim) => {
+                if (anim.key === `jump-${this.id}`&& !this.sprite.body.onFloor()) {
+                   this.playAnim(`air-${this.id}`);
+                }
+            
+            });
         }
     }
 

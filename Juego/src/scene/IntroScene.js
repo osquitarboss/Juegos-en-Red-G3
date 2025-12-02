@@ -16,7 +16,7 @@ export class IntroScene extends Phaser.Scene {
         this.indiceTexto=0;
         this.enProgreso=false;
         
-        const nextBtn = this.add.text(600, 500, 'Next', {
+        const nextBtn = this.add.text(600, 500, 'Siguiente', {
             fontSize: '20px', 
             color: '#ffffffff',
             backgroundColor: '#000000ff',
@@ -28,11 +28,11 @@ export class IntroScene extends Phaser.Scene {
             if(!this.enProgreso)
                 {this.siguenteTexto();} 
             });
-        this.texto= this.add.text(400, 300, '',{ 
+        this.texto= this.add.text(400, 100, '',{ 
             fontSize: '24px',
             color: '#ffffffff',
             align: 'center',
-            alignVertical: 'top',
+            
             
         }).setOrigin(0.5);
 

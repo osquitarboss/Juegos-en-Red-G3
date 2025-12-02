@@ -118,7 +118,7 @@ export class GameScene extends Phaser.Scene{
         this.physics.add.overlap(this.enemies[0].sprite, this.light.colliderCircle, () => { // Hacemos que el enemigo se debilite si la luz está activa pero q despues de un tiempo vuelva a la normalidad
             if (this.light.isOn) {
                 this.enemies[0]?.setWeakened(true);
-                this.time.delayedCall(2000, () => {
+                this.time.delayedCall(4000, () => {
                     this.enemies[0]?.setWeakened(false);
                 });
             }

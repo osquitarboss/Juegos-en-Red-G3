@@ -16,7 +16,7 @@ export class MenuScene extends Phaser.Scene {
 
 
 
-        const localBtn = this.add.text(600, 100, 'Local Play', {
+        const localBtn = this.add.text(600, 100, 'Juego Local', {
             fontSize: '24px', 
             color: '#ffffffff',
             backgroundColor: '#000000ff',
@@ -25,10 +25,10 @@ export class MenuScene extends Phaser.Scene {
         .on('pointerover', () => localBtn.setStyle({backgroundColor: '#737373ff'}))
         .on('pointerout', () => localBtn.setStyle({backgroundColor: '#000000ff'}))
         .on('pointerdown', () =>{
-            this.scene.start('IntroScene');
+            this.scene.start('GameScene');
         });
 
-        const creditsBtn = this.add.text(600, 200, 'Credits', {
+        const creditsBtn = this.add.text(600, 200, 'Créditos', {
             fontSize: '24px', 
             color: '#ffffffff',
             backgroundColor: '#000000ff',
