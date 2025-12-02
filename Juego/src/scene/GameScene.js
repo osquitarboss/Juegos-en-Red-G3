@@ -1,11 +1,11 @@
 import Phaser from "phaser";
-import { Player } from "../entities/Player.js";
-import { Light } from "../entities/Light.js";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
 import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
 import { Camera } from "../Components/Camera.js";
 import { Platform } from "../entities/Platform.js";
+import { Lucy } from "../entities/Lucy.js";
+import { Arthur } from "../entities/Arthur.js";
 
 
 export class GameScene extends Phaser.Scene{
@@ -22,6 +22,8 @@ export class GameScene extends Phaser.Scene{
         this.load.image('suelo', 'assets/suelo.png');
         this.load.image('p2', 'assets/plataforma2.png');
         this.load.image('c1', 'assets/columna1.png');
+
+        this.enemies.forEach(enemy =>  enemy.preload() );
     }
     
     init() {
@@ -31,15 +33,17 @@ export class GameScene extends Phaser.Scene{
         this.platforms = new Map();
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.scene, this.input, this.commandProcessor);
-        this.arthur = new Player(this, 'player1', 50, 300, 600, 100, 100, 'spritesheet-arthur');
-        this.light = new Light(this, 'light1', this.arthur, 75, 0xffffff)
-        this.arthur.action = this.light;
+        this.arthur = new Arthur(this, 'player1', 50, 300, 600, 100, 100, 'spritesheet-arthur');
+        
+        
 
-        this.lucy = new Player(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
+        this.lucy = new Lucy(this, 'player2', 750, 300, 300, 300, 100, 'spritesheet-lucy');
 
-        this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.arthur);
+        this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.players);
 
         this.camera = new Camera(this, this.players);
+
+        this.enemies.set(this.enemy1.id, this.enemy1);
 
     }
 
@@ -57,18 +61,34 @@ export class GameScene extends Phaser.Scene{
         // Set up input and players
         this.players.set('player1', this.arthur);
         this.players.set('player2', this.lucy);
+        
         this.inputManager.players = this.players;
 
-        this.enemies.set('enemy1', this.enemy1)
+        // Set up de enemies
+        this.enemies.forEach( (enemy) => {
+            enemy.create();
+        });
 
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
+        this.setUpReviveCollision();
 
         this.physics.world.setBounds(0, 0, 10000, 600);
         this.camera.camera.setBounds(0, 0, 10000, 600);
 
         this.camera.camera.setLerp(0.1, 0.1);
 
+    }
+
+    setUpReviveCollision() {
+        this.physics.add.overlap(this.players.get('player1').sprite, this.players.get('player2').sprite, () => {
+            if (this.players.get('player1').health <= 0 && this.players.get('player2').health > 0) {
+                this.players.get('player1').revive();
+            } 
+            else if (this.players.get('player2').health <= 0 && this.players.get('player1').health > 0) {
+                this.players.get('player2').revive();
+            }
+        });
     }
 
     setUpWorldCollisions() {
@@ -97,8 +117,39 @@ export class GameScene extends Phaser.Scene{
     }
 
     setUpEnemyCollisions() {
-        this.physics.add.collider(this.enemy1.sprite, this.players.get('player1').sprite, () => {
-            this.arthur.getHit(50);
+        this.enemies.forEach((enemy) => {
+            
+            this.physics.add.collider(enemy.sprite, this.players.get('player1').sprite, () => {
+                if (enemy &&  this.players.get('player1').health > 0) {
+                    this.players.get('player1').getHit(50);
+                }
+            });
+            
+            this.physics.add.collider(enemy.sprite, this.players.get('player2').sprite, () => {
+                if (enemy &&  this.players.get('player2').health > 0) {
+                     this.players.get('player2').getHit(50);
+                }
+            });
+
+            
+            this.physics.add.overlap(enemy.sprite, this.arthur.light.colliderCircle, () => {
+                if (this.arthur.light.isOn && enemy) {
+                    enemy.setWeakened(true);
+                    this.time.delayedCall(4000, () => {
+                        if (enemy) {
+                            enemy.setWeakened(false);
+                        }
+                    });
+                }
+            });
+
+            this.physics.add.overlap(enemy.sprite, this.players.get('player2').attackHitbox, () => {
+                if (enemy?.weakened && this.players.get('player2').isAttacking) {
+                    enemy.die();
+                    enemy.isDead = true;
+                    enemy = null;
+                }
+            });
         });
     }
 
@@ -108,7 +159,14 @@ export class GameScene extends Phaser.Scene{
         this.camera.update();
         this.inputManager.update();
         
-        this.light.update();
-        //this.enemy1.update();
+        this.arthur.light.update();
+        
+        this.enemies.forEach((enemy) => {
+            if (!enemy || enemy.isDead) {
+                this.enemies.delete(enemy.id);
+                return;
+            }
+            enemy.update();
+        })
     }
 }

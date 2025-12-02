@@ -7,7 +7,7 @@ export class MenuScene extends Phaser.Scene {
 
     preload()
     {
-        this.load.image('background', 'assets/menuJR.png');
+        this.load.image('background', 'assets/menu-inicio-fondo.png');
     }
 
     create() {
@@ -15,16 +15,29 @@ export class MenuScene extends Phaser.Scene {
         setOrigin(0.5);
 
 
-        const localBtn = this.add.text(550, 450, 'Local Play', {
+
+        const localBtn = this.add.text(600, 100, 'Juego Local', {
             fontSize: '24px', 
-            color: '#3e2606ff',
-            backgroundColor: '#ffffffff',
+            color: '#ffffffff',
+            backgroundColor: '#000000ff',
         }).setOrigin(0.5)
         .setInteractive({useHandCursor: true})
-        .on('pointover', () => localBtn.setStyle({fill: '#e7b14dff'}))
-        .on('pointout', () => localBtn.setStyle({fill: '#1dd627ff'}))
+        .on('pointerover', () => localBtn.setStyle({backgroundColor: '#737373ff'}))
+        .on('pointerout', () => localBtn.setStyle({backgroundColor: '#000000ff'}))
         .on('pointerdown', () =>{
             this.scene.start('GameScene');
+        });
+
+        const creditsBtn = this.add.text(600, 200, 'Créditos', {
+            fontSize: '24px', 
+            color: '#ffffffff',
+            backgroundColor: '#000000ff',
+        }).setOrigin(0.5)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => creditsBtn.setStyle({backgroundColor: '#737373ff'}))
+        .on('pointerout', () => creditsBtn.setStyle({backgroundColor: '#000000ff'}))
+        .on('pointerdown', () =>{
+            this.scene.start('CreditsScene');
         });
 
     }

@@ -10,6 +10,7 @@ export class Light {
         this.isOn = false;
         this.canPerform = true;
 
+        this.colliderCircle = null;
         
     }
     create() {

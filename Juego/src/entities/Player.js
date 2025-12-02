@@ -9,19 +9,18 @@ export class Player {
         this.baseHeight = 0.17;
         this.baseWidth = 0.17;
         this.baseSpeed = 300;
-        this.jumpForce = 450; 
+        this.jumpForce = 450;
         this.health = 100;
         this.invulnerable = false;
         this.authority = 'LOCAL';
         this.xPos = xPos;
         this.yPos = yPos;
         this.isDead = false;
-        this.action = null;
 
         this.currentDirection = 'idle';
         this.currentAnim = null;
 
-        this.animator = new Animator(this.scene, spriteSheet)        
+        this.animator = new Animator(this.scene, spriteSheet)
     }
 
     preload(width, height) {
@@ -39,7 +38,7 @@ export class Player {
         this.animator.createAnimation(`attack-${this.id}`, 12, 13, 10, 0);
 
         this.sprite.on("animationcomplete", (anim) => {
-            if (anim.key === `jump-${this.id}`) {     
+            if (anim.key === `jump-${this.id}`) {
 
                 if (!this.sprite.body.onFloor()) {
                     this.playAnim(`air-${this.id}`);
@@ -49,7 +48,7 @@ export class Player {
 
         this.sprite.on("animationupdate", (anim) => {
             if (anim.key === `air-${this.id}`) {
-                if (this.sprite.body.onFloor()){
+                if (this.sprite.body.onFloor()) {
                     this.playAnim(`fall-${this.id}`);
                 }
             }
@@ -62,7 +61,7 @@ export class Player {
         this.sprite.body.setGravityY(this.gravity);
         this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
         this.sprite.body.setOffset(150, 270);
-        
+
         this.sprite.play(`idle-${this.id}`);
     }
 
@@ -81,7 +80,7 @@ export class Player {
         // Mover
         this.sprite.setVelocityX(direction === 'left' ? -this.baseSpeed : this.baseSpeed);
 
-        
+
         if (this.sprite.body.onFloor() && this.currentAnim !== `jump-${this.id}` && this.currentAnim !== `attack-${this.id}`) {
             this.playAnim(`walk-${this.id}`);
         }
@@ -90,7 +89,7 @@ export class Player {
     jump() {
         if (this.canJump()) {
             this.sprite.setVelocityY(-this.jumpForce);
-            this.playAnim(`jump-${this.id}`);          
+            this.playAnim(`jump-${this.id}`);
         }
     }
 
@@ -112,7 +111,7 @@ export class Player {
         this.health -= damage;
         this.invulnerable = true;
         this.sprite.setTint(0xff0000);  // Rojo
-        
+
         if (!this.checkAlive()) {
             this.health = 0;
             this.baseSpeed = 0;
@@ -121,9 +120,9 @@ export class Player {
             this.invulnerable = false;
             this.isDead = true;
             return;
-}
+        }
 
-    // Volver vulnerable tras 2 segundos
+        // Volver vulnerable tras 2 segundos
         this.scene.time.delayedCall(2000, () => {
             this.invulnerable = false;
             this.sprite.clearTint();
@@ -137,6 +136,9 @@ export class Player {
         this.invulnerable = false;
         this.sprite.clearTint();
         this.sprite.anims.resume();
+        this.invulnerable = true;
+
+        this.scene.time.delayedCall(1000, () => { this.invulnerable = false })
     }
 
     checkAlive() {
@@ -148,6 +150,6 @@ export class Player {
     }
 
     attack() {
-        this.action.perform(); // Implementar en las clases hijas
+        // Implementar en las clases hijas
     }
 }

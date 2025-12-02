@@ -1,16 +1,16 @@
 import { Animator } from "../Components/Animator";
 
 export class Enemy {
-    constructor(scene, id, x, y, player) {
+    constructor(scene, id, x, y, players) {
         this.scene = scene;
         this.x = x;
         this.y = y;
-        this.player = player;
+        this.players = players;
         this.id = id;
         this.baseHeight = 0.17;
         this.baseWidth = 0.17;
         this.baseSpeed = 100;
-
+        this.isDead = false;
 
         this.weakened = false;
 
@@ -46,17 +46,25 @@ export class Enemy {
         this.sprite.anims.play(`idle-black-${this.id}`);
     }
     enemyMovement() {
-        // move towards the player
-        this.sprite.flipX = this.player.sprite.x < this.sprite.x;
 
-        if (this.weakened || Math.abs(this.player.sprite.x - this.sprite.x) > 500 || Math.abs(this.player.sprite.y - this.sprite.y) > 500){ // Comprobamos que no esté muy lejos
+        let player = this.pickPlayer();
+        // move towards the player
+        this.sprite.flipX = player.sprite.x < this.sprite.x;
+
+        if (this.weakened || Math.abs(player.sprite.x - this.sprite.x) > 500 || Math.abs(player.sprite.y - this.sprite.y) > 500){ // Comprobamos que no esté muy lejos
             this.baseSpeed = 0;
         } else {
             this.baseSpeed = 100;
         }
 
 
-        this.scene.physics.moveToObject(this.sprite, this.player.sprite, this.baseSpeed);
+        this.scene.physics.moveToObject(this.sprite, player.sprite, this.baseSpeed);
+    }
+
+    pickPlayer(){
+        let player = (Math.abs(this.players.get('player1').sprite.x - this.sprite.x)) > (Math.abs(this.players.get('player2').sprite.x - this.sprite.x)) ? this.players.get('player2') : this.players.get('player1');
+
+        return player;
     }
 
     die() {
@@ -81,9 +89,9 @@ export class Enemy {
                 }   
           
     }
-
     
     update() {
+        if (this.isDead) return;
         this.enemyMovement();
     }
 }
