@@ -72,7 +72,7 @@ export class GameScene extends Phaser.Scene{
     setUpWorldCollisions() {
         //Set up platforms and collisions
 
-        this.suelo1 = new Platform(this, 'suelo', 400, 580, 1500, 40, 'suelo');
+        this.suelo1 = new Platform(this, 'suelo', 400, 590, 1500, 40, 'suelo');
         this.suelo2 = new Platform(this, 'p1', 200, 450, 200, 30, 'p1');
         this.suelo3 = new Platform(this, 'p2', 500, 200, 200, 30, 'p1')
 

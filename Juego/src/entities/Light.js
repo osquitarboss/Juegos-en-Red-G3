@@ -27,6 +27,7 @@ export class Light {
             // Dibujar la luz
             this.graphics.fillStyle(this.color, 0.5);
             this.graphics.fillCircle(x, y, this.radius);
+            this.graphics.setDepth(10);
         } else {
             // Borrar la luz si está apagada
             this.graphics.clear();
