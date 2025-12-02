@@ -41,7 +41,7 @@ export class Enemy {
         this.sprite.setScale(this.baseWidth, this.baseHeight);
         this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
 
-        this.sprite.anims.play(`idle-white-${this.id}`);
+        this.sprite.anims.play(`idle-black-${this.id}`);
     }
     enemyMovement() {
         // move towards the player
@@ -66,9 +66,9 @@ export class Enemy {
     setWeakened(value) {
         this.weakened = value;
         if (value) {
-            this.sprite.anims.play(`idle-black-${this.id}`);
-        } else {
             this.sprite.anims.play(`idle-white-${this.id}`);
+        } else {
+            this.sprite.anims.play(`idle-black-${this.id}`);
         }
     }
 
