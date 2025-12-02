@@ -19,7 +19,7 @@ export class PauseScene extends Phaser.Scene {
             backgroundColor: '#ffffff'
         }).setOrigin(0.5);
 
-        const playBtn = this.add.text(400, 400, 'Resume', {
+        const playBtn = this.add.text(400, 250, 'Continuar', {
             fontSize: '24px', 
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
@@ -31,7 +31,19 @@ export class PauseScene extends Phaser.Scene {
             this.unpause(data.originalScene); 
         });
 
-        const exitBtn = this.add.text(400, 550, 'Exit to Menu', {
+        const options = this.add.text(400, 400, 'Opciones', {
+            fontSize: '24px', 
+            color: '#3e2606ff',
+            backgroundColor: '#ffffff',
+        }).setOrigin(0.5)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => playBtn.setStyle({fill: '#00000037'}))
+        .on('pointerout', () => playBtn.setStyle({fill: '#000000'}))
+        .on('pointerdown', () =>{
+            this.scene.launch('OptionsScene', {originalScene: "PauseScene"}); 
+        });
+
+        const exitBtn = this.add.text(400, 550, 'Volver al Menu', {
             fontSize: '24px', 
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
