@@ -100,7 +100,7 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 ### Sonido
 - __Banda sonora:__ Como banda sonora se estará compuesta por melodías tétricas inspiradas en los temas del Pueblo Lavanda de la saga de juegos Pokemon.
-
+  - Nos hemos inspirado en el estilo retro, pero también en el misterio y la desesperación, se han usado temas  de Tim Beek y de Szajna Wokshops, con toques adaptados de Leon Riskin y Kyle Dixon.
 - __Efectos sonoros:__ Además de música el juego contará con efectos de sonido que acompañen la jugabilidad.
 
 ### Diagrama de flujo
