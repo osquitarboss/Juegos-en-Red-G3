@@ -14,6 +14,7 @@ export class IntroScene extends Phaser.Scene {
             "El detective Arthur junto con el \nfantasma de la difunta Lucy Felton \n se adentrará al interior de la mansión \npara descubrir el misterio \ndetrás de esa fatídica noche.",
             "Jugador 1(Arthur): Usa las teclas wasd para moverte \ny f para encender tu candelabro.\n\nJugador 2(Lucy): Usa las flechas para moverte \ny la tecla intro para lanzar un ataque psíquico.\n\nPara derrotar a los fantasmas el jugador 1 \ndeberá iluminar a los fantasmas \ny mientras están iluminados\n el jugador 2 deberá atacarlos.\n\n¡Buena suerte!"];
         this.indiceTexto=0;
+        this.enProgreso=false;
         
         const nextBtn = this.add.text(600, 500, 'Next', {
             fontSize: '20px', 
@@ -23,7 +24,10 @@ export class IntroScene extends Phaser.Scene {
         .setInteractive({useHandCursor: true})
         .on('pointerover', () => nextBtn.setStyle({backgroundColor: '#737373ff'}))
         .on('pointerout', () => nextBtn.setStyle({backgroundColor: '#000000ff'}))
-        .on('pointerdown', () =>{this.siguenteTexto();});
+        .on('pointerdown', () =>{
+            if(!this.enProgreso)
+                {this.siguenteTexto();} 
+            });
         this.texto= this.add.text(400, 300, '',{ 
             fontSize: '24px',
             color: '#ffffffff',
