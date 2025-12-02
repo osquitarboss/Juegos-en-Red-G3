@@ -20,6 +20,8 @@ export class GameScene extends Phaser.Scene{
         this.load.image('fondo', 'assets/FondoHorizontal.png');
         this.load.image('p1', 'assets/plataforma1.png');
         this.load.image('suelo', 'assets/suelo.png');
+        this.load.image('p2', 'assets/plataforma2.png');
+        this.load.image('c1', 'assets/columna1.png');
     }
     
     init() {
@@ -72,13 +74,17 @@ export class GameScene extends Phaser.Scene{
     setUpWorldCollisions() {
         //Set up platforms and collisions
 
-        this.suelo1 = new Platform(this, 'suelo', 400, 590, 1500, 40, 'suelo');
+        this.suelo1 = new Platform(this, 'suelo', 200, 590, 600, 40, 'suelo');
         this.suelo2 = new Platform(this, 'p1', 200, 450, 200, 30, 'p1');
-        this.suelo3 = new Platform(this, 'p2', 500, 200, 200, 30, 'p1')
+        this.suelo3 = new Platform(this, 'p2', 450, 300, 200, 30, 'p1');
+        this.suelo4 = new Platform(this, 'p3', 1200, 550, 500, 200, 'p2');
+        this.col1 = new Platform(this, 'c1', 700, 450, 50, 300, 'c1');
 
         this.platforms.set('suelo', this.suelo1);
         this.platforms.set('p1', this.suelo2);
-        this.platforms.set('p3', this.suelo3);
+        this.platforms.set('p2', this.suelo3);
+        this.platforms.set('p3', this.suelo4);
+        this.platforms.set('c1', this.col1);
 
         this.platforms.forEach(p => {
             this.players.forEach(personaje => {
