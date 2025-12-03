@@ -56,5 +56,19 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.launch('OptionsScene', { originalScene: "MenuScene" });
             });
 
+        const exitBtn = this.add.text(600, 400, 'Salir', {
+            fontSize: '24px',
+            color: '#ffffffff',
+            backgroundColor: '#000000ff',
+        }).setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => exitBtn.setStyle({ backgroundColor: '#737373ff' }))
+            .on('pointerout', () => exitBtn.setStyle({ backgroundColor: '#000000ff' }))
+            .on('pointerdown', () => {
+                this.game.destroy(true);
+                window.close();
+            });
+
+
     }
 }
