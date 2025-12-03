@@ -68,7 +68,7 @@ export class MenuScene extends Phaser.Scene {
                 this.game.destroy(true);
                 window.close();
             });
-
+//
 
     }
 }
