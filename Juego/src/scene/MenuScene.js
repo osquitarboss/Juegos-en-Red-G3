@@ -16,7 +16,7 @@ export class MenuScene extends Phaser.Scene {
 
         this.music = this.sound.add('music');
         this.music.play();
-        this.music.setVolume(0.5);
+        this.music.setVolume(0.25);
 
 
         const localBtn = this.add.text(600, 100, 'Juego Local', {
@@ -53,7 +53,7 @@ export class MenuScene extends Phaser.Scene {
             .on('pointerover', () => optionsBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => optionsBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                this.scene.launch('OptionsScene');
+                this.scene.launch('OptionsScene', { originalScene: "MenuScene" });
             });
 
     }

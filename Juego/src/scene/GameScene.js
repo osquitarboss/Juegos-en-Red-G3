@@ -16,6 +16,8 @@ export class GameScene extends Phaser.Scene {
     preload() {
         this.arthur.preload(600, 800);
         this.lucy.preload(600, 800);
+        this.load.audio('ambient', 'assets/sound/ambient-theme.mp3');
+        
 
         this.load.image('fondo', 'assets/FondoHorizontal.png');
         this.load.image('p1', 'assets/props/plataforma1.png');
@@ -28,6 +30,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     init() {
+        this.sound.stopAll();
         this.commandProcessor = new CommandProcessor();
         this.players = new Map();
         this.enemies = new Map();
@@ -58,7 +61,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
+        // Music
+        this.music = this.sound.add('ambient');
+        this.music.play();
+        this.music.setVolume(0.25);
 
+        // Background
         this.fondo = this.add.tileSprite(0, 0, 8000, 2000, 'fondo')
             .setOrigin(0, 0)
             .setScrollFactor(0.2)
@@ -157,19 +165,22 @@ export class GameScene extends Phaser.Scene {
     setUpEnemyCollisions() {
         this.enemies.forEach((enemy) => {
 
+            // Emeny hits 
             this.physics.add.collider(enemy.sprite, this.players.get('player1').sprite, () => {
                 if (enemy && this.players.get('player1').health > 0) {
                     this.players.get('player1').getHit(50);
+                    this.checkPlayerStatus();
                 }
             });
 
             this.physics.add.collider(enemy.sprite, this.players.get('player2').sprite, () => {
                 if (enemy && this.players.get('player2').health > 0) {
                     this.players.get('player2').getHit(50);
+                    this.checkPlayerStatus();
                 }
             });
 
-
+            // Player lights enemy
             this.physics.add.overlap(enemy.sprite, this.arthur.light.colliderCircle, () => {
                 if (this.arthur.light.isOn && enemy) {
                     enemy.setWeakened(true);
@@ -181,6 +192,7 @@ export class GameScene extends Phaser.Scene {
                 }
             });
 
+            // Player attacks enemy
             this.physics.add.overlap(enemy.sprite, this.players.get('player2').attackHitbox, () => {
                 if (enemy?.weakened && this.players.get('player2').isAttacking) {
                     enemy.die();
@@ -189,6 +201,13 @@ export class GameScene extends Phaser.Scene {
                 }
             });
         });
+    }
+
+    checkPlayerStatus() {
+        if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
+            this.scene.stop();
+            this.scene.start('GameScene');
+        }
     }
 
     update() {
@@ -207,4 +226,6 @@ export class GameScene extends Phaser.Scene {
             enemy.update();
         })
     }
+
+
 }

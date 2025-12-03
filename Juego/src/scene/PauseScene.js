@@ -12,48 +12,51 @@ export class PauseScene extends Phaser.Scene {
         });
 
         this.add.rectangle(400, 300, 800, 600, 0x000000, 0.7);
-        
+
         this.add.text(400, 100, 'Pause Menu', {
-            fontSize: '48px', 
+            fontSize: '48px',
             color: '#3e2606ff',
             backgroundColor: '#ffffff'
         }).setOrigin(0.5);
 
         const playBtn = this.add.text(400, 250, 'Continuar', {
-            fontSize: '24px', 
+            fontSize: '24px',
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
         }).setOrigin(0.5)
-        .setInteractive({useHandCursor: true})
-        .on('pointerover', () => playBtn.setStyle({fill: '#00000037'}))
-        .on('pointerout', () => playBtn.setStyle({fill: '#000000'}))
-        .on('pointerdown', () =>{
-            this.unpause(data.originalScene); 
-        });
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => playBtn.setStyle({ fill: '#00000037' }))
+            .on('pointerout', () => playBtn.setStyle({ fill: '#000000' }))
+            .on('pointerdown', () => {
+                this.unpause(data.originalScene);
+            });
 
-        const options = this.add.text(400, 400, 'Opciones', {
-            fontSize: '24px', 
+        //boton de sonido
+        const volumeText = this.sound.mute ? 'Activar Sonido' : 'Desactivar Sonido';
+        const volumeBtn = this.add.text(400, 400, volumeText, {
+            fontSize: '24px',
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
         }).setOrigin(0.5)
-        .setInteractive({useHandCursor: true})
-        .on('pointerover', () => playBtn.setStyle({fill: '#00000037'}))
-        .on('pointerout', () => playBtn.setStyle({fill: '#000000'}))
-        .on('pointerdown', () =>{
-            this.scene.launch('OptionsScene', {originalScene: "PauseScene"}); 
+        .setInteractive({ useHandCursor: true })
+        .on('pointerover', () => volumeBtn.setStyle({ fill: '#00000037' }))
+        .on('pointerout', () => volumeBtn.setStyle({ fill: '#000000' }))
+        .on('pointerdown', () => {
+            this.sound.mute = !this.sound.mute;
+            volumeBtn.setText(this.sound.mute ? 'Activar Sonido' : 'Desactivar Sonido');
         });
 
         const exitBtn = this.add.text(400, 550, 'Volver al Menu', {
-            fontSize: '24px', 
+            fontSize: '24px',
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
         }).setOrigin(0.5)
-        .setInteractive({useHandCursor: true})
-        .on('pointerover', () => exitBtn.setStyle({fill: '#00000037'}))
-        .on('pointerout', () => exitBtn.setStyle({fill: '#000000'}))
-        .on('pointerdown', () =>{
-            this.exitToMenu(data.originalScene); 
-        });
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => exitBtn.setStyle({ fill: '#00000037' }))
+            .on('pointerout', () => exitBtn.setStyle({ fill: '#000000' }))
+            .on('pointerdown', () => {
+                this.exitToMenu(data.originalScene);
+            });
     }
 
     unpause(originalScene) {
@@ -63,6 +66,7 @@ export class PauseScene extends Phaser.Scene {
 
     exitToMenu(originalScene) {
         this.scene.stop(originalScene);
+        this.sound.stopAll();
         this.scene.start('MenuScene');
     }
 }

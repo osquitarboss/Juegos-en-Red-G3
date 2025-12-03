@@ -64,6 +64,15 @@ export class Enemy {
     pickPlayer(){
         let player = (Math.abs(this.players.get('player1').sprite.x - this.sprite.x)) > (Math.abs(this.players.get('player2').sprite.x - this.sprite.x)) ? this.players.get('player2') : this.players.get('player1');
 
+
+        if (player.health <= 0) {
+            if (player.id === 'player1') {
+                player = this.players.get('player2');
+            } else {
+                player = this.players.get('player1');
+            }
+        }
+
         return player;
     }
 
