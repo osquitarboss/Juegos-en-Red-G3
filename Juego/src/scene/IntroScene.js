@@ -52,6 +52,18 @@ export class IntroScene extends Phaser.Scene {
             
         }).setOrigin(0.5);
 
+        const skipBtn = this.add.text(100, 550, 'Saltar', {
+            fontSize: '20px', 
+            color: '#ffffffff',
+            backgroundColor: '#00000000',
+        }).setOrigin(0.5)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => skipBtn.setStyle({backgroundColor: '#737373ff'}))
+        .on('pointerout', () => skipBtn.setStyle({backgroundColor: '#000000ff'}))
+        .on('pointerdown', () =>{
+            this.scene.start('GameScene');
+        });
+
         this.showText();
     }
         
