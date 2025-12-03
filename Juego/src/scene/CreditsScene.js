@@ -5,8 +5,6 @@ export class CreditsScene extends Phaser.Scene {
         super('CreditsScene')
     }
 
-    
-
     create() {
         
         this.add.text(400, 100, 'Juego desarrollado por:\n\nClaudia Porcuna: Interfaces y arte \nJavier Ruibal: Programación \nOscar Rodriguez: Arte y diseño \nMarcos Matutes: Programación \nFernando Pin: Sonido',

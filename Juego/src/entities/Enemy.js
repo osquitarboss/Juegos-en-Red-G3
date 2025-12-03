@@ -51,7 +51,7 @@ export class Enemy {
         // move towards the player
         this.sprite.flipX = player.sprite.x < this.sprite.x;
 
-        if (this.weakened || Math.abs(player.sprite.x - this.sprite.x) > 500 || Math.abs(player.sprite.y - this.sprite.y) > 500){ // Comprobamos que no esté muy lejos
+        if (this.weakened || Math.abs(player.sprite.x - this.sprite.x) > 500 || Math.abs(player.sprite.y - this.sprite.y) > 500){ // Check if the player is too far away
             this.baseSpeed = 0;
         } else {
             this.baseSpeed = 100;

@@ -43,7 +43,7 @@ export class Lucy extends Player {
     }
 
     attack() {
-        if (this.isAttacking) return; // evita spameo
+        if (this.isAttacking ) return; // evita spameo
 
         this.updateHitbox();
         this.isAttacking = true;

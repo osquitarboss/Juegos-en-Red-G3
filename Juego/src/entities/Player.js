@@ -74,6 +74,7 @@ export class Player {
 
     horizontalMove(direction) {
 
+        if (this.health <= 0) return;
         this.currentDirection = direction;
         this.sprite.flipX = (direction === 'left');
 
@@ -110,7 +111,7 @@ export class Player {
 
         this.health -= damage;
         this.invulnerable = true;
-        this.sprite.setTint(0xff0000);  // Rojo
+        this.sprite.setTint(0x808080);  // Gris
 
         if (!this.checkAlive()) {
             this.health = 0;
@@ -119,6 +120,7 @@ export class Player {
             this.sprite.anims.pause();
             this.invulnerable = false;
             this.isDead = true;
+            this.isAttacking = false;
             return;
         }
 
@@ -137,6 +139,8 @@ export class Player {
         this.sprite.clearTint();
         this.sprite.anims.resume();
         this.invulnerable = true;
+        this.isAttacking = false;
+        this.playAnim(`idle-${this.id}`);
 
         this.scene.time.delayedCall(1000, () => { this.invulnerable = false })
     }

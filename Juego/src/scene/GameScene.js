@@ -72,7 +72,7 @@ export class GameScene extends Phaser.Scene {
             .setScrollFactor(0.2)
             .setScale(0.3);
 
-        //Create the animations 
+        //Create the players 
         this.arthur.create();
         this.lucy.create();
 
@@ -82,7 +82,7 @@ export class GameScene extends Phaser.Scene {
 
         this.inputManager.players = this.players;
 
-        // Set up de enemies
+        // Set up enemies
         this.enemies.forEach((enemy) => {
             enemy.create();
         });

@@ -30,6 +30,11 @@ export class Arthur extends Player {
         });
     }
 
+    revive() {
+        super.revive();
+        this.light.canPerform = true;
+    }
+
     attack() {
         if (this.isAttacking || !this.light.canPerform) return;
 
