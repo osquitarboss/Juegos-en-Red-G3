@@ -84,7 +84,11 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 <img src="Imagenes/logoJuegosEnRedFondoBlanco.png" width = "300" height = "300">
 <img src="Imagenes/menuJR.png" width = "400" height = "300">
 
-
+### Introducción:
+#### Escena 1:
+![Escena 1](Imagenes/p1entrando.png)
+#### Escena 2:
+![Escena 2](Imagenes/p1yp2.png)
 #### Escenario:
 <img src="Imagenes/FondoHorizontal.png" width = "1000" height = "562">
 

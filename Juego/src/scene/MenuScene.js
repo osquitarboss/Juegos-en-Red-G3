@@ -28,7 +28,7 @@ export class MenuScene extends Phaser.Scene {
             .on('pointerover', () => localBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => localBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                this.scene.start('GameScene');
+                this.scene.start('IntroScene');
             });
 
         const creditsBtn = this.add.text(600, 300, 'Créditos', {
