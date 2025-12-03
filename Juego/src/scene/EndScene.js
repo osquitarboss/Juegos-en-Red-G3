@@ -8,12 +8,12 @@ export class EndScene extends Phaser.Scene {
 
 
     create() {
-        this.textoIntro = [
+        this.introText = [
             "Arthur abre un libro viejo \n\ny polvoriento de la estantería.\n",
             "Lo que vió entre sus páginas \n\nlo dejó sin aliento.\n",
             "Continuará..."];
-        this.indiceTexto = 0;
-        this.enProgreso = false;
+        this.textIdx = 0;
+        this.inProgress = false;
 
         const nextBtn = this.add.text(600, 500, 'Siguiente', {
             fontSize: '20px',
@@ -24,7 +24,7 @@ export class EndScene extends Phaser.Scene {
             .on('pointerover', () => nextBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => nextBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                if (!this.enProgreso) { this.siguenteTexto(); }
+                if (!this.inProgress) { this.nextText(); }
             });
         this.texto = this.add.text(400, 100, '', {
             fontSize: '24px',
@@ -34,36 +34,36 @@ export class EndScene extends Phaser.Scene {
 
         }).setOrigin(0.5);
 
-        this.mostrarTexto();
+        this.showText();
     }
 
-    mostrarTexto() {
-        if (this.indiceTexto < this.textoIntro.length) {
-            this.textoIn(this.textoIntro[this.indiceTexto]);
+    showText() {
+        if (this.textIdx < this.introText.length) {
+            this.textIn(this.introText[this.textIdx]);
         } else {
             this.scene.start('MenuScene');
         }
     }
 
-    textoIn(text) {
-        this.enProgreso = true;
-        let indice = 0;
-        const velocidad = 75; // Velocidad de escritura en ms
+    textIn(text) {
+        this.inProgress = true;
+        let idx = 0;
+        const speed = 75; // speed of writing in ms
 
-        const escribirLetra = () => {
-            if (indice < text.length) {
-                this.texto.setText(text.substring(0, indice + 1));
-                indice++;
-                this.time.delayedCall(velocidad, escribirLetra);
+        const writeLetter = () => {
+            if (idx < text.length) {
+                this.texto.setText(text.substring(0, idx + 1));
+                idx++;
+                this.time.delayedCall(speed, writeLetter);
             } else {
-                this.enProgreso = false;
+                this.inProgress = false;
             }
         };
 
-        escribirLetra();
+        writeLetter();
     }
-    siguenteTexto() {
-        this.indiceTexto++;
-        this.mostrarTexto();
+    nextText() {
+        this.textIdx++;
+        this.showText();
     }
 }

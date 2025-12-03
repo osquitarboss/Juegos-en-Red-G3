@@ -4,7 +4,7 @@ import { CommandProcessor } from '../command-pattern/CommandProcessor';
 import Phaser from 'phaser';
 
 export class InputManager {
-
+// Clase que maneja los inputs del jugador y los envia al command processor 
     constructor(scene, sceneManager, input, commandProcessor) {
         this.commandProcessor = new CommandProcessor();
         this.scene = scene;
@@ -99,7 +99,7 @@ export class InputManager {
             }
 
             if (mapping.attackKeyObj.isDown) {
-                player.attack();
+                player.attack(); // IMPLEMENTAR EN LAS FASES DE REDES CON EL PATRÓN DE COMANDOS
             }
 
             this.commandProcessor.process(command);
