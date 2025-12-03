@@ -11,7 +11,7 @@
 ##### Javier Ruibal Piñero(j.ruibal.2023@alumnos.urjc.es, HeadDoctr)
 
 __URL del repositorio:__ https://github.com/osquitarboss/Juegos-en-Red-G3 
-## Game Design Document 
+## Game Design Document - Fase 2
 
 ### Índice   
 1. [Introducción](#introducción)
