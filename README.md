@@ -34,7 +34,7 @@ BM Confidential es un juego de puzzles y plataformas en 2D en el que el que los 
 - __Historia del juego:__
 Birmingham, Noviembre de 1953, 27 años después del asesinato del matrimonio Felton y nadie se atreve a entrar a la casa. Arthur Kentley es un detective determinado a resolver el enigma que la envuelve, impulsado por una extraña obsesión. Cuenta con la ayuda de Lucy, uno de los fantasmas residentes en la mansión. 
 
-Tras la resolución de puzzles y pistas por la mansión Felton, se descubre que Lucy es la madre de Arthur, (quien en realidad es un Fleton), y fue ella quien le protegió de los acontecimientos 27 años atrás.  
+Tras la resolución de niveles y pistas por la mansión Felton, se descubre que Lucy es la madre de Arthur, (quien en realidad es un Fleton), y fue ella quien le protegió de los acontecimientos 27 años atrás.  
 
 - __Desarrollo de personajes:__ 
 
