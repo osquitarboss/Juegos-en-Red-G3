@@ -2,7 +2,7 @@ import { Animator } from "../Components/Animator";
 
 export class Player {
 
-    constructor(scene, id, x, y, gravity, xPos, yPos, spriteSheet = null) {
+    constructor(scene, id, gravity, xPos, yPos, spriteSheet = null) {
         this.id = id;
         this.scene = scene;
         this.gravity = gravity;
