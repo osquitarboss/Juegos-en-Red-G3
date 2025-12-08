@@ -55,7 +55,7 @@ export class MenuScene extends Phaser.Scene {
            setOrigin(0).
            setInteractive({ useHandCursor: true }).
         on('pointerdown', () => {
-                this.scene.start('OptionsScene');
+                this.scene.launch('OptionsScene', {originalScene : 'MenuScene'});
             });
 
         this.add.image(276, 451, 'id5').
