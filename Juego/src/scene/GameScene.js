@@ -38,9 +38,6 @@ export class GameScene extends Phaser.Scene {
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.scene, this.input, this.commandProcessor);
         this.arthur = new Arthur(this, 'player1', 600, 100, 500, 'spritesheet-arthur');
-
-
-
         this.lucy = new Lucy(this, 'player2', 450, 300, 500, 'spritesheet-lucy');
 
         this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.players);

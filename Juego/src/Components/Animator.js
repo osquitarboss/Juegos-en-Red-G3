@@ -24,5 +24,9 @@ export class Animator {
     assignSpriteToPlayer(x, y) {
         return this.scene.physics.add.sprite(x, y, this.animationSpritesheet);
     }
+
+    createSprite(x, y) {
+        return this.scene.add.sprite(x, y, this.animationSpritesheet);
+    }
     
 }
