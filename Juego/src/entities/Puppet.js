@@ -2,13 +2,13 @@ import { Animator } from "../Components/Animator";
 
 export class Puppet {
 
-    constructor(scene, id, xPos, yPos, spriteSheet = null) {
+    constructor(scene, id, xPos, yPos, spriteSheet = null, isPlayer) {
         this.id = id;
         this.scene = scene;
         this.xPos = xPos;
         this.yPos = yPos;
         this.currentAnim = null;
-
+        this.isPlayer = isPlayer;
         this.animator = new Animator(scene, spriteSheet);
     }
 
@@ -21,14 +21,25 @@ export class Puppet {
         this.sprite = this.animator.createSprite(this.xPos, this.yPos);
 
         // Crear animaciones igual que Player
-        this.animator.createAnimation(`idle-${this.id}`, 0, 3, 4);
-        this.animator.createAnimation(`walk-${this.id}`, 4, 7, 5);
-        this.animator.createAnimation(`jump-${this.id}`, 8, 8, 4, 0);
-        this.animator.createAnimation(`air-${this.id}`, 9, 10, 1, 0);
-        this.animator.createAnimation(`fall-${this.id}`, 10, 10, 1, 0);
-        this.animator.createAnimation(`attack-${this.id}`, 12, 13, 2, 0);
+        if (this.isPlayer) {
+            this.animator.createAnimation(`idle-${this.id}`, 0, 3, 4);
+            this.animator.createAnimation(`walk-${this.id}`, 4, 7, 5);
+            this.animator.createAnimation(`jump-${this.id}`, 8, 8, 4, 0);
+            this.animator.createAnimation(`air-${this.id}`, 9, 10, 1, 0);
+            this.animator.createAnimation(`fall-${this.id}`, 10, 10, 1, 0);
+            this.animator.createAnimation(`attack-${this.id}`, 12, 13, 2, 0);
+            this.sprite.setScale(0.23);
+        } else {
+            this.animator.createAnimation(`idle-${this.id}`, 0, 2, 5);
+            this.animator.createAnimation(`idle-white-${this.id}`, 3, 5, 5);
+            this.animator.createAnimation(`black-to-white-${this.id}`, 6, 8, 8, 0);
+            this.animator.createAnimation(`white-to-black-${this.id}`, 6, 8, 8, 0);
+            this.animator.createAnimation(`die-${this.id}`, 9, 11, 8, 0);
+            this.sprite.setScale(0.35);
+        }
 
-        this.sprite.setScale(0.17, 0.17);
+
+
         this.sprite.setDepth(200);
 
         // Animación por defecto

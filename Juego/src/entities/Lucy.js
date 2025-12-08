@@ -21,7 +21,7 @@ export class Lucy extends Player {
                 this.isAttacking = false;
                 this.playAnim(`idle-${this.id}`); // o walk si te mueves
                 this.attackHitbox.setPosition(-100, -100); // sacar el hitbox de la pantalla
-                
+
             }
         });
 

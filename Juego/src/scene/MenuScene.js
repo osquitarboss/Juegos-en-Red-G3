@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { Puppet } from "../entities/Puppet.js";
 
 
 export class MenuScene extends Phaser.Scene {
@@ -8,19 +7,19 @@ export class MenuScene extends Phaser.Scene {
     }
 
     init() {
-        this.puppet = new Puppet(this, "test", 300, 300, "spritesheet-arthur");
+        //this.puppet = new Puppet(this, "test", 300, 300, "spritesheet-arthur");
     }
 
     preload() {
         this.load.audio('music', 'assets/sound/menu-theme.mp3');
         this.load.image('background', 'assets/menu-inicio-fondo.png');
-        this.puppet.preload(600, 800);
+        //this.puppet.preload(600, 800);
     }
 
     create() {
-        this.puppet.create();
+        //this.puppet.create();
         //this.puppet.playAnim(`walk-test`);
-        this.puppet.loopAnimationList([`jump-test`, `air-test`, 'fall-test'], 200);
+        //this.puppet.loopAnimationList([`jump-test`, `air-test`, 'fall-test'], 200);
 
         this.add.image(400, 300, 'background').
             setOrigin(0.5);

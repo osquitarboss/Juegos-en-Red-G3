@@ -17,7 +17,7 @@ export class GameScene extends Phaser.Scene {
         this.arthur.preload(600, 800);
         this.lucy.preload(600, 800);
         this.load.audio('ambient', 'assets/sound/ambient-theme.mp3');
-        
+
 
         this.load.image('fondo', 'assets/FondoHorizontal.png');
         this.load.image('p1', 'assets/props/plataforma1.png');
