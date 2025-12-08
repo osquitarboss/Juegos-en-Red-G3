@@ -5,6 +5,25 @@ export class EndScene extends Phaser.Scene {
         super('EndScene')
     }
 
+    preload(){
+        this.load.image('p1', 'assets/p1p2foto.png');
+        this.load.image('p2', 'assets/p1p2Partido.png');
+        this.load.image('p3', 'assets/p1p2fantasma.png');
+        this.load.image('p4', 'assets/p1p2eSCAPANDO.png');
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
     create() {
@@ -14,6 +33,8 @@ export class EndScene extends Phaser.Scene {
             "Continuará..."];
         this.textIdx = 0;
         this.inProgress = false;
+
+        this.endImage1 = this.add.image(400, 200, 'p1p2foto');
 
         const nextBtn = this.add.text(600, 500, 'Siguiente', {
             fontSize: '20px',

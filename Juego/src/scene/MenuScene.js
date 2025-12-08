@@ -12,7 +12,14 @@ export class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.audio('music', 'assets/sound/menu-theme.mp3');
-        this.load.image('background', 'assets/menu-inicio-fondo.png');
+        this.load.image('background', 'assets/menuSinLetras.png');
+         
+        this.load.image('id1', 'assets/BotonTitulo.png');
+        this.load.image('id2', 'assets/BotonLocalPlay.png');
+        this.load.image('id3', 'assets/BotonCreditos.png');
+        this.load.image('id4', 'assets/BotonOpciones.png');
+        this.load.image('id5', 'assets/BotonSalir.png');
+
         //this.puppet.preload(600, 800);
     }
 
@@ -24,12 +31,49 @@ export class MenuScene extends Phaser.Scene {
         this.add.image(400, 300, 'background').
             setOrigin(0.5);
 
+        
+        this.add.image(85, 34, 'id1').
+           setOrigin(0);
+        
+
+
+        this.add.image(196, 238, 'id2').
+           setOrigin(0).
+           setInteractive({ useHandCursor: true }).
+        on('pointerdown', () => {
+                this.scene.start('IntroScene');
+            });
+
+        this.add.image(241, 307, 'id3').
+           setOrigin(0).
+           setInteractive({ useHandCursor: true }).
+        on('pointerdown', () => {
+                this.scene.start('CreditsScene');
+            });
+
+        this.add.image(245, 377, 'id4').
+           setOrigin(0).
+           setInteractive({ useHandCursor: true }).
+        on('pointerdown', () => {
+                this.scene.start('OptionsScene');
+            });
+
+        this.add.image(276, 451, 'id5').
+           setOrigin(0).
+           setInteractive({ useHandCursor: true }).
+        on('pointerdown', () => {
+                this.game.destroy(true);
+                window.close();
+            });
+            
+
+
         this.music = this.sound.add('music');
         this.music.play();
-        this.music.setVolume(0.25);
+        this.music.setVolume(0);
 
 
-        const localBtn = this.add.text(600, 100, 'Juego Local', {
+        /*const localBtn = this.add.text(600, 100, 'Juego Local', {
             fontSize: '24px',
             color: '#ffffffff',
             backgroundColor: '#000000ff',
@@ -78,7 +122,7 @@ export class MenuScene extends Phaser.Scene {
                 this.game.destroy(true);
                 window.close();
             });
-        //
+        */
 
     }
 }

@@ -28,10 +28,14 @@ export class IntroScene extends Phaser.Scene {
     }
 
     preload() {
+       
+       
         this.load.image('intro', 'assets/p1entrando.png');
         this.load.image('intro2', 'assets/p1yp2.png');
         this.load.image('controls', 'assets/ilustracionMecanicas.png');
         this.load.image('combat', 'assets/ilustracionCombate.png');
+        this.load.image('mansion', 'assets/mansion.png');
+        this.load.image('lucyPeeking', 'assets/lucyPeeking.png');
 
         this.puppets1.forEach(puppet => puppet.preload(600, 800));
         this.puppets2.forEach(puppet => puppet.preload(600, 800));
@@ -40,22 +44,28 @@ export class IntroScene extends Phaser.Scene {
     create() {
         this.introText = [
             "1953, Birmingham, Inglaterra, \nhace 27 años la familia Felton fue misteriosamente \nasesinada,\n nadie se ha atrevido a entrar en su mansión.",
-            "Hasta hoy.",
-            "El detective Arthur se ha adentrado en la mansión, \ndonde ha conocido a la difunta Lucy Felton, \n después de hablar un rato han decidido ayudarse \npara descubrir el misterio detrás de esa noche.",
+            "Hasta hoy. \nArthur dispuesto a resolver el caso\n se adentra en la sombría mansión.", 
+            "Pero no está solo.\nAlgo le observa desde las sombras...\nO más bien,\nAlguien.",
+            "La fantasma resultó ser extrañamente amigable,\nOfreciéndose como guía y protectora\n en su investigacíon por la mansión.",
             " ",
             " "
         ];
         this.textIndex = 0;
         this.inProgress = false;
+        this.introImage0= this.add.image(400, 200, 'mansion');
+        
         this.introImage1 = this.add.image(400, 200, 'intro');
+         this.introImageL = this.add.image(400, 200, 'lucyPeeking');
         this.introImage2 = this.add.image(400, 200, 'intro2');
         this.controlsImage = this.add.image(400, 270, 'controls');
         this.combatImage = this.add.image(400, 270, 'combat');
         this.controlsImage.setScale(0.9);
         this.combatImage.setScale(0.9);
-        this.cutsceneImages = [this.introImage1, this.introImage2, this.controlsImage, this.combatImage];
+        this.cutsceneImages = [this.introImage1,this.introImageL, this.introImage2, this.controlsImage, this.combatImage];
         this.cutsceneImages.forEach(image => image.setVisible(false));
 
+
+        
         this.arthur1.create();
         this.arthur1.playAnim(`walk-ca1`);
         this.arthur1.sprite.flipX = true;
@@ -102,15 +112,20 @@ export class IntroScene extends Phaser.Scene {
             .on('pointerdown', () => {
                 if (!this.inProgress) { this.nextText(); }
                 if (this.textIndex == 1) {
+                    this.introImage0.setVisible(false);
                     this.introImage1.setVisible(true);
                 } else if (this.textIndex == 2) {
                     this.introImage1.setVisible(false);
-                    this.introImage2.setVisible(true);
+                    this.introImageL.setVisible(true);
                 } else if (this.textIndex == 3) {
-                    this.introImage2.setVisible(false);
+                    this.introImageL.setVisible(false);
+                    this.introImage2.setVisible(true);
+                } else if (this.textIndex == 4) {
+                   this.introImage2.setVisible(false);
                     this.controlsImage.setVisible(true);
                     this.puppets1.forEach(puppet => puppet.sprite.setVisible(true));
-                } else if (this.textIndex == 4) {
+                    
+                } else if(this.textIndex==5){
                     this.controlsImage.setVisible(false);
                     this.combatImage.setVisible(true);
                     this.puppets1.forEach(puppet => puppet.sprite.setVisible(false));
@@ -121,7 +136,8 @@ export class IntroScene extends Phaser.Scene {
                     this.lucy4.sprite.x = 150;
                     this.lucy4.sprite.y = 330;
                     this.puppets2.forEach(puppet => puppet.sprite.setVisible(true));
-                } else {
+                }
+                    else {
                     this.introImage1.setVisible(false);
                     this.introImage2.setVisible(false);
                     this.controlsImage.setVisible(false);
@@ -161,7 +177,7 @@ export class IntroScene extends Phaser.Scene {
     textIn(text) {
         this.inProgress = true;
         let index = 0;
-        const speed = 75; // Velocidad de escritura en ms
+        const speed = 1; // Velocidad de escritura en ms
 
         const writeText = () => {
             if (index < text.length) {
