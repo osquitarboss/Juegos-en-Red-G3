@@ -15,6 +15,9 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('id3', 'assets/BotonCreditos.png');
         this.load.image('id4', 'assets/BotonOpciones.png');
         this.load.image('id5', 'assets/BotonSalir.png');
+        this.load.image('menu', 'assets/libretaNivelesConSombra.png');
+        this.load.image('n1', 'assets/BotonNivel1.png');
+        this.load.image('n2', 'assets/BotonNivel2.png');
 
     }
 
@@ -120,26 +123,22 @@ export class MenuScene extends Phaser.Scene {
         this.buttons.forEach(btn => btn.removeInteractive());
 
         // Fondo del menú
-        const bg = this.add.rectangle(400, 300, 600, 400, 0x000000, 0.5)
+        const bg = this.add.image(400, 300, 'menu')
             .setDepth(10);
 
         // Botón Nivel 1
-        const lvl1 = this.add.text(320, 250, 'Nivel 1', {
-            fontSize: '32px', color: '#fff'
-        })
+        const lvl1 = this.add.image(350, 230, 'n1')
             .setDepth(11)
-            .setInteractive()
+            .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
                 this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
                 this.scene.start('IntroScene');
             });
 
         // Botón Nivel 2
-        const lvl2 = this.add.text(320, 300, 'Nivel 2', {
-            fontSize: '32px', color: '#fff'
-        })
+        const lvl2 = this.add.image(350, 310, 'n2')
             .setDepth(11)
-            .setInteractive()
+            .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
                 this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
                 this.scene.start('EndScene');
@@ -149,7 +148,7 @@ export class MenuScene extends Phaser.Scene {
             fontSize: '32px', color: '#fff'
         })
             .setDepth(11)
-            .setInteractive()
+            .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
                 this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
             });
