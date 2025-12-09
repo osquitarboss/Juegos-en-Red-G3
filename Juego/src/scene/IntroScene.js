@@ -111,36 +111,48 @@ export class IntroScene extends Phaser.Scene {
             .on('pointerout', () => nextBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
                 if (!this.inProgress) { this.nextText(); }
-                if (this.textIndex == 1) {
-                    this.introImage0.setVisible(false);
-                    this.introImage1.setVisible(true);
-                } else if (this.textIndex == 2) {
-                    this.introImage1.setVisible(false);
-                    this.introImageL.setVisible(true);
-                } else if (this.textIndex == 3) {
-                    this.introImageL.setVisible(false);
-                    this.introImage2.setVisible(true);
-                } else if (this.textIndex == 4) {
-                   this.introImage2.setVisible(false);
-                    this.controlsImage.setVisible(true);
-                    this.puppets1.forEach(puppet => puppet.sprite.setVisible(true));
-                    
-                } else if(this.textIndex==5){
-                    this.controlsImage.setVisible(false);
-                    this.combatImage.setVisible(true);
-                    this.puppets1.forEach(puppet => puppet.sprite.setVisible(false));
-                    this.arthur4.sprite.setVisible(true);
-                    this.arthur4.sprite.x = 150;
-                    this.arthur4.sprite.y = 100;
-                    this.lucy4.sprite.setVisible(true);
-                    this.lucy4.sprite.x = 150;
-                    this.lucy4.sprite.y = 330;
-                    this.puppets2.forEach(puppet => puppet.sprite.setVisible(true));
-                }
-                    else {
-                    this.introImage1.setVisible(false);
-                    this.introImage2.setVisible(false);
-                    this.controlsImage.setVisible(false);
+                switch (this.textIndex) {
+                    case 1:
+                        this.introImage0.setVisible(false);
+                        this.introImage1.setVisible(true);
+                        break;
+
+                    case 2:
+                        this.introImage1.setVisible(false);
+                        this.introImageL.setVisible(true);
+                        break;
+
+                    case 3:
+                        this.introImageL.setVisible(false);
+                        this.introImage2.setVisible(true);
+                        break;
+
+                    case 4:
+                        this.introImage2.setVisible(false);
+                        this.controlsImage.setVisible(true);
+                        this.puppets1.forEach(puppet => puppet.sprite.setVisible(true));
+                        break;
+
+                    case 5:
+                        this.controlsImage.setVisible(false);
+                        this.combatImage.setVisible(true);
+
+                        this.puppets1.forEach(puppet => puppet.sprite.setVisible(false));
+
+                        this.arthur4.sprite.setVisible(true);
+                        this.arthur4.sprite.x = 150;
+                        this.arthur4.sprite.y = 100;
+
+                        this.lucy4.sprite.setVisible(true);
+                        this.lucy4.sprite.x = 150;
+                        this.lucy4.sprite.y = 330;
+
+                        this.puppets2.forEach(puppet => puppet.sprite.setVisible(true));
+                        break;
+
+                    default:
+                        this.cutsceneImages.forEach(image => image.setVisible(false));
+                        break;
                 } //Se podria hacer con un array
             });
         this.text = this.add.text(400, 460, '', {

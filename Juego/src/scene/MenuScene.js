@@ -1,73 +1,60 @@
 import Phaser from "phaser";
 
-
 export class MenuScene extends Phaser.Scene {
     constructor() {
         super('MenuScene')
     }
 
-    init() {
-        //this.puppet = new Puppet(this, "test", 300, 300, "spritesheet-arthur");
-    }
 
     preload() {
         this.load.audio('music', 'assets/sound/menu-theme.mp3');
         this.load.image('background', 'assets/menuSinLetras.png');
-         
+
         this.load.image('id1', 'assets/BotonTitulo.png');
         this.load.image('id2', 'assets/BotonLocalPlay.png');
         this.load.image('id3', 'assets/BotonCreditos.png');
         this.load.image('id4', 'assets/BotonOpciones.png');
         this.load.image('id5', 'assets/BotonSalir.png');
 
-        //this.puppet.preload(600, 800);
     }
 
     create() {
-        //this.puppet.create();
-        //this.puppet.playAnim(`walk-test`);
-        //this.puppet.loopAnimationList([`jump-test`, `air-test`, 'fall-test'], 200);
-
         this.add.image(400, 300, 'background').
             setOrigin(0.5);
-
-        
         this.add.image(85, 34, 'id1').
-           setOrigin(0);
-        
+            setOrigin(0);
 
-
-        this.add.image(196, 238, 'id2').
-           setOrigin(0).
-           setInteractive({ useHandCursor: true }).
-        on('pointerdown', () => {
-                this.scene.start('IntroScene');
+        this.startButton = this.add.image(196, 238, 'id2').
+            setOrigin(0).
+            setInteractive({ useHandCursor: true }).
+            on('pointerdown', () => {
+                this.openMiniMenu();
             });
 
-        this.add.image(241, 307, 'id3').
-           setOrigin(0).
-           setInteractive({ useHandCursor: true }).
-        on('pointerdown', () => {
+        this.creditsButton = this.add.image(241, 307, 'id3').
+            setOrigin(0).
+            setInteractive({ useHandCursor: true }).
+            on('pointerdown', () => {
                 this.scene.start('CreditsScene');
             });
 
-        this.add.image(245, 377, 'id4').
-           setOrigin(0).
-           setInteractive({ useHandCursor: true }).
-        on('pointerdown', () => {
-                this.scene.launch('OptionsScene', {originalScene : 'MenuScene'});
+        this.optionsButton = this.add.image(245, 377, 'id4').
+            setOrigin(0).
+            setInteractive({ useHandCursor: true }).
+            on('pointerdown', () => {
+                this.scene.launch('OptionsScene', { originalScene: 'MenuScene' });
             });
 
-        this.add.image(276, 451, 'id5').
-           setOrigin(0).
-           setInteractive({ useHandCursor: true }).
-        on('pointerdown', () => {
+        this.exitButton = this.add.image(276, 451, 'id5').
+            setOrigin(0).
+            setInteractive({ useHandCursor: true }).
+            on('pointerdown', () => {
                 this.game.destroy(true);
                 window.close();
             });
-            
 
 
+        this.buttons = [this.startButton, this.creditsButton, this.optionsButton, this.exitButton];
         this.music = this.sound.add('music');
         this.music.play();
         this.music.setVolume(0);
@@ -124,5 +111,56 @@ export class MenuScene extends Phaser.Scene {
             });
         */
 
+    }
+
+
+    openMiniMenu() {
+
+        // ❌ Desactivar todos los botones de abajo del menú
+        this.buttons.forEach(btn => btn.removeInteractive());
+
+        // Fondo del menú
+        const bg = this.add.rectangle(400, 300, 600, 400, 0x000000, 0.5)
+            .setDepth(10);
+
+        // Botón Nivel 1
+        const lvl1 = this.add.text(320, 250, 'Nivel 1', {
+            fontSize: '32px', color: '#fff'
+        })
+            .setDepth(11)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+                this.scene.start('IntroScene');
+            });
+
+        // Botón Nivel 2
+        const lvl2 = this.add.text(320, 300, 'Nivel 2', {
+            fontSize: '32px', color: '#fff'
+        })
+            .setDepth(11)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+                this.scene.start('EndScene');
+            });
+
+        const returnBtn = this.add.text(320, 400, 'Volver', {
+            fontSize: '32px', color: '#fff'
+        })
+            .setDepth(11)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+            });
+    }
+
+    closeMiniMenu(elements) {
+
+        // Eliminar los elementos del minimenu
+        elements.forEach(e => e.destroy());
+
+        // ✔️ Reactivar los botones de la escena
+        this.buttons.forEach(btn => btn.setInteractive({ useHandCursor: true }));
     }
 }

@@ -5,38 +5,32 @@ export class EndScene extends Phaser.Scene {
         super('EndScene')
     }
 
-    preload(){
+    preload() {
         this.load.image('p1', 'assets/p1p2foto.png');
         this.load.image('p2', 'assets/p1p2Partido.png');
-        this.load.image('p3', 'assets/p1p2fantasma.png');
+        this.load.image('p3', 'assets/p1p2yfantasma.png');
         this.load.image('p4', 'assets/p1p2eSCAPANDO.png');
 
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     create() {
         this.introText = [
-            "Arthur abre un libro viejo \n\ny polvoriento de la estantería.\n",
-            "Lo que vió entre sus páginas \n\nlo dejó sin aliento.\n",
-            "Continuará..."];
-        this.textIdx = 0;
+            "Arthur halló una vieja foto entre los \n polvorientos libros de la estantería.",
+            "El rostro espectral de Lucy lo decía todo. \n\nEstaba ante el retrato roto de una familia rota.",
+            "Pero no había tiempo para lamentos.",
+            " "];
+        this.textIndex = 0;
         this.inProgress = false;
 
-        this.endImage1 = this.add.image(400, 200, 'p1p2foto');
+        this.endImage1 = this.add.image(400, 200, 'p1');
+        this.endImage2 = this.add.image(400, 200, 'p2');
+        this.endImage3 = this.add.image(400, 200, 'p3');
+        this.endImage4 = this.add.image(400, 200, 'p4');
+        this.endImages = [this.endImage2, this.endImage3, this.endImage4];
+        this.endImages.forEach(image => image.setVisible(false));
 
-        const nextBtn = this.add.text(600, 500, 'Siguiente', {
+        const nextBtn = this.add.text(700, 550, 'Siguiente', {
             fontSize: '20px',
             color: '#ffffffff',
             backgroundColor: '#000000ff',
@@ -46,8 +40,29 @@ export class EndScene extends Phaser.Scene {
             .on('pointerout', () => nextBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
                 if (!this.inProgress) { this.nextText(); }
+                switch (this.textIndex) {
+                    case 1:
+                        this.endImage1.setVisible(false);
+                        this.endImage2.setVisible(true);
+                        break;
+
+                    case 2:
+                        this.endImage2.setVisible(false);
+                        this.endImage3.setVisible(true);
+                        break;
+
+                    case 3:
+                        this.endImage3.setVisible(false);
+                        this.endImage4.setVisible(true);
+                        break;
+
+                    case 4:
+                        this.endImage4.setVisible(false);
+                        break;
+                }
+
             });
-        this.texto = this.add.text(400, 100, '', {
+        this.texto = this.add.text(400, 460, '', {
             fontSize: '24px',
             color: '#ffffffff',
             align: 'center',
@@ -55,14 +70,27 @@ export class EndScene extends Phaser.Scene {
 
         }).setOrigin(0.5);
 
+        const skipBtn = this.add.text(100, 550, 'Saltar', {
+            fontSize: '20px',
+            color: '#ffffffff',
+            backgroundColor: '#00000000',
+        }).setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => skipBtn.setStyle({ backgroundColor: '#737373ff' }))
+            .on('pointerout', () => skipBtn.setStyle({ backgroundColor: '#000000ff' }))
+            .on('pointerdown', () => {
+                this.scene.start('GameScene2');
+            });
+
         this.showText();
+
     }
 
     showText() {
-        if (this.textIdx < this.introText.length) {
-            this.textIn(this.introText[this.textIdx]);
+        if (this.textIndex < this.introText.length) {
+            this.textIn(this.introText[this.textIndex]);
         } else {
-            this.scene.start('MenuScene');
+            this.scene.start('GameScene2');
         }
     }
 
@@ -84,7 +112,7 @@ export class EndScene extends Phaser.Scene {
         writeLetter();
     }
     nextText() {
-        this.textIdx++;
+        this.textIndex++;
         this.showText();
     }
 }
