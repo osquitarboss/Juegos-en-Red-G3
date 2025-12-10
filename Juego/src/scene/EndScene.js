@@ -16,10 +16,11 @@ export class EndScene extends Phaser.Scene {
 
     create() {
         this.introText = [
-            "Arthur halló una vieja foto entre los \n polvorientos libros de la estantería.",
-            "El rostro espectral de su compañera lo decía todo. \n\nEstaba ante el retrato roto de una familia rota.",
-            "Pero no había tiempo para lamentos.",
-            " "];
+            "Arthur y Lucy hallan una vieja foto entre los \n polvorientos libros de la estantería.",
+            "De pronto, todo encaja en la mente de Arthur.\nSu obsesión sin sentido con el caso\n y la conexión con Lucy...\nella es...",
+            "Sin embargo, no hay tiempo para reflexiones.",
+            "Deben huir.",
+            ];
         this.textIndex = 0;
         this.inProgress = false;
 

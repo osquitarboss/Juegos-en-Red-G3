@@ -43,11 +43,10 @@ export class IntroScene extends Phaser.Scene {
 
     create() {
         this.introText = [
-            "1953, Birmingham, Inglaterra, \nhace 27 años la familia Felton fue misteriosamente \nasesinada,\n nadie se ha atrevido a entrar en su mansión.",
-            "Hasta hoy. \n           \nArthur, dispuesto a resolver el caso\n se adentra en la sombría mansión.", 
+            "1953, Birmingham, Inglaterra. \nHace 27 años la familia Felton fue misteriosamente \nasesinada.\n Desde entonces, nadie se ha atrevido a entrar.",
+            "Hasta hoy. \n           \nEl detective Arthur Doyle, \ndispuesto a resolver el caso\n se adentra en la sombría mansión.", 
             "Pero no está solo.\nAlgo le observa desde las sombras...\nO más bien,\nAlguien.",
-            "La fantasma resultó ser extrañamente amigable,\nOfreciéndose como guía y protectora\n en su investigacíon por la mansión.",
-            " ",
+            "La fantasma resulta ser extrañamente amigable, \npresentándose como Lucy.\nSe ofrece como guía y protectora\n en la investigacíon por la mansión.",
             " "
         ];
         this.textIndex = 0;
