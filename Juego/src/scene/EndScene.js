@@ -17,7 +17,7 @@ export class EndScene extends Phaser.Scene {
     create() {
         this.introText = [
             "Arthur halló una vieja foto entre los \n polvorientos libros de la estantería.",
-            "El rostro espectral de Lucy lo decía todo. \n\nEstaba ante el retrato roto de una familia rota.",
+            "El rostro espectral de su compañera lo decía todo. \n\nEstaba ante el retrato roto de una familia rota.",
             "Pero no había tiempo para lamentos.",
             " "];
         this.textIndex = 0;

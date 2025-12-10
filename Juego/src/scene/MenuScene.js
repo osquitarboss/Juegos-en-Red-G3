@@ -18,7 +18,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('menu', 'assets/libretaNivelesConSombra.png');
         this.load.image('n1', 'assets/BotonNivel1.png');
         this.load.image('n2', 'assets/BotonNivel2.png');
-
+        this.load.image('return', 'assets/BotonVolver.png');
     }
 
     create() {
@@ -144,9 +144,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('EndScene');
             });
 
-        const returnBtn = this.add.text(320, 400, 'Volver', {
-            fontSize: '32px', color: '#fff'
-        })
+        const returnBtn = this.add.image(320, 400, 'return')
             .setDepth(11)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {

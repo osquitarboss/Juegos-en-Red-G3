@@ -44,7 +44,7 @@ export class IntroScene extends Phaser.Scene {
     create() {
         this.introText = [
             "1953, Birmingham, Inglaterra, \nhace 27 años la familia Felton fue misteriosamente \nasesinada,\n nadie se ha atrevido a entrar en su mansión.",
-            "Hasta hoy. \nArthur dispuesto a resolver el caso\n se adentra en la sombría mansión.", 
+            "Hasta hoy. \n           \nArthur, dispuesto a resolver el caso\n se adentra en la sombría mansión.", 
             "Pero no está solo.\nAlgo le observa desde las sombras...\nO más bien,\nAlguien.",
             "La fantasma resultó ser extrañamente amigable,\nOfreciéndose como guía y protectora\n en su investigacíon por la mansión.",
             " ",
@@ -189,7 +189,7 @@ export class IntroScene extends Phaser.Scene {
     textIn(text) {
         this.inProgress = true;
         let index = 0;
-        const speed = 1; // Velocidad de escritura en ms
+        const speed = 75; // Velocidad de escritura en ms
 
         const writeText = () => {
             if (index < text.length) {
