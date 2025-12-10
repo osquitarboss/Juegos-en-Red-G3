@@ -6,6 +6,7 @@ import { Camera } from "../Components/Camera.js";
 import { Platform } from "../entities/Platform.js";
 import { Lucy } from "../entities/Lucy.js";
 import { Arthur } from "../entities/Arthur.js";
+import { connectionManager } from "../services/ConnectionManager.js";
 
 
 export class GameScene extends Phaser.Scene {
@@ -93,6 +94,12 @@ export class GameScene extends Phaser.Scene {
 
         this.camera.camera.setLerp(0.1, 0.1);
 
+        this.connectionListener = (data) => {
+            if (!data.connected && this.scene.isActive()) {
+                this.onConnectionLost();
+            }
+        };
+        connectionManager.addListener(this.connectionListener);
     }
 
     setUpReviveCollision() {
@@ -224,5 +231,9 @@ export class GameScene extends Phaser.Scene {
         })
     }
 
-
+    ////////////////// RED //////////////
+    onConnectionLost() {
+        this.scene.pause();
+        this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene'});
+    }
 }
