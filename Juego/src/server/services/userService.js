@@ -11,23 +11,22 @@ export function createUserService() {
 
   /**
    * Crea un nuevo usuario
-   * @param {Object} userData - {email, name, avatar, level}
+   * @param {Object} userData - {name, level}
    * @returns {Object} Usuario creado
    */
   function createUser(userData) {
     // 1. Validar que el email no exista ya
-    const existingUser = users.find(u => u.email === userData.email);
+    const existingUser = users.find(u => u.name === userData.name);
     if (existingUser) {
-      throw new Error('El email ya está registrado');
+      throw new Error('El nombre ya está registrado');
     }
 
     // 2. Crear objeto usuario con id único y createdAt
     const newUser = {
       id: String(nextId),
-      email: userData.email,
       name: userData.name,
-      avatar: userData.avatar || '',
-      level: userData.level || 1,
+      password: userData.password,
+      deaths: userData.deaths || 0,
       createdAt: new Date().toISOString()
     };
 

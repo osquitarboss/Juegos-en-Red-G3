@@ -13,24 +13,27 @@ export function createUserController(userService) {
   async function create(req, res, next) {
     try {
       // 1. Extraer datos del body: email, name, avatar, level
-      const { email, name, avatar, level } = req.body;
+      const { name, password, level } = req.body;
 
       // 2. Validar que los campos requeridos estén presentes (email, name)
-      if (!email || !name) {
+      if (!name || !password) {
+        console.error('Nombre o contraseña no proporcionados');
         return res.status(400).json({
-          error: 'Los campos email y name son obligatorios'
+          error: 'Los campos name y password son obligatorios'
         });
       }
 
       // 3. Llamar a userService.createUser()
-      const newUser = userService.createUser({ email, name, avatar, level });
+      const newUser = userService.createUser({ name, password, level });
 
       // 4. Retornar 201 con el usuario creado
-      res.status(201).json(newUser);
+      console.log('Nuevo usuario registrado: ' + newUser);
+      return res.status(201).json(newUser);
     } catch (error) {
-      // 5. Si hay error (ej: email duplicado), retornar 400
-      if (error.message === 'El email ya está registrado') {
-        return res.status(400).json({ error: error.message });
+      // 5. Si hay error (ej: nombre duplicado), retornar 400
+      if (error.message === 'El nombre ya está registrado') {
+        console.error('Usuario duplicado');
+        return res.status(409).json({ error: error.message });
       }
       next(error);
     }
@@ -41,11 +44,13 @@ export function createUserController(userService) {
    */
   async function getAll(req, res, next) {
     try {
-      // TODO: Implementar
       // 1. Llamar a userService.getAllUsers()
+      const users = userService.getAllUsers();
       // 2. Retornar 200 con el array de usuarios
-      throw new Error('getAll() no implementado');
+      console.log('Todos los usuarios: ' + users);
+      return res.status(200).json(users);
     } catch (error) {
+      console.error('Error al obtener todos los usuarios:', error);
       next(error);
     }
   }
@@ -69,7 +74,7 @@ export function createUserController(userService) {
       }
 
       // 4. Si existe, retornar 200 con el usuario
-      res.status(200).json(user);
+      return res.status(200).json(user);
     } catch (error) {
       next(error);
     }
