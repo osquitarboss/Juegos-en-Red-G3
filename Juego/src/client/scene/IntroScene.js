@@ -28,8 +28,8 @@ export class IntroScene extends Phaser.Scene {
     }
 
     preload() {
-       
-       
+
+
         this.load.image('intro', 'assets/p1entrando.png');
         this.load.image('intro2', 'assets/p1yp2.png');
         this.load.image('controls', 'assets/ilustracionMecanicas.png');
@@ -43,28 +43,29 @@ export class IntroScene extends Phaser.Scene {
 
     create() {
         this.introText = [
-            "1953, Birmingham, Inglaterra. \nHace 27 años la familia Felton fue misteriosamente \nasesinada.\n Desde entonces, nadie se ha atrevido a entrar.",
-            "Hasta hoy. \n           \nEl detective Arthur Doyle, \ndispuesto a resolver el caso\n se adentra en la sombría mansión.", 
+            "1953, Birmingham, Inglaterra, \nhace 27 años la familia Felton fue misteriosamente \nasesinada,\n nadie se ha atrevido a entrar en su mansión.",
+            "Hasta hoy. \n           \nArthur, dispuesto a resolver el caso\n se adentra en la sombría mansión.",
             "Pero no está solo.\nAlgo le observa desde las sombras...\nO más bien,\nAlguien.",
-            "La fantasma resulta ser extrañamente amigable, \npresentándose como Lucy.\nSe ofrece como guía y protectora\n en la investigacíon por la mansión.",
+            "La fantasma resultó ser extrañamente amigable,\nOfreciéndose como guía y protectora\n en su investigacíon por la mansión.",
+            " ",
             " "
         ];
         this.textIndex = 0;
         this.inProgress = false;
-        this.introImage0= this.add.image(400, 200, 'mansion');
-        
+        this.introImage0 = this.add.image(400, 200, 'mansion');
+
         this.introImage1 = this.add.image(400, 200, 'intro');
-         this.introImageL = this.add.image(400, 200, 'lucyPeeking');
+        this.introImageL = this.add.image(400, 200, 'lucyPeeking');
         this.introImage2 = this.add.image(400, 200, 'intro2');
         this.controlsImage = this.add.image(400, 270, 'controls');
         this.combatImage = this.add.image(400, 270, 'combat');
         this.controlsImage.setScale(0.9);
         this.combatImage.setScale(0.9);
-        this.cutsceneImages = [this.introImage1,this.introImageL, this.introImage2, this.controlsImage, this.combatImage];
+        this.cutsceneImages = [this.introImage1, this.introImageL, this.introImage2, this.controlsImage, this.combatImage];
         this.cutsceneImages.forEach(image => image.setVisible(false));
 
 
-        
+
         this.arthur1.create();
         this.arthur1.playAnim(`walk-ca1`);
         this.arthur1.sprite.flipX = true;

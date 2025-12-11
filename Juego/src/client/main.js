@@ -7,6 +7,7 @@ import { CreditsScene } from './scene/CreditsScene.js';
 import { IntroScene } from './scene/IntroScene.js';
 import { EndScene } from './scene/EndScene.js';
 import { GameScene2 } from './scene/GameScene2.js';
+import { ConnectionLostScene } from './scene/ConnectionLostScene.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -25,7 +26,7 @@ const config = {
     },
 
 
-    scene: [MenuScene, CreditsScene, OptionsScene, IntroScene, GameScene, PauseScene, EndScene, GameScene2],
+    scene: [MenuScene, CreditsScene, OptionsScene, IntroScene, GameScene, PauseScene, EndScene, GameScene2, ConnectionLostScene],
     backgroundColor: '#360246ff'
 }
 
