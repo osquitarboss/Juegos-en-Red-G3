@@ -1,4 +1,5 @@
 import { Animator } from "../Components/Animator";
+import { clientDataManager } from "../services/clientDataManager";
 
 export class Player {
 
@@ -16,6 +17,7 @@ export class Player {
         this.xPos = xPos;
         this.yPos = yPos;
         this.isDead = false;
+        this.numDeaths = clientDataManager.deaths;
 
         this.currentDirection = 'idle';
         this.currentAnim = null;
@@ -155,5 +157,9 @@ export class Player {
 
     attack() {
         // Implementar en las clases hijas
+    }
+
+    async updateDeaths() {
+        await clientDataManager.updateClientData(clientDataManager, { deaths: this.numDeaths });
     }
 }

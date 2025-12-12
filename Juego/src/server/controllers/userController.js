@@ -13,18 +13,18 @@ export function createUserController(userService) {
   async function create(req, res, next) {
     try {
       // 1. Extraer datos del body: email, name, avatar, level
-      const { name, password, level } = req.body;
+      const { name, deaths } = req.body;
 
       // 2. Validar que los campos requeridos estén presentes (email, name)
-      if (!name || !password) {
-        console.error('Nombre o contraseña no proporcionados');
+      if (!name) {
+        console.error('Nombre no proporcionado');
         return res.status(400).json({
-          error: 'Los campos name y password son obligatorios'
+          error: 'El campo name es obligatorio'
         });
       }
 
       // 3. Llamar a userService.createUser()
-      const newUser = userService.createUser({ name, password, level });
+      const newUser = userService.createUser({ name, deaths });
 
       // 4. Retornar 201 con el usuario creado
       console.log('Nuevo usuario registrado: ' + newUser);

@@ -11,6 +11,18 @@ class ClientDataManager {
         this.name = name;
         this.deaths = deaths;
     }
+
+    async updateClientData(id, updates) {
+        const response = await fetch(`/api/users/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updates)
+        });
+
+        return await response.json();
+    }
 }
 
 //Singleton

@@ -71,6 +71,11 @@ export class ConnectionLostScene extends Phaser.Scene {
 
     async attemptReconnect() {
         this.attemptCount++;
+        if (this.attemptCount > 30) {
+            this.statusText.setText('No se pudo establecer la conexión');
+            this.statusText.setColor('#ff0000');
+            return;
+        }
         this.attemptText.setText(`Intentos: ${this.attemptCount}`);
         await connectionManager.checkConnection();
     }

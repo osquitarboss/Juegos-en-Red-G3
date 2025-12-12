@@ -25,7 +25,6 @@ export function createUserService() {
     const newUser = {
       id: String(nextId),
       name: userData.name,
-      password: userData.password,
       deaths: userData.deaths || 0,
       createdAt: new Date().toISOString()
     };

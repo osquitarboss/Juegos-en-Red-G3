@@ -25,21 +25,18 @@ export class LoginScene extends Phaser.Scene {
             if (event.target.name === 'loginButton') {
 
                 const inputUsername = element.getChildByName('username').value;
-                const inputPassword = element.getChildByName('password').value;
 
                 //  Have they entered anything?
-                if (inputUsername !== '' && inputPassword !== '') {
-                    //  Turn off the click events
-                    element.removeListener('click');
+                if (inputUsername !== '') {
+                   
                     console.log('Trying to log in');
                     //POST on /api/users
-                    const loggedIn = await self.postLogin(inputUsername, inputPassword);
+                    const loggedIn = await self.postLogin(inputUsername);
                     if (loggedIn) {
+                        //  Turn off the click events
+                        element.removeListener('click');
                         text.setText('Login successful');
                         this.scene.start('MenuScene');
-                    } else {
-                        text.setText('Login failed');
-                        element.addListener('click');
                     }
                 }
             }
@@ -48,7 +45,7 @@ export class LoginScene extends Phaser.Scene {
 
     }
 
-    async postLogin(username, password) {
+    async postLogin(username) {
         try {
             const response = await fetch('/api/users', {
                 method: 'POST',
@@ -57,7 +54,6 @@ export class LoginScene extends Phaser.Scene {
                 },
                 body: JSON.stringify({
                     name: username,
-                    password: password,
                     deaths: 0
                 })
             });
