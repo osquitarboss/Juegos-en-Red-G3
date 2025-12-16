@@ -80,11 +80,17 @@ export function createUserService() {
   function updateUser(id, updates) {
     // TODO: Implementar
     // 1. Buscar el usuario por id
+    const user = users.find(u => u.id === id);
     // 2. Si no existe, retornar null
+    if (!user) {
+      return null;
+    }
     // 3. Actualizar solo los campos permitidos (name, avatar, level)
-    // 4. NO permitir actualizar id, email, o createdAt
+    user.name = updates.name || user.name;
+    user.deaths = updates.deaths || user.deaths;
+    
     // 5. Retornar el usuario actualizado
-    throw new Error('updateUser() no implementado');
+    return user;
   }
 
   /**

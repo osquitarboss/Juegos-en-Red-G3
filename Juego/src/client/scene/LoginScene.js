@@ -31,12 +31,15 @@ export class LoginScene extends Phaser.Scene {
                    
                     console.log('Trying to log in');
                     //POST on /api/users
-                    const loggedIn = await self.postLogin(inputUsername);
-                    if (loggedIn) {
+                    clientDataManager.name = inputUsername;
+                    const loggedIn = await clientDataManager.postLogin();
+                    if (loggedIn === 201) {
                         //  Turn off the click events
                         element.removeListener('click');
                         text.setText('Login successful');
                         this.scene.start('MenuScene');
+                    } else {
+                        text.setText('Login failed');
                     }
                 }
             }
@@ -45,31 +48,4 @@ export class LoginScene extends Phaser.Scene {
 
     }
 
-    async postLogin(username) {
-        try {
-            const response = await fetch('/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: username,
-                    deaths: 0
-                })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Login successful');
-                clientDataManager.setParams(data.id, data.name, data.deaths);
-                console.log(clientDataManager.name);
-                return true;
-            } else if (response.status === 409) {
-                return false;
-            }
-        } catch (error) {
-            console.error('Error logging in:', error);
-            return false;
-        }
-    }
 }

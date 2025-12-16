@@ -87,11 +87,19 @@ export function createUserController(userService) {
     try {
       // TODO: Implementar
       // 1. Extraer el id de req.params
+      const { id } = req.params; 
       // 2. Extraer los campos a actualizar del body
+      const { name, deaths } = req.body;
       // 3. Llamar a userService.updateUser()
+      const updatedUser = userService.updateUser(id, { name, deaths });
       // 4. Si no existe, retornar 404
-      // 5. Si existe, retornar 200 con el usuario actualizado
-      throw new Error('update() no implementado');
+      if (!updatedUser) {
+        return res.status(404).json({
+          error: 'Usuario no encontrado'
+        });
+      } else {
+        return res.status(200).json(updatedUser);
+      }
     } catch (error) {
       next(error);
     }
