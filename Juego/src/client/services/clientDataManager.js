@@ -1,4 +1,4 @@
-class ClientDataManager {
+export class ClientDataManager {
     
     constructor() {
         this.id = undefined;
@@ -48,7 +48,7 @@ class ClientDataManager {
         });
         if (response.ok) {
             const data = await response.json();
-            this.id = data.id; 
+            this.id = data.id;
             this.deaths = data.deaths;
         }
         return response.status;

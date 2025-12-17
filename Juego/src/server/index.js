@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { WebSocketServer } from 'ws';
+import { createServer } from 'http';
 
 // Servicios (factory functions)
 import { createUserService } from './services/userService.js';
@@ -16,7 +18,7 @@ import { createConnectionController } from './controllers/connectionController.j
 import { createUserRoutes } from './routes/users.js';
 import { createMessageRoutes } from './routes/messages.js';
 import { createConnectionRoutes } from './routes/connections.js';
-
+import { createMatchmakingService } from 'client/services/matchmakingService.js';
 // Para obtener __dirname en ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +31,7 @@ const __dirname = path.dirname(__filename);
 const userService = createUserService();
 const messageService = createMessageService(userService);  // messageService depende de userService
 const connectionService = createConnectionService();
+const matchmakingService = createMatchmakingService();
 
 // 2. Crear controladores inyectando servicios (capa de lógica)
 const userController = createUserController(userService);
@@ -104,7 +107,53 @@ app.use((err, req, res, next) => {
     error: err.message || 'Error interno del servidor'
   });
 });
+// ==================== WEBSOCKET SERVER ====================
 
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+  console.log('Cliente WebSocket conectado');
+
+  ws.on('message', (message) => {
+    try {
+      const data = JSON.parse(message);
+
+      switch (data.type) {
+        case 'joinQueue':
+          matchmakingService.joinQueue(ws);
+          break;
+
+        case 'leaveQueue':
+          matchmakingService.leaveQueue(ws);
+          break;
+
+        case 'paddleMove':
+          gameRoomService.handlePaddleMove(ws, data.y);
+          break;
+
+        case 'goal':
+          gameRoomService.handleGoal(ws, data.side);
+          break;
+
+        default:
+          console.log('Mensaje desconocido:', data.type);
+      }
+    } catch (error) {
+      console.error('Error procesando mensaje:', error);
+    }
+  });
+
+  ws.on('close', () => {
+    console.log('Cliente WebSocket desconectado');
+    matchmakingService.leaveQueue(ws);
+    gameRoomService.handleDisconnect(ws);
+  });
+
+  ws.on('error', (error) => {
+    console.error('Error en WebSocket:', error);
+  });
+});
 // ==================== INICIO DEL SERVIDOR ====================
 
 app.listen(PORT, () => {

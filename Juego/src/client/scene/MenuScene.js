@@ -146,7 +146,19 @@ export class MenuScene extends Phaser.Scene {
             this.deathsText.setText('Muertes: Error');
         });
 
+//////////WebSocket//////////
+        this.onlineBtn = this.add.text(500, 300, 'Jugar Online', {
+            fontSize: '18px',
+            color: '#ffff00'
+        }).setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => this.onlineBtn.setStyle({ backgroundColor: '#737373ff' }))
+            .on('pointerout', () => this.onlineBtn.setStyle({ backgroundColor: '#000000ff' }))
+            .on('pointerdown', () => {
+                this.scene.start('MatchMakingScene');
+            });
 
+//////////WebSocket//////////
     }
 
 
