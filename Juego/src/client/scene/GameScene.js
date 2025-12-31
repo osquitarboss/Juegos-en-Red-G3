@@ -11,9 +11,10 @@ import { clientDataManager } from "../services/clientDataManager.js";
 
 
 export class GameScene extends Phaser.Scene {
-    constructor() {
-        super('GameScene')
+    constructor(name = 'GameScene') {
+        super(name)
     }
+
 
     preload() {
         this.arthur.preload(600, 800);
@@ -80,6 +81,7 @@ export class GameScene extends Phaser.Scene {
         this.players.set('player2', this.lucy);
 
         this.inputManager.players = this.players;
+        this.commandProcessor.players = this.players;
 
         // Set up enemies
         this.enemies.forEach((enemy) => {
@@ -238,7 +240,7 @@ export class GameScene extends Phaser.Scene {
     ////////////////// RED //////////////
     onConnectionLost() {
         this.scene.pause();
-        this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene'});
+        this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene' });
     }
 
 }

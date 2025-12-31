@@ -116,6 +116,7 @@ export class MenuScene extends Phaser.Scene {
                 window.close();
             });
         */
+////////////////////// API REST //////////////////////
         // Indicador de conexión al servidor
         this.connectionText = this.add.text(400, 550, 'Servidor: Comprobando...', {
             fontSize: '18px',
@@ -129,24 +130,24 @@ export class MenuScene extends Phaser.Scene {
         connectionManager.addListener(this.connectionListener);
 
         // Texto de muertes
-        this.deathsText = this.add.text(400, 500, 'Muertes: Cargando... ', {
-            fontSize: '18px',
-            color: '#ffff00'
-        }).setOrigin(0.5);
+        // this.deathsText = this.add.text(400, 500, 'Muertes: Cargando... ', {
+        //     fontSize: '18px',
+        //     color: '#ffff00'
+        // }).setOrigin(0.5);
 
-        clientDataManager.getClientDeaths().then(deaths => {
-            console.log('Received deaths:', deaths); 
-            if (deaths !== null && deaths !== undefined) {
-                this.deathsText.setText('Muertes: ' + deaths);
-            } else {
-                this.deathsText.setText('Muertes: Error');
-            }
-        }).catch(error => {
-            console.error('Error fetching deaths:', error);
-            this.deathsText.setText('Muertes: Error');
-        });
+        // clientDataManager.getClientDeaths().then(deaths => {
+        //     console.log('Received deaths:', deaths); 
+        //     if (deaths !== null && deaths !== undefined) {
+        //         this.deathsText.setText('Muertes: ' + deaths);
+        //     } else {
+        //         this.deathsText.setText('Muertes: Error');
+        //     }
+        // }).catch(error => {
+        //     console.error('Error fetching deaths:', error);
+        //     this.deathsText.setText('Muertes: Error');
+        // });
 
-//////////WebSocket//////////
+/////////////////////////// WebSocket //////////////////////////
         this.onlineBtn = this.add.text(500, 300, 'Jugar Online', {
             fontSize: '18px',
             color: '#ffff00'

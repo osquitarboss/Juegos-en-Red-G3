@@ -18,7 +18,8 @@ import { createConnectionController } from './controllers/connectionController.j
 import { createUserRoutes } from './routes/users.js';
 import { createMessageRoutes } from './routes/messages.js';
 import { createConnectionRoutes } from './routes/connections.js';
-import { createMatchmakingService } from 'client/services/matchmakingService.js';
+import { createMatchmakingService } from './services/matchmakingService.js';
+import { createGameRoomService } from './services/gameRoomService.js';
 // Para obtener __dirname en ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,7 +32,8 @@ const __dirname = path.dirname(__filename);
 const userService = createUserService();
 const messageService = createMessageService(userService);  // messageService depende de userService
 const connectionService = createConnectionService();
-const matchmakingService = createMatchmakingService();
+const gameRoomService = createGameRoomService();
+const matchmakingService = createMatchmakingService(gameRoomService);
 
 // 2. Crear controladores inyectando servicios (capa de lógica)
 const userController = createUserController(userService);
@@ -82,10 +84,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/connected', connectionRoutes);
 
-// Ruta de health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
 
 // SPA Fallback - Servir index.html para todas las rutas que no sean API
 // Esto debe ir DESPUÉS de las rutas de la API y ANTES del error handler
@@ -128,8 +126,12 @@ wss.on('connection', (ws) => {
           matchmakingService.leaveQueue(ws);
           break;
 
-        case 'paddleMove':
-          gameRoomService.handlePaddleMove(ws, data.y);
+        case 'PlayerMovmentInputCommand':
+          gameRoomService.handlePlayerMove(ws, data);
+          break;
+
+        case 'PlayerAttackCommand':
+          gameRoomService.handlePlayerAttack(ws, data);
           break;
 
         case 'goal':
@@ -156,16 +158,15 @@ wss.on('connection', (ws) => {
 });
 // ==================== INICIO DEL SERVIDOR ====================
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('========================================');
-  console.log('  SERVIDOR DE CHAT PARA VIDEOJUEGO');
+  console.log('  SERVIDOR PARA VIDEOJUEGO');
   console.log('========================================');
   console.log(`  Servidor corriendo en http://localhost:${PORT}`);
   console.log(`  `);
   console.log(`  🎮 Juego: http://localhost:${PORT}`);
   console.log(`  `);
   console.log(`  API Endpoints disponibles:`);
-  console.log(`   - GET    /health`);
   console.log(`   - GET    /api/connected`);
   console.log(`   - GET    /api/users`);
   console.log(`   - POST   /api/users`);

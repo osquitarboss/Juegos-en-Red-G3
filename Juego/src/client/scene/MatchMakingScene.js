@@ -1,18 +1,59 @@
-import Phaser from "phaser";
-
+/**
+ * Lobby Scene - Waiting for multiplayer matchmaking
+ */
 export class MatchMakingScene extends Phaser.Scene {
-    constructor() {
-        super('MatchMakingScene')
-        this.ws = null;
-    }
+  constructor() {
+    super('MatchMakingScene');
+    this.ws = null;
+  }
 
-    create() {
-        this.add.text(400, 200, 'Buscando partida...', { fontSize: '32px', color: '#f1f1f1ff' }).setOrigin(0.5);
+  create() {
+    const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
 
-        this.connectToServer();
-    }
+    // Title
+    this.add.text(width / 2, 100, 'Online Multiplayer', {
+      fontSize: '48px',
+      color: '#ffffffff'
+    }).setOrigin(0.5);
 
-    connectToServer() {
+    // Status text
+    this.statusText = this.add.text(width / 2, height / 2 - 50, 'Connecting to server...', {
+      fontSize: '24px',
+      color: '#ffffffff'
+    }).setOrigin(0.5);
+
+    // Player count text
+    this.playerCountText = this.add.text(width / 2, height / 2 + 20, '', {
+      fontSize: '20px',
+      color: '#ffffffff'
+    }).setOrigin(0.5);
+
+    // Cancel button
+    const cancelButton = this.add.text(width / 2, height - 100, 'Cancel', {
+      fontSize: '24px',
+      color: '#ff6666fff',
+      padding: { x: 20, y: 10 }
+    }).setOrigin(0.5).setInteractive();
+
+    cancelButton.on('pointerover', () => {
+      cancelButton.setColor('#ff0000ff');
+    });
+
+    cancelButton.on('pointerout', () => {
+      cancelButton.setColor('#ff6666ff');
+    });
+
+    cancelButton.on('pointerdown', () => {
+      this.leaveQueue();
+      this.scene.start('MenuScene');
+    });
+
+    // Connect to WebSocket server
+    this.connectToServer();
+  }
+
+  connectToServer() {
     try {
       // Connect to WebSocket server (same host as web server)
       const wsUrl = `ws://${window.location.host}`;
@@ -21,7 +62,7 @@ export class MatchMakingScene extends Phaser.Scene {
 
       this.ws.onopen = () => {
         console.log('Connected to WebSocket server');
-        //this.statusText.setText('Waiting for opponent...');
+        this.statusText.setText('Waiting for opponent...');
 
         // Join matchmaking queue
         this.ws.send(JSON.stringify({ type: 'joinQueue' }));
@@ -38,38 +79,37 @@ export class MatchMakingScene extends Phaser.Scene {
 
       this.ws.onerror = (error) => {
         console.error('WebSocket error:', error);
-        //this.statusText.setText('Connection error!');
-        //this.statusText.setColor('#ff0000');
+        this.statusText.setText('Connection error!');
+        this.statusText.setColor('#ff0000ff');
       };
 
       this.ws.onclose = () => {
         console.log('WebSocket connection closed');
         if (this.scene.isActive('LobbyScene')) {
-          //this.statusText.setText('Connection lost!');
-          //this.statusText.setColor('#ff0000');
+          this.statusText.setText('Connection lost!');
+          this.statusText.setColor('#ff0000ff');
         }
       };
     } catch (error) {
       console.error('Error connecting to server:', error);
-      //this.statusText.setText('Failed to connect!');
-      //this.statusText.setColor('#ff0000');
+      this.statusText.setText('Failed to connect!');
+      this.statusText.setColor('#ff0000ff');
     }
   }
 
   handleServerMessage(data) {
     switch (data.type) {
       case 'queueStatus':
-        //this.playerCountText.setText(`Players in queue: ${data.position}/2`);
+        this.playerCountText.setText(`Players in queue: ${data.position}/2`);
         break;
 
       case 'gameStart':
         console.log('Game starting!', data);
         // Store game data and transition to multiplayer game scene
-        this.scene.start('MultiplayerGameScene', {
+        this.scene.start('MultiplayerScene', {
           ws: this.ws,
           playerRole: data.role,
           roomId: data.roomId,
-          initialBall: data.ball
         });
         break;
 
@@ -89,4 +129,3 @@ export class MatchMakingScene extends Phaser.Scene {
     this.leaveQueue();
   }
 }
-
