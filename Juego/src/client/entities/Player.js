@@ -6,8 +6,8 @@ export class Player {
         this.id = id;
         this.scene = scene;
         this.gravity = gravity;
-        this.baseHeight = 0.17;
-        this.baseWidth = 0.17;
+        this.baseHeight = 0.34;
+        this.baseWidth = 0.34;
         this.baseSpeed = 300;
         this.jumpForce = 450;
         this.health = 100;

@@ -7,22 +7,22 @@ export class IntroScene extends Phaser.Scene {
     }
 
     init() {
-        this.arthur1 = new Puppet(this, "ca1", 130, 120, "spritesheet-arthur", true);
-        this.arthur2 = new Puppet(this, "ca2", 340, 120, "spritesheet-arthur", true);
-        this.arthur3 = new Puppet(this, "ca3", 500, 120, "spritesheet-arthur", true);
-        this.arthur4 = new Puppet(this, "ca4", 650, 120, "spritesheet-arthur", true);
+        this.arthur1 = new Puppet(this, "ca1", 130, 120, "spritesheet-arthur-reescalado-mitad", true);
+        this.arthur2 = new Puppet(this, "ca2", 340, 120, "spritesheet-arthur-reescalado-mitad", true);
+        this.arthur3 = new Puppet(this, "ca3", 500, 120, "spritesheet-arthur-reescalado-mitad", true);
+        this.arthur4 = new Puppet(this, "ca4", 650, 120, "spritesheet-arthur-reescalado-mitad", true);
 
-        this.lucy1 = new Puppet(this, "cl1", 130, 370, "spritesheet-lucy", true);
-        this.lucy2 = new Puppet(this, "cl2", 340, 370, "spritesheet-lucy", true);
-        this.lucy3 = new Puppet(this, "cl3", 500, 370, "spritesheet-lucy", true);
-        this.lucy4 = new Puppet(this, "cl4", 650, 370, "spritesheet-lucy", true);
+        this.lucy1 = new Puppet(this, "cl1", 130, 370, "spritesheet-lucy-reescalado-mitad", true);
+        this.lucy2 = new Puppet(this, "cl2", 340, 370, "spritesheet-lucy-reescalado-mitad", true);
+        this.lucy3 = new Puppet(this, "cl3", 500, 370, "spritesheet-lucy-reescalado-mitad", true);
+        this.lucy4 = new Puppet(this, "cl4", 650, 370, "spritesheet-lucy-reescalado-mitad", true);
 
         this.puppets1 = [this.arthur1, this.arthur2, this.arthur3, this.arthur4, this.lucy1, this.lucy2, this.lucy3, this.lucy4];
 
-        this.enemy1 = new Puppet(this, "enemy1", 300, 90, "spritesheet-enemigo", false);
-        this.enemy2 = new Puppet(this, "enemy2", 600, 90, "spritesheet-enemigo", false);
-        this.enemy3 = new Puppet(this, "enemy3", 300, 340, "spritesheet-enemigo", false);
-        this.enemy4 = new Puppet(this, "enemy4", 600, 340, "spritesheet-enemigo", false);
+        this.enemy1 = new Puppet(this, "enemy1", 300, 90, "spritesheet-enemigo-reescalado-mitad", false);
+        this.enemy2 = new Puppet(this, "enemy2", 600, 90, "spritesheet-enemigo-reescalado-mitad", false);
+        this.enemy3 = new Puppet(this, "enemy3", 300, 340, "spritesheet-enemigo-reescalado-mitad", false);
+        this.enemy4 = new Puppet(this, "enemy4", 600, 340, "spritesheet-enemigo-reescalado-mitad", false);
 
         this.puppets2 = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
     }
@@ -37,8 +37,8 @@ export class IntroScene extends Phaser.Scene {
         this.load.image('mansion', 'assets/mansion.png');
         this.load.image('lucyPeeking', 'assets/lucyPeeking.png');
 
-        this.puppets1.forEach(puppet => puppet.preload(600, 800));
-        this.puppets2.forEach(puppet => puppet.preload(600, 800));
+        this.puppets1.forEach(puppet => puppet.preload(300, 400));
+        this.puppets2.forEach(puppet => puppet.preload(300, 400));
     }
 
     create() {
