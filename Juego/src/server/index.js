@@ -134,8 +134,16 @@ wss.on('connection', (ws) => {
           gameRoomService.handlePlayerAttack(ws, data);
           break;
 
-        case 'goal':
-          gameRoomService.handleGoal(ws, data.side);
+        case 'PlayerHit':
+          gameRoomService.handlePlayerHit(ws, data);
+          break;
+
+        case 'GameOver':
+          gameRoomService.handleGameOver(ws);
+          break;
+
+        case 'Restart':
+          gameRoomService.handleRestart(ws);
           break;
 
         default:

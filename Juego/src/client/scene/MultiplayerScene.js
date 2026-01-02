@@ -19,8 +19,8 @@ export class MultiplayerScene extends GameScene {
     }
 
     create() {
-        super.create();
         this.setUpPlayers();
+        super.create();
 
         // Configurar InputManager para multiplayer
         this.inputManager.setWebSocket(this.ws);
@@ -45,6 +45,8 @@ export class MultiplayerScene extends GameScene {
             this.localPlayer = this.lucy;
             this.remotePlayer = this.arthur;
         }
+        console.log('Local player:', this.localPlayer);
+        console.log('Remote player:', this.remotePlayer);
     }
 
     setupWebSocketListeners() {
@@ -82,16 +84,83 @@ export class MultiplayerScene extends GameScene {
                 this.inputManager.updateRemotePlayerAttack(data);
                 break;
 
-            case 'gameOver':
-                // TODO: implementar
+            case 'PlayerHit':
+                console.log('MultiplayerScene received msg:', data);
+                // Remote player hits
+                this.updateRemotePlayerHit(data);
                 break;
 
             case 'playerDisconnected':
                 this.handleDisconnection();
                 break;
 
+            case 'GameOver':
+                this.handleGameOver();
+                break;
+
+            case 'Restart':
+                this.handleRestart();
+                break;
+
             default:
                 console.log('Unknown message type:', data.type);
+        }
+    }
+
+    setUpEnemyCollisions() {
+        this.enemies.forEach((enemy) => {
+
+            // Emeny hits 
+            this.physics.add.collider(enemy.sprite, this.localPlayer.sprite, () => {
+                if (enemy && this.localPlayer.health > 0) {
+                    let damage = 50;
+                    this.localPlayer.getHit(damage);
+                    this.sendMessage({
+                        type: 'PlayerHit',
+                        damage: damage,
+                        playerId: this.playerRole,
+                    });
+                    this.checkPlayerStatus();
+                }
+            });
+
+            // Remote player raw collisions with enemies (no callbacks)
+            this.physics.add.collider(enemy.sprite, this.remotePlayer.sprite);
+
+
+            // Player lights enemy
+            this.physics.add.overlap(enemy.sprite, this.arthur.light.colliderCircle, () => {
+                if (this.arthur.light.isOn && enemy) {
+                    enemy.setWeakened(true);
+                    this.time.delayedCall(4000, () => {
+                        if (enemy) {
+                            enemy.setWeakened(false);
+                        }
+                    });
+                }
+            });
+
+            // Player attacks enemy
+            this.physics.add.overlap(enemy.sprite, this.players.get('player2').attackHitbox, () => {
+                if (enemy?.weakened && this.players.get('player2').isAttacking) {
+                    enemy.die();
+                    enemy.isDead = true;
+                    enemy = null;
+                }
+            });
+        });
+    }
+
+    updateRemotePlayerHit(data) {
+        this.players.get(data.playerId).getHit(data.damage);
+        this.checkPlayerStatus();
+    }
+
+    checkPlayerStatus() { // This will be broadcasted to both players 
+        if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
+            this.sendMessage({
+                type: 'GameOver',
+            });
         }
     }
 
@@ -107,6 +176,39 @@ export class MultiplayerScene extends GameScene {
         this.createMenuButton();
     }
 
+
+    handleGameOver() {
+        this.gameEnded = true;
+        this.physics.pause();
+
+        this.add.text(400, 250, 'Game Over', {
+            fontSize: '48px',
+            color: '#ff0000'
+        }).setOrigin(0.5);
+
+        this.createMenuButton();
+        this.createRetryButton();
+    }
+
+    createRetryButton() {
+        const retryBtn = this.add.text(400, 350, 'Retry', {
+            fontSize: '32px',
+            color: '#ffffff',
+        }).setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => retryBtn.setColor('#cccccc'))
+            .on('pointerout', () => retryBtn.setColor('#ffffff'))
+            .on('pointerdown', () => {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.sendMessage({
+                        type: 'Restart',
+                    });
+                }
+                
+
+            });
+    }
+
     createMenuButton() {
         const menuBtn = this.add.text(400, 400, 'Return to Main Menu', {
             fontSize: '32px',
@@ -117,10 +219,23 @@ export class MultiplayerScene extends GameScene {
             .on('pointerout', () => menuBtn.setColor('#ffffff'))
             .on('pointerdown', () => {
                 if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.sendMessage({
+                        type: 'PlayerDisconnected',
+                    });
                     this.ws.close();
                 }
                 this.scene.start('MenuScene');
             });
+    }
+
+    handleRestart() {
+        this.scene.start('MultiplayerScene');
+    }
+
+    sendMessage(data) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify(data));
+        }
     }
 
     shutdown() {

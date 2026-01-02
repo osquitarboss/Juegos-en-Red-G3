@@ -75,6 +75,26 @@ export function createGameRoomService() {
     }
   }
 
+  /**
+   * Handle player hit from a player
+   * @param {WebSocket} ws - Player's WebSocket
+   * @param {Object} data - Player hit notification
+   */
+  function handlePlayerHit(ws, data) {
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room || !room.active) return;
+
+    // Relay to the other player
+    const opponent = room.player2.ws === ws ? room.player1.ws : room.player2.ws;
+
+    if (opponent.readyState === 1) { // WebSocket.OPEN
+      opponent.send(JSON.stringify(data));
+    }
+  }
+
 
   /**
    * Handle player disconnection
@@ -99,9 +119,47 @@ export function createGameRoomService() {
       }
     }
 
-    // Clean up room
-    room.active = false;
-    rooms.delete(roomId);
+  }
+
+  function handleGameOver(ws) {
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room) return;
+    //Broadcast to both players
+    if (room.player1.ws.readyState === WebSocket.OPEN) {
+      room.player1.ws.send(JSON.stringify({
+        type: 'GameOver'
+      }));
+    }
+    if (room.player2.ws.readyState === WebSocket.OPEN) {
+      room.player2.ws.send(JSON.stringify({
+        type: 'GameOver'
+      }));
+    }
+  }
+
+  function handleRestart(ws) {
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room) return;
+
+    //Broadcast to both players
+    if (room.player1.ws.readyState === WebSocket.OPEN) {
+      room.player1.ws.send(JSON.stringify({
+        type: 'Restart'
+      }));
+    }
+    if (room.player2.ws.readyState === WebSocket.OPEN) {
+      room.player2.ws.send(JSON.stringify({
+        type: 'Restart'
+      }));
+    }
+
+
   }
 
   /**
@@ -116,7 +174,10 @@ export function createGameRoomService() {
     createRoom,
     handlePlayerMove,
     handlePlayerAttack,
+    handlePlayerHit,
     handleDisconnect,
+    handleGameOver,
+    handleRestart,
     getActiveRoomCount
   };
 }
