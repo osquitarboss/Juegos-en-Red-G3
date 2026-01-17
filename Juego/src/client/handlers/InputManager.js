@@ -45,12 +45,6 @@ export class InputManager {
             this.pause();
         });
 
-        // Detectar F solo cuando se presiona (evento)
-        this.input.keyboard.on('keydown-F', () => {
-
-            this.players.get('player1').attack();
-        });
-
         const InputConfig = [
             {
                 playerId: 'player1',

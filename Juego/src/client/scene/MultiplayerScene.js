@@ -4,6 +4,7 @@ import { Platform } from "../entities/Platform.js";
 export class MultiplayerScene extends GameScene {
     constructor() {
         super('MultiplayerScene');
+        this.loaded = false; // flag para verificar q ha cargado la escena del compi
     }
 
     preload() {
@@ -17,6 +18,9 @@ export class MultiplayerScene extends GameScene {
         this.roomId = data.roomId;
         this.localPlayer = null;
         this.remotePlayer = null;
+        this.setupWebSocketListeners();
+
+
     }
 
     create() {
@@ -28,11 +32,15 @@ export class MultiplayerScene extends GameScene {
         this.inputManager.setPlayerRole(this.playerRole);
         this.inputManager.setUpInputs();
 
-        this.setupWebSocketListeners();
+
+        this.sendMessage({
+            type: 'Loaded',
+        });
     }
 
 
     update() {
+        if (!this.loaded) return;
 
         this.fondo.tilePositionX = this.cameras.main.scrollX * 0.2;
 
@@ -54,6 +62,8 @@ export class MultiplayerScene extends GameScene {
                     enemyId: enemy.id,
                     movementVector: enemy.movementVector,
                     chasingPlayerId: enemy.chasingPlayerId,
+                    x: enemy.sprite.x,
+                    y: enemy.sprite.y
                 });
             })
         }
@@ -123,6 +133,10 @@ export class MultiplayerScene extends GameScene {
                 this.handleDisconnection();
                 break;
 
+            case 'Loaded':
+                this.loaded = true;
+                break;
+
             case 'GameOver':
                 this.handleGameOver();
                 break;
@@ -143,7 +157,7 @@ export class MultiplayerScene extends GameScene {
     recieveEnemyMovment(data) {
         this.enemies.forEach((enemy) => {
             if (enemy.id === data.enemyId) {
-                enemy.receiveEnemyMovment(data.movementVector, data.chasingPlayerId);
+                enemy.receiveEnemyMovment(data.movementVector, data.chasingPlayerId, data.x, data.y);
             }
         });
     }
@@ -152,23 +166,21 @@ export class MultiplayerScene extends GameScene {
         this.enemies.forEach((enemy) => {
 
             // Emeny hits 
-            this.physics.add.collider(enemy.sprite, this.localPlayer.sprite, () => {
+            this.physics.add.overlap(enemy.sprite, this.localPlayer.sprite, () => {
                 if (enemy && this.localPlayer.health > 0) {
                     let damage = 50;
                     this.localPlayer.getHit(damage);
+                    this.checkPlayerStatus();
                     this.sendMessage({
                         type: 'PlayerHit',
                         damage: damage,
                         playerId: this.playerRole,
                     });
-                    this.checkPlayerStatus();
                 }
             });
 
-            // Remote player raw collisions with enemies (no callbacks)
-            // Use overlap instead of collider to prevent local physics from pushing the remote player (which causes desync)
+            // Repote player hit
             this.physics.add.overlap(enemy.sprite, this.remotePlayer.sprite);
-
 
             // Player lights enemy
             this.physics.add.overlap(enemy.sprite, this.arthur.light.colliderCircle, () => {
@@ -183,8 +195,8 @@ export class MultiplayerScene extends GameScene {
             });
 
             // Player attacks enemy
-            this.physics.add.overlap(enemy.sprite, this.players.get('player2').attackHitbox, () => {
-                if (enemy?.weakened && this.players.get('player2').isAttacking) {
+            this.physics.add.overlap(enemy.sprite, this.lucy.attackHitbox, () => {
+                if (enemy?.weakened && this.lucy.isAttacking) {
                     enemy.die();
                     enemy.isDead = true;
                     enemy = null;

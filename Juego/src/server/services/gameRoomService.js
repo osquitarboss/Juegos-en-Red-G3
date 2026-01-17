@@ -6,202 +6,97 @@ export function createGameRoomService() {
   let nextRoomId = 1;
 
   /**
-   * Create a new game room with two players
-   * @param {WebSocket} player1Ws - Player 1's WebSocket
-   * @param {WebSocket} player2Ws - Player 2's WebSocket
-   * @returns {string} Room ID
+   * Helper: Envia un mensaje al contrincante
+   * @param {WebSocket} senderWs - Socket del que envía
+   * @param {Object} data - Datos a reenviar
    */
+  function relayToOpponent(senderWs, data) {
+    const roomId = senderWs.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room || !room.active) return;
+
+    // Determinar quién es el oponente
+    const opponent = room.player2.ws === senderWs ? room.player1.ws : room.player2.ws;
+
+    if (opponent.readyState === 1) { // WebSocket.OPEN
+      opponent.send(JSON.stringify(data));
+    }
+  }
+
   function createRoom(player1Ws, player2Ws) {
     const roomId = `room_${nextRoomId++}`;
-
     const room = {
       id: roomId,
-      player1: {
-        ws: player1Ws,
-      },
-      player2: {
-        ws: player2Ws,
-      },
+      player1: { ws: player1Ws },
+      player2: { ws: player2Ws },
       active: true,
     };
 
     rooms.set(roomId, room);
-
-    // Store room ID on WebSocket for quick lookup
     player1Ws.roomId = roomId;
     player2Ws.roomId = roomId;
-
     return roomId;
   }
 
-  /**
-   * Handle player movement from a player
-   * @param {WebSocket} ws - Player's WebSocket
-   * @param {Object} data - Player's movement action
-   */
-  function handlePlayerMove(ws, data) {
+
+  const handlePlayerMove = (ws, data) => relayToOpponent(ws, data);
+  const handlePlayerAttack = (ws, data) => relayToOpponent(ws, data);
+  const handlePlayerHit = (ws, data) => relayToOpponent(ws, data);
+  const handleEnemyMove = (ws, data) => relayToOpponent(ws, data);
+  /* const handleLoaded = (ws, data) => relayToOpponent(ws, data); */ // Replaced by logic below
+
+  function handleLoaded(ws) {
     const roomId = ws.roomId;
     if (!roomId) return;
-
     const room = rooms.get(roomId);
-    if (!room || !room.active) return;
+    if (!room) return;
 
-    // Relay to the other player
-    const opponent = room.player2.ws === ws ? room.player1.ws : room.player2.ws;
+    ws.isLoaded = true;
 
-    if (opponent.readyState === 1) { // WebSocket.OPEN
-      opponent.send(JSON.stringify(data));
+    // Check if both players are loaded
+    if (room.player1.ws.isLoaded && room.player2.ws.isLoaded) {
+      broadcastToRoom(roomId, { type: 'Loaded' }); // Start the game for both
     }
   }
 
-
-  /**
-   * Handle player attack from a player
-   * @param {WebSocket} ws - Player's WebSocket
-   * @param {Object} data - Player's attack action
-   */
-  function handlePlayerAttack(ws, data) {
-    const roomId = ws.roomId;
-    if (!roomId) return;
-
-    const room = rooms.get(roomId);
-    if (!room || !room.active) return;
-
-    // Relay to the other player
-    const opponent = room.player2.ws === ws ? room.player1.ws : room.player2.ws;
-
-    if (opponent.readyState === 1) { // WebSocket.OPEN
-      opponent.send(JSON.stringify(data));
-    }
-  }
-
-  /**
-   * Handle player hit from a player
-   * @param {WebSocket} ws - Player's WebSocket
-   * @param {Object} data - Player hit notification
-   */
-  function handlePlayerHit(ws, data) {
-    const roomId = ws.roomId;
-    if (!roomId) return;
-
-    const room = rooms.get(roomId);
-    if (!room || !room.active) return;
-
-    // Relay to the other player
-    const opponent = room.player2.ws === ws ? room.player1.ws : room.player2.ws;
-
-    if (opponent.readyState === 1) { // WebSocket.OPEN
-      opponent.send(JSON.stringify(data));
-    }
-  }
-
-  /**
-   * Handle enemy movement from a player
-   * @param {WebSocket} ws - Player's WebSocket
-   * @param {Object} data - Player's movement action
-   */
-  function handleEnemyMove(ws, data) {
-    const roomId = ws.roomId;
-    if (!roomId) return;
-
-    const room = rooms.get(roomId);
-    if (!room || !room.active) return;
-
-    //como es el player 1 quien maneja el movimiento del enemigo, entonces envio el movimiento al player 2
-    if (room.player2.ws.readyState === 1) { // WebSocket.OPEN
-      room.player2.ws.send(JSON.stringify(data));
-    }
-  }
-
-  /**
-   * Handle player disconnection
-   * @param {WebSocket} ws - Disconnected player's WebSocket
-   */
   function handleDisconnect(ws) {
     const roomId = ws.roomId;
     if (!roomId) return;
-
     const room = rooms.get(roomId);
     if (!room) return;
 
-    // Only notify the other player if the game is still active
-    // If the game already ended (room.active = false), don't send disconnect message
     if (room.active) {
       const opponent = room.player1.ws === ws ? room.player2.ws : room.player1.ws;
-
-      if (opponent.readyState === 1) { // WebSocket.OPEN
-        opponent.send(JSON.stringify({
-          type: 'playerDisconnected'
-        }));
+      if (opponent.readyState === 1) {
+        opponent.send(JSON.stringify({ type: 'playerDisconnected' }));
       }
     }
-
   }
 
   function handleGameOver(ws) {
-    const roomId = ws.roomId;
-    if (!roomId) return;
-
-    const room = rooms.get(roomId);
-    if (!room) return;
-    //Broadcast to both players
-    if (room.player1.ws.readyState === WebSocket.OPEN) {
-      room.player1.ws.send(JSON.stringify({
-        type: 'GameOver'
-      }));
-    }
-    if (room.player2.ws.readyState === WebSocket.OPEN) {
-      room.player2.ws.send(JSON.stringify({
-        type: 'GameOver'
-      }));
-    }
+    broadcastToRoom(ws.roomId, { type: 'GameOver' });
   }
 
   function handleRestart(ws) {
-    const roomId = ws.roomId;
-    if (!roomId) return;
-
-    const room = rooms.get(roomId);
-    if (!room) return;
-
-    //Broadcast to both players
-    if (room.player1.ws.readyState === WebSocket.OPEN) {
-      room.player1.ws.send(JSON.stringify({
-        type: 'Restart'
-      }));
-    }
-    if (room.player2.ws.readyState === WebSocket.OPEN) {
-      room.player2.ws.send(JSON.stringify({
-        type: 'Restart'
-      }));
-    }
-
-
+    broadcastToRoom(ws.roomId, { type: 'Restart' });
   }
 
   function handlePlayersWin(ws) {
-    const roomId = ws.roomId;
-    if (!roomId) return;
-
-    const room = rooms.get(roomId);
-    if (!room) return;
-    //Broadcast to both players
-    if (room.player1.ws.readyState === WebSocket.OPEN) {
-      room.player1.ws.send(JSON.stringify({
-        type: 'PlayersWin'
-      }));
-    }
-    if (room.player2.ws.readyState === WebSocket.OPEN) {
-      room.player2.ws.send(JSON.stringify({
-        type: 'PlayersWin'
-      }));
-    }
+    broadcastToRoom(ws.roomId, { type: 'PlayersWin' });
   }
 
-  /**
-   * Get number of active rooms
-   * @returns {number} Number of active rooms
-   */
+  function broadcastToRoom(roomId, data) {
+    if (!roomId) return;
+    const room = rooms.get(roomId);
+    if (!room) return;
+
+    const msg = JSON.stringify(data);
+    if (room.player1.ws.readyState === 1) room.player1.ws.send(msg);
+    if (room.player2.ws.readyState === 1) room.player2.ws.send(msg);
+  }
+
   function getActiveRoomCount() {
     return Array.from(rooms.values()).filter(room => room.active).length;
   }
@@ -212,6 +107,7 @@ export function createGameRoomService() {
     handlePlayerAttack,
     handlePlayerHit,
     handleEnemyMove,
+    handleLoaded,
     handleDisconnect,
     handleGameOver,
     handleRestart,

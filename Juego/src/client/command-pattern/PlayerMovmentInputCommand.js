@@ -35,6 +35,8 @@ export class PlayerMovmentInputCommand extends Command {
             type: 'PlayerMovmentInputCommand',
             playerId: this.player.id,
             action: this.action,
+            x: this.player.sprite.x,
+            y: this.player.sprite.y
         };
     }
 

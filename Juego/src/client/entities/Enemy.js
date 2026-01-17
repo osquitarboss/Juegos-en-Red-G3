@@ -64,7 +64,7 @@ export class Enemy {
         }
 
         // Calculamos el vector normalizado y aplicamos velocidad
-        if (distance > 0 && this.baseSpeed > 0) {
+        if (distance > 25 && this.baseSpeed > 0) {
             this.movementVector = {
                 x: dx / distance,
                 y: dy / distance
@@ -78,7 +78,7 @@ export class Enemy {
 
     }
 
-    receiveEnemyMovment(movementVector, playerId) {
+    receiveEnemyMovment(movementVector, playerId, x, y) {
         const targetPlayer = this.players.get(playerId);
         if (!targetPlayer || !targetPlayer.sprite) return;
 
@@ -88,6 +88,13 @@ export class Enemy {
             this.baseSpeed = 0;
         } else {
             this.baseSpeed = 100;
+        }
+
+        // Sync local position with host position to fix drift
+        if (x !== undefined && y !== undefined) {
+            if (Math.abs(this.sprite.x - x) > 10 || Math.abs(this.sprite.y - y) > 10) {
+                this.sprite.setPosition(x, y);
+            }
         }
 
         this.movementVector = movementVector;

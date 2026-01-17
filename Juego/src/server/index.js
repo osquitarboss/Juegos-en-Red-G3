@@ -147,6 +147,10 @@ wss.on('connection', (ws) => {
           gameRoomService.handlePlayersWin(ws);
           break;
 
+        case 'Loaded':
+          gameRoomService.handleLoaded(ws);
+          break;
+
         default:
           console.log('Mensaje desconocido:', data.type);
       }
