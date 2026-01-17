@@ -95,6 +95,23 @@ export function createGameRoomService() {
     }
   }
 
+  /**
+   * Handle enemy movement from a player
+   * @param {WebSocket} ws - Player's WebSocket
+   * @param {Object} data - Player's movement action
+   */
+  function handleEnemyMove(ws, data) {
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room || !room.active) return;
+
+    //como es el player 1 quien maneja el movimiento del enemigo, entonces envio el movimiento al player 2
+    if (room.player2.ws.readyState === 1) { // WebSocket.OPEN
+      room.player2.ws.send(JSON.stringify(data));
+    }
+  }
 
   /**
    * Handle player disconnection
@@ -162,6 +179,25 @@ export function createGameRoomService() {
 
   }
 
+  function handlePlayersWin(ws) {
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room) return;
+    //Broadcast to both players
+    if (room.player1.ws.readyState === WebSocket.OPEN) {
+      room.player1.ws.send(JSON.stringify({
+        type: 'PlayersWin'
+      }));
+    }
+    if (room.player2.ws.readyState === WebSocket.OPEN) {
+      room.player2.ws.send(JSON.stringify({
+        type: 'PlayersWin'
+      }));
+    }
+  }
+
   /**
    * Get number of active rooms
    * @returns {number} Number of active rooms
@@ -175,9 +211,11 @@ export function createGameRoomService() {
     handlePlayerMove,
     handlePlayerAttack,
     handlePlayerHit,
+    handleEnemyMove,
     handleDisconnect,
     handleGameOver,
     handleRestart,
+    handlePlayersWin,
     getActiveRoomCount
   };
 }

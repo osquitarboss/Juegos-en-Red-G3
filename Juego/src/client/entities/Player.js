@@ -129,7 +129,6 @@ export class Player {
         // Volver vulnerable tras 2 segundos
         this.scene.time.delayedCall(2000, () => {
             this.invulnerable = false;
-            this.sprite.clearTint();
         });
     }
 

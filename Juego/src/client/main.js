@@ -10,7 +10,7 @@ import { GameScene2 } from './scene/GameScene2.js';
 import { ConnectionLostScene } from './scene/ConnectionLostScene.js';
 import { LoginScene } from './scene/LoginScene.js';
 import { MatchMakingScene } from './scene/MatchMakingScene.js';
-import {MultiplayerScene} from './scene/MultiplayerScene.js';
+import { MultiplayerScene } from './scene/MultiplayerScene.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -31,8 +31,8 @@ const config = {
         createContainer: true
     },
 
-// LoginScene poner como escena inicial, ahora esta quitado pq es un coñazo para hacer pruebas
-    scene: [MenuScene, MatchMakingScene, CreditsScene, OptionsScene, IntroScene, GameScene, MultiplayerScene, PauseScene, EndScene, GameScene2, ConnectionLostScene],
+    // LoginScene poner como escena inicial, ahora esta quitado pq es un coñazo para hacer pruebas
+    scene: [LoginScene, MenuScene, MatchMakingScene, CreditsScene, OptionsScene, IntroScene, GameScene, MultiplayerScene, PauseScene, EndScene, GameScene2, ConnectionLostScene],
     backgroundColor: '#360246ff'
 }
 

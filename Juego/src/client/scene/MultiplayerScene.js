@@ -1,4 +1,5 @@
 import { GameScene } from "./GameScene.js";
+import { Platform } from "../entities/Platform.js";
 
 export class MultiplayerScene extends GameScene {
     constructor() {
@@ -32,7 +33,30 @@ export class MultiplayerScene extends GameScene {
 
 
     update() {
-        super.update();
+
+        this.fondo.tilePositionX = this.cameras.main.scrollX * 0.2;
+
+        this.camera.update();
+        this.inputManager.update();
+
+        this.arthur.light.update();
+
+        if (this.playerRole === 'player1') {  // Jugador 1 actualiza enemigos y reenvia movimientos a jugador 2
+
+            this.enemies.forEach((enemy) => {
+                if (!enemy || enemy.isDead) {
+                    this.enemies.delete(enemy.id);
+                    return;
+                }
+                enemy.update();
+                this.sendMessage({
+                    type: 'EnemyMovment',
+                    enemyId: enemy.id,
+                    movementVector: enemy.movementVector,
+                    chasingPlayerId: enemy.chasingPlayerId,
+                });
+            })
+        }
     }
 
     ////////////////// RED CON WEBSOCKET //////////////
@@ -90,12 +114,21 @@ export class MultiplayerScene extends GameScene {
                 this.updateRemotePlayerHit(data);
                 break;
 
+            case 'EnemyMovment':
+                // Remote player hits
+                this.recieveEnemyMovment(data);
+                break;
+
             case 'playerDisconnected':
                 this.handleDisconnection();
                 break;
 
             case 'GameOver':
                 this.handleGameOver();
+                break;
+
+            case 'PlayersWin':
+                this.handlePlayersWin();
                 break;
 
             case 'Restart':
@@ -105,6 +138,14 @@ export class MultiplayerScene extends GameScene {
             default:
                 console.log('Unknown message type:', data.type);
         }
+    }
+
+    recieveEnemyMovment(data) {
+        this.enemies.forEach((enemy) => {
+            if (enemy.id === data.enemyId) {
+                enemy.receiveEnemyMovment(data.movementVector, data.chasingPlayerId);
+            }
+        });
     }
 
     setUpEnemyCollisions() {
@@ -125,7 +166,8 @@ export class MultiplayerScene extends GameScene {
             });
 
             // Remote player raw collisions with enemies (no callbacks)
-            this.physics.add.collider(enemy.sprite, this.remotePlayer.sprite);
+            // Use overlap instead of collider to prevent local physics from pushing the remote player (which causes desync)
+            this.physics.add.overlap(enemy.sprite, this.remotePlayer.sprite);
 
 
             // Player lights enemy
@@ -151,6 +193,18 @@ export class MultiplayerScene extends GameScene {
         });
     }
 
+    setUpLibraryCollision() {
+        this.libreria = new Platform(this, 'lib', 4000, 208, 100, 150, 'lib');
+        this.libreria.sprite.setDepth(2);
+        this.physics.add.overlap(this.libreria.sprite, this.localPlayer.sprite, () => {
+            this.sendMessage({
+                type: 'PlayersWin',
+            });
+            this.scene.stop();
+            this.scene.start('EndScene');
+        });
+    }
+
     updateRemotePlayerHit(data) {
         this.players.get(data.playerId).getHit(data.damage);
         this.checkPlayerStatus();
@@ -171,7 +225,7 @@ export class MultiplayerScene extends GameScene {
         this.add.text(400, 250, 'Partner Disconnected', {
             fontSize: '48px',
             color: '#ff0000'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setScrollFactor(0);
 
         this.createMenuButton();
     }
@@ -184,10 +238,15 @@ export class MultiplayerScene extends GameScene {
         this.add.text(400, 250, 'Game Over', {
             fontSize: '48px',
             color: '#ff0000'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setScrollFactor(0);
 
         this.createMenuButton();
         this.createRetryButton();
+    }
+
+    handlePlayersWin() {
+        this.scene.stop();
+        this.scene.start('EndScene');
     }
 
     createRetryButton() {
@@ -195,6 +254,7 @@ export class MultiplayerScene extends GameScene {
             fontSize: '32px',
             color: '#ffffff',
         }).setOrigin(0.5)
+            .setScrollFactor(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => retryBtn.setColor('#cccccc'))
             .on('pointerout', () => retryBtn.setColor('#ffffff'))
@@ -204,7 +264,7 @@ export class MultiplayerScene extends GameScene {
                         type: 'Restart',
                     });
                 }
-                
+
 
             });
     }
@@ -214,6 +274,7 @@ export class MultiplayerScene extends GameScene {
             fontSize: '32px',
             color: '#ffffff',
         }).setOrigin(0.5)
+            .setScrollFactor(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => menuBtn.setColor('#cccccc'))
             .on('pointerout', () => menuBtn.setColor('#ffffff'))

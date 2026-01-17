@@ -6,17 +6,14 @@ import { createServer } from 'http';
 
 // Servicios (factory functions)
 import { createUserService } from './services/userService.js';
-import { createMessageService } from './services/messageService.js';
 import { createConnectionService } from './services/connectionService.js';
 
 // Controladores (factory functions)
 import { createUserController } from './controllers/userController.js';
-import { createMessageController } from './controllers/messageController.js';
 import { createConnectionController } from './controllers/connectionController.js';
 
 // Rutas (factory functions)
 import { createUserRoutes } from './routes/users.js';
-import { createMessageRoutes } from './routes/messages.js';
 import { createConnectionRoutes } from './routes/connections.js';
 import { createMatchmakingService } from './services/matchmakingService.js';
 import { createGameRoomService } from './services/gameRoomService.js';
@@ -30,19 +27,16 @@ const __dirname = path.dirname(__filename);
 
 // 1. Crear servicios (capa de datos)
 const userService = createUserService();
-const messageService = createMessageService(userService);  // messageService depende de userService
 const connectionService = createConnectionService();
 const gameRoomService = createGameRoomService();
 const matchmakingService = createMatchmakingService(gameRoomService);
 
 // 2. Crear controladores inyectando servicios (capa de lógica)
 const userController = createUserController(userService);
-const messageController = createMessageController(messageService);
 const connectionController = createConnectionController(connectionService);
 
 // 3. Crear routers inyectando controladores (capa de rutas)
 const userRoutes = createUserRoutes(userController);
-const messageRoutes = createMessageRoutes(messageController);
 const connectionRoutes = createConnectionRoutes(connectionController);
 
 // ==================== SERVIDOR ====================
@@ -81,7 +75,6 @@ app.use(express.static(path.join(__dirname, '../../dist')));
 // ==================== RUTAS ====================
 
 app.use('/api/users', userRoutes);
-app.use('/api/messages', messageRoutes);
 app.use('/api/connected', connectionRoutes);
 
 
@@ -138,12 +131,20 @@ wss.on('connection', (ws) => {
           gameRoomService.handlePlayerHit(ws, data);
           break;
 
+        case 'EnemyMovment':
+          gameRoomService.handleEnemyMove(ws, data);
+          break;
+
         case 'GameOver':
           gameRoomService.handleGameOver(ws);
           break;
 
         case 'Restart':
           gameRoomService.handleRestart(ws);
+          break;
+
+        case 'PlayersWin':
+          gameRoomService.handlePlayersWin(ws);
           break;
 
         default:
@@ -181,7 +182,5 @@ server.listen(PORT, () => {
   console.log(`   - GET    /api/users/:id`);
   console.log(`   - PUT    /api/users/:id`);
   console.log(`   - DELETE /api/users/:id`);
-  console.log(`   - GET    /api/messages`);
-  console.log(`   - POST   /api/messages`);
   console.log('========================================\n');
 });

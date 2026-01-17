@@ -21,14 +21,16 @@ export class LoginScene extends Phaser.Scene {
 
         const self = this;
         element.on('click', async (event) => {
+            event.preventDefault();
 
             if (event.target.name === 'loginButton') {
 
                 const inputUsername = element.getChildByName('username').value;
+                console.log(inputUsername);
 
                 //  Have they entered anything?
                 if (inputUsername !== '') {
-                   
+
                     console.log('Trying to log in');
                     //POST on /api/users
                     clientDataManager.name = inputUsername;
