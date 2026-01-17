@@ -6,7 +6,7 @@ export function createGameRoomService() {
   let nextRoomId = 1;
 
   /**
-   * Helper: Envia un mensaje al contrincante
+   * Envia un mensaje al contrincante
    * @param {WebSocket} senderWs - Socket del que envía
    * @param {Object} data - Datos a reenviar
    */

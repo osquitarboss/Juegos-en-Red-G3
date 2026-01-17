@@ -1,15 +1,15 @@
 import { Player } from "./Player";
 
 export class Lucy extends Player {
-    constructor(scene, id, x, y, gravity, xPos, yPos, spriteSheet = null) {
-        super(scene, id, x, y, gravity, xPos, yPos, spriteSheet);
+    constructor(scene, id, gravity, xPos, yPos, spriteSheet = null) {
+        super(scene, id, gravity, xPos, yPos, spriteSheet);
         this.attackHitbox = null;
     }
 
     create() {
         super.create();
         this.attackHitbox = this.scene.physics.add.sprite(0, 0, null)
-            .setSize(40, 20)
+            .setSize(50, 20)
             .setVisible(false)
             .setImmovable(true);
 

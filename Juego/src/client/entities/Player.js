@@ -7,13 +7,12 @@ export class Player {
         this.id = id;
         this.scene = scene;
         this.gravity = gravity;
-        this.baseHeight = 0.34;
-        this.baseWidth = 0.34;
+        this.baseHeight = 0.33;
+        this.baseWidth = 0.33;
         this.baseSpeed = 300;
         this.jumpForce = 450;
         this.health = 100;
         this.invulnerable = false;
-        this.authority = 'LOCAL';
         this.xPos = xPos;
         this.yPos = yPos;
         this.isDead = false;
@@ -61,8 +60,8 @@ export class Player {
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.allowGravity = true;
         this.sprite.body.setGravityY(this.gravity);
-        this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
-        this.sprite.body.setOffset(150, 270);
+        this.sprite.body.setSize(this.sprite.width - 160, this.sprite.height - 140);
+        this.sprite.body.setOffset(75, 135);
         this.sprite.setDepth(5);
         this.sprite.play(`idle-${this.id}`);
     }
@@ -159,6 +158,6 @@ export class Player {
     }
 
     async updateDeaths() {
-        await clientDataManager.updateClientData(clientDataManager, { deaths: this.numDeaths });
+        await clientDataManager.updateClientData({ deaths: this.numDeaths });
     }
 }

@@ -7,8 +7,8 @@ export class Enemy {
         this.y = y;
         this.players = players;
         this.id = id;
-        this.baseHeight = 0.17;
-        this.baseWidth = 0.17;
+        this.baseHeight = 0.33;
+        this.baseWidth = 0.33;
         this.baseSpeed = 100;
         this.isDead = false;
 
@@ -19,7 +19,7 @@ export class Enemy {
     }
 
     preload() {
-        this.animator.preload(600, 800);
+        this.animator.preload(300, 400);
     }
 
     create() {
@@ -42,7 +42,7 @@ export class Enemy {
         this.sprite.body.setGravityY(500);
         this.sprite.setDepth(10);
         this.sprite.setScale(this.baseWidth, this.baseHeight);
-        this.sprite.body.setSize(this.sprite.width - 300, this.sprite.height - 270);
+        this.sprite.body.setSize(this.sprite.width - 150, this.sprite.height - 135);
 
         this.sprite.anims.play(`idle-black-${this.id}`);
     }
