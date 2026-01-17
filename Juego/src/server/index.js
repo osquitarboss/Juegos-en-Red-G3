@@ -1,22 +1,22 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { WebSocketServer } from 'ws';
+import { createServer } from 'http';
 
 // Servicios (factory functions)
 import { createUserService } from './services/userService.js';
-import { createMessageService } from './services/messageService.js';
 import { createConnectionService } from './services/connectionService.js';
 
 // Controladores (factory functions)
 import { createUserController } from './controllers/userController.js';
-import { createMessageController } from './controllers/messageController.js';
 import { createConnectionController } from './controllers/connectionController.js';
 
 // Rutas (factory functions)
 import { createUserRoutes } from './routes/users.js';
-import { createMessageRoutes } from './routes/messages.js';
 import { createConnectionRoutes } from './routes/connections.js';
-
+import { createMatchmakingService } from './services/matchmakingService.js';
+import { createGameRoomService } from './services/gameRoomService.js';
 // Para obtener __dirname en ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,17 +27,16 @@ const __dirname = path.dirname(__filename);
 
 // 1. Crear servicios (capa de datos)
 const userService = createUserService();
-const messageService = createMessageService(userService);  // messageService depende de userService
 const connectionService = createConnectionService();
+const gameRoomService = createGameRoomService();
+const matchmakingService = createMatchmakingService(gameRoomService);
 
 // 2. Crear controladores inyectando servicios (capa de lógica)
 const userController = createUserController(userService);
-const messageController = createMessageController(messageService);
 const connectionController = createConnectionController(connectionService);
 
 // 3. Crear routers inyectando controladores (capa de rutas)
 const userRoutes = createUserRoutes(userController);
-const messageRoutes = createMessageRoutes(messageController);
 const connectionRoutes = createConnectionRoutes(connectionController);
 
 // ==================== SERVIDOR ====================
@@ -76,13 +75,8 @@ app.use(express.static(path.join(__dirname, '../../dist')));
 // ==================== RUTAS ====================
 
 app.use('/api/users', userRoutes);
-app.use('/api/messages', messageRoutes);
 app.use('/api/connected', connectionRoutes);
 
-// Ruta de health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
 
 // SPA Fallback - Servir index.html para todas las rutas que no sean API
 // Esto debe ir DESPUÉS de las rutas de la API y ANTES del error handler
@@ -104,26 +98,93 @@ app.use((err, req, res, next) => {
     error: err.message || 'Error interno del servidor'
   });
 });
+// ==================== WEBSOCKET SERVER ====================
 
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+  console.log('Cliente WebSocket conectado');
+
+  ws.on('message', (message) => {
+    try {
+      const data = JSON.parse(message);
+
+      switch (data.type) {
+        case 'joinQueue':
+          matchmakingService.joinQueue(ws);
+          break;
+
+        case 'leaveQueue':
+          matchmakingService.leaveQueue(ws);
+          break;
+
+        case 'PlayerMovmentInputCommand':
+          gameRoomService.handlePlayerMove(ws, data);
+          break;
+
+        case 'PlayerAttackCommand':
+          gameRoomService.handlePlayerAttack(ws, data);
+          break;
+
+        case 'PlayerHit':
+          gameRoomService.handlePlayerHit(ws, data);
+          break;
+
+        case 'EnemyMovment':
+          gameRoomService.handleEnemyMove(ws, data);
+          break;
+
+        case 'GameOver':
+          gameRoomService.handleGameOver(ws);
+          break;
+
+        case 'Restart':
+          gameRoomService.handleRestart(ws);
+          break;
+
+        case 'PlayersWin':
+          gameRoomService.handlePlayersWin(ws);
+          break;
+
+        case 'Loaded':
+          gameRoomService.handleLoaded(ws);
+          break;
+
+        default:
+          console.log('Mensaje desconocido:', data.type);
+      }
+    } catch (error) {
+      console.error('Error procesando mensaje:', error);
+    }
+  });
+
+  ws.on('close', () => {
+    console.log('Cliente WebSocket desconectado');
+    matchmakingService.leaveQueue(ws);
+    gameRoomService.handleDisconnect(ws);
+  });
+
+  ws.on('error', (error) => {
+    console.error('Error en WebSocket:', error);
+  });
+});
 // ==================== INICIO DEL SERVIDOR ====================
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('========================================');
-  console.log('  SERVIDOR DE CHAT PARA VIDEOJUEGO');
+  console.log('  SERVIDOR PARA VIDEOJUEGO');
   console.log('========================================');
   console.log(`  Servidor corriendo en http://localhost:${PORT}`);
   console.log(`  `);
   console.log(`  🎮 Juego: http://localhost:${PORT}`);
   console.log(`  `);
   console.log(`  API Endpoints disponibles:`);
-  console.log(`   - GET    /health`);
   console.log(`   - GET    /api/connected`);
   console.log(`   - GET    /api/users`);
   console.log(`   - POST   /api/users`);
   console.log(`   - GET    /api/users/:id`);
   console.log(`   - PUT    /api/users/:id`);
   console.log(`   - DELETE /api/users/:id`);
-  console.log(`   - GET    /api/messages`);
-  console.log(`   - POST   /api/messages`);
   console.log('========================================\n');
 });

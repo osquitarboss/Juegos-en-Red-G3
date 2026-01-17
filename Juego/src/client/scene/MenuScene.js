@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { connectionManager } from "../services/ConnectionManager.js";
+import { clientDataManager } from "../services/clientDataManager.js";
 
 export class MenuScene extends Phaser.Scene {
     constructor() {
@@ -58,6 +59,7 @@ export class MenuScene extends Phaser.Scene {
             });
 
 
+
         this.buttons = [this.startButton, this.creditsButton, this.optionsButton, this.exitButton];
         this.music = this.sound.add('music');
         this.music.play();
@@ -114,21 +116,53 @@ export class MenuScene extends Phaser.Scene {
                 window.close();
             });
         */
+////////////////////// API REST //////////////////////
         // Indicador de conexión al servidor
         this.connectionText = this.add.text(400, 550, 'Servidor: Comprobando...', {
             fontSize: '18px',
             color: '#ffff00'
         }).setOrigin(0.5);
 
-       // Listener para cambios de conexión
+        // Listener para cambios de conexión
         this.connectionListener = (data) => {
             this.updateConnectionDisplay(data);
         };
         connectionManager.addListener(this.connectionListener);
 
+        // Texto de muertes
+        // this.deathsText = this.add.text(400, 500, 'Muertes: Cargando... ', {
+        //     fontSize: '18px',
+        //     color: '#ffff00'
+        // }).setOrigin(0.5);
+
+        // clientDataManager.getClientDeaths().then(deaths => {
+        //     console.log('Received deaths:', deaths); 
+        //     if (deaths !== null && deaths !== undefined) {
+        //         this.deathsText.setText('Muertes: ' + deaths);
+        //     } else {
+        //         this.deathsText.setText('Muertes: Error');
+        //     }
+        // }).catch(error => {
+        //     console.error('Error fetching deaths:', error);
+        //     this.deathsText.setText('Muertes: Error');
+        // });
+
+/////////////////////////// WebSocket //////////////////////////
+        this.onlineBtn = this.add.text(500, 300, 'Jugar Online', {
+            fontSize: '18px',
+            color: '#ffff00'
+        }).setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => this.onlineBtn.setStyle({ backgroundColor: '#737373ff' }))
+            .on('pointerout', () => this.onlineBtn.setStyle({ backgroundColor: '#000000ff' }))
+            .on('pointerdown', () => {
+                this.scene.start('MatchMakingScene');
+            });
+
+//////////WebSocket//////////
     }
 
-    
+
 
     openMiniMenu() {
 
@@ -199,5 +233,6 @@ export class MenuScene extends Phaser.Scene {
             connectionManager.removeListener(this.connectionListener);
         }
     }
+
 
 }

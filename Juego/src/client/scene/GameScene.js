@@ -7,12 +7,14 @@ import { Platform } from "../entities/Platform.js";
 import { Lucy } from "../entities/Lucy.js";
 import { Arthur } from "../entities/Arthur.js";
 import { connectionManager } from "../services/ConnectionManager.js";
+import { clientDataManager } from "../services/clientDataManager.js";
 
 
 export class GameScene extends Phaser.Scene {
-    constructor() {
-        super('GameScene')
+    constructor(name = 'GameScene') {
+        super(name)
     }
+
 
     preload() {
         this.arthur.preload(300, 400);
@@ -79,6 +81,7 @@ export class GameScene extends Phaser.Scene {
         this.players.set('player2', this.lucy);
 
         this.inputManager.players = this.players;
+        this.commandProcessor.players = this.players;
 
         // Set up enemies
         this.enemies.forEach((enemy) => {
@@ -88,6 +91,7 @@ export class GameScene extends Phaser.Scene {
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
         this.setUpReviveCollision();
+        this.setUpLibraryCollision();
 
         this.physics.world.setBounds(0, 0, 4175, 600);
         this.camera.camera.setBounds(0, 0, 4175, 600);
@@ -158,9 +162,17 @@ export class GameScene extends Phaser.Scene {
             });
         });
 
+        
+    }
+
+    setUpLibraryCollision() {
         this.libreria = new Platform(this, 'lib', 4000, 208, 100, 150, 'lib');
         this.libreria.sprite.setDepth(2);
         this.physics.add.overlap(this.libreria.sprite, this.arthur.sprite, () => {
+            this.scene.stop();
+            this.scene.start('EndScene');
+        });
+        this.physics.add.overlap(this.libreria.sprite, this.lucy.sprite, () => {
             this.scene.stop();
             this.scene.start('EndScene');
         });
@@ -209,8 +221,11 @@ export class GameScene extends Phaser.Scene {
 
     checkPlayerStatus() {
         if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
+            clientDataManager.updateClientDeaths(clientDataManager.deaths + 1);
+            clientDataManager.updateClientData({ deaths: clientDataManager.deaths });
             this.scene.stop();
             this.scene.start('GameScene');
+
         }
     }
 
@@ -234,6 +249,7 @@ export class GameScene extends Phaser.Scene {
     ////////////////// RED //////////////
     onConnectionLost() {
         this.scene.pause();
-        this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene'});
+        this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene' });
     }
+
 }

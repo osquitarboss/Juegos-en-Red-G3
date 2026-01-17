@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Confidencial - Estudios Noir</title>
+  <style>
+    /* --- ESTÉTICA NOIR / DETECTIVE --- */
+    body {
+      background-color: #1a1a1a;
+      background-image:
+        radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      color: #dcdcdc;
+      overflow: hidden;
+    }
+
+    /* Efecto de grano de película antiguo */
+    body::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .login-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .login {
+      background: #0d0d0d;
+      border: 2px solid #555;
+      box-shadow: 10px 10px 0px #000;
+      padding: 40px;
+      width: 320px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Título estilo "Caso Clasificado" */
+    .login h1 {
+      color: #fff;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #fff;
+      padding-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Inputs de texto */
+    input[type="text"] {
+      background-color: #1a1a1a;
+      border: 1px solid #444;
+      border-left: 4px solid #fff;
+      color: #fff;
+      display: block;
+      width: 100%;
+      height: 45px;
+      margin-bottom: 20px;
+      padding: 0 15px;
+      box-sizing: border-box;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder {
+      color: #666;
+      font-style: italic;
+    }
+
+    input[type="text"]:focus {
+      background-color: #000;
+      border-color: #fff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Botón de Submit */
+    input[type="submit"] {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      width: 100%;
+      height: 45px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      border: 2px solid #fff;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #000;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    input[type="submit"]:active {
+      transform: translateY(2px);
+    }
+
+    .noir-decoration {
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .noir-icon {
+      font-size: 40px;
+      color: white;
+      filter: drop-shadow(0 0 5px white);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-wrapper">
+    <div class="login">
+      <div class="noir-decoration">
+        <h1>LA NOIR</h1>
+      </div>
+
+      <form action="#" method="POST">
+        <input type="text" placeholder="NOMBRE EN CLAVE" id="username" name="username" autocomplete="off">
+        
+        <input type="submit" value="Investigar" name="loginButton">
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

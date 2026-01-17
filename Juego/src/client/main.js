@@ -8,25 +8,31 @@ import { IntroScene } from './scene/IntroScene.js';
 import { EndScene } from './scene/EndScene.js';
 import { GameScene2 } from './scene/GameScene2.js';
 import { ConnectionLostScene } from './scene/ConnectionLostScene.js';
+import { LoginScene } from './scene/LoginScene.js';
+import { MatchMakingScene } from './scene/MatchMakingScene.js';
+import { MultiplayerScene } from './scene/MultiplayerScene.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 800, // Ancho de la ventana
+    height: 600, // Alto de la ventana
     parent: 'game-container',
 
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 1 },
+            gravity: { x: 0, y: 1 },
             debug: true,
             debugShowBody: false,
             debugShowStaticBody: false,
         }
     },
+    dom: {
+        createContainer: true
+    },
 
-
-    scene: [MenuScene, CreditsScene, OptionsScene, IntroScene, GameScene, PauseScene, EndScene, GameScene2, ConnectionLostScene],
+    // LoginScene poner como escena inicial, ahora esta quitado pq es un coñazo para hacer pruebas
+    scene: [LoginScene, MenuScene, MatchMakingScene, CreditsScene, OptionsScene, IntroScene, GameScene, MultiplayerScene, PauseScene, EndScene, GameScene2, ConnectionLostScene],
     backgroundColor: '#360246ff'
 }
 
