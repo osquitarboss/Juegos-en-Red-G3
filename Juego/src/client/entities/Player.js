@@ -1,4 +1,4 @@
-import { Animator } from "../Components/Animator";
+import { Animator } from "../components/Animator";
 import { clientDataManager } from "../services/clientDataManager";
 
 export class Player {

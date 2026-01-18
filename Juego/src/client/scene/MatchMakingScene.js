@@ -1,38 +1,42 @@
-/**
- * Lobby Scene - Waiting for multiplayer matchmaking
- */
 export class MatchMakingScene extends Phaser.Scene {
   constructor() {
     super('MatchMakingScene');
     this.ws = null;
   }
 
+  preload() {
+    this.load.image('matchMaking', 'assets/menus/pantalla-matchmaking.jpg');
+  }
+
   create() {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
-    // Title
-    this.add.text(width / 2, 100, 'Online Multiplayer', {
-      fontSize: '48px',
-      color: '#ffffffff'
-    }).setOrigin(0.5);
+    // Background image
+    this.add.image(width / 2, height / 2, 'matchMaking').setOrigin(0.5);
 
     // Status text
-    this.statusText = this.add.text(width / 2, height / 2 - 50, 'Connecting to server...', {
+    this.statusText = this.add.text(width / 2, height / 2 - 50, 'Conectando...', {
+      fontFamily: 'LinLibertine',
       fontSize: '24px',
-      color: '#ffffffff'
+      color: '#ffffffff',
+      backgroundColor: '#000000ff'
     }).setOrigin(0.5);
 
     // Player count text
     this.playerCountText = this.add.text(width / 2, height / 2 + 20, '', {
+      fontFamily: 'LinLibertine',
       fontSize: '20px',
-      color: '#ffffffff'
+      color: '#ffffffff',
+      backgroundColor: '#000000ff'
     }).setOrigin(0.5);
 
     // Cancel button
     const cancelButton = this.add.text(width / 2, height - 100, 'Cancel', {
+      fontFamily: 'LinLibertine',
       fontSize: '24px',
-      color: '#ff6666fff',
+      color: '#ff6666ff',
+      backgroundColor: '#000000ff',
       padding: { x: 20, y: 10 }
     }).setOrigin(0.5).setInteractive();
 
@@ -49,7 +53,7 @@ export class MatchMakingScene extends Phaser.Scene {
       this.scene.start('MenuScene');
     });
 
-    // Connect to WebSocket server
+  // Connect to WebSocket server
     this.connectToServer();
   }
 
@@ -61,8 +65,8 @@ export class MatchMakingScene extends Phaser.Scene {
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onopen = () => {
-        console.log('Connected to WebSocket server');
-        this.statusText.setText('Waiting for opponent...');
+        console.log('Connecting to WebSocket server');
+        this.statusText.setText('Esperando oponente...');
 
         // Join matchmaking queue
         this.ws.send(JSON.stringify({ type: 'joinQueue' }));
@@ -78,21 +82,21 @@ export class MatchMakingScene extends Phaser.Scene {
       };
 
       this.ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-        this.statusText.setText('Connection error!');
+        console.error('Error de WebSocket:', error);
+        this.statusText.setText('Error de WebSocket!');
         this.statusText.setColor('#ff0000ff');
       };
 
       this.ws.onclose = () => {
         console.log('WebSocket connection closed');
         if (this.scene.isActive('LobbyScene')) {
-          this.statusText.setText('Connection lost!');
+          this.statusText.setText('Conexión perdida!');
           this.statusText.setColor('#ff0000ff');
         }
       };
     } catch (error) {
       console.error('Error connecting to server:', error);
-      this.statusText.setText('Failed to connect!');
+      this.statusText.setText('Error al conectar!');
       this.statusText.setColor('#ff0000ff');
     }
   }
@@ -100,7 +104,7 @@ export class MatchMakingScene extends Phaser.Scene {
   handleServerMessage(data) {
     switch (data.type) {
       case 'queueStatus':
-        this.playerCountText.setText(`Players in queue: ${data.position}/2`);
+        this.playerCountText.setText(`Jugadores en cola: ${data.position}/2`);
         break;
 
       case 'gameStart':

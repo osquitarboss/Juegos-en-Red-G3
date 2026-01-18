@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
 import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
-import { Camera } from "../Components/Camera.js";
+import { Camera } from "../components/Camera.js";
 import { Platform } from "../entities/Platform.js";
 import { Lucy } from "../entities/Lucy.js";
 import { Arthur } from "../entities/Arthur.js";
@@ -162,7 +162,7 @@ export class GameScene extends Phaser.Scene {
             });
         });
 
-        
+
     }
 
     setUpLibraryCollision() {

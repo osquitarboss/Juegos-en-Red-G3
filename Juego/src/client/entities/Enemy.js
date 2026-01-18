@@ -1,4 +1,4 @@
-import { Animator } from "../Components/Animator";
+import { Animator } from "../components/Animator";
 
 export class Enemy {
     constructor(scene, id, x, y, players) {

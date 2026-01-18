@@ -18,9 +18,17 @@
     #game-container {
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     }
+    @font-face {
+    font-family: 'LinLibertine';
+    src: url('assets/fonts/LinLibertine_aBS.ttf') format('truetype');
+  }
   </style>
 </head>
 <body>
+  <div style="font-family: 'LinLibertine'; visibility: hidden; height: 0; width: 0;">
+    .
+  </div>
+
   <div id="game-container"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js"></script>
   <script src="bundle.js"></script>

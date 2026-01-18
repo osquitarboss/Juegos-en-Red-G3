@@ -10,17 +10,17 @@ export class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.audio('music', 'assets/sound/menu-theme.mp3');
-        this.load.image('background', 'assets/menuSinLetras.png');
+        this.load.image('background', 'assets/menus/menuSinLetras.png');
 
-        this.load.image('id1', 'assets/BotonTitulo.png');
-        this.load.image('id2', 'assets/BotonLocalPlay.png');
-        this.load.image('id3', 'assets/BotonCreditos.png');
-        this.load.image('id4', 'assets/BotonOpciones.png');
-        this.load.image('id5', 'assets/BotonSalir.png');
-        this.load.image('menu', 'assets/libretaNivelesConSombra.png');
-        this.load.image('n1', 'assets/BotonNivel1.png');
-        this.load.image('n2', 'assets/BotonNivel2.png');
-        this.load.image('return', 'assets/BotonVolver.png');
+        this.load.image('id1', 'assets/menus/BotonTitulo.png');
+        this.load.image('id2', 'assets/menus/BotonLocalPlay.png');
+        this.load.image('id3', 'assets/menus/BotonCreditos.png');
+        this.load.image('id4', 'assets/menus/BotonOpciones.png');
+        this.load.image('id5', 'assets/menus/BotonSalir.png');
+        this.load.image('menu', 'assets/menus/libretaNivelesConSombra.png');
+        this.load.image('n1', 'assets/menus/BotonNivel1.png');
+        this.load.image('n2', 'assets/menus/BotonNivel2.png');
+        this.load.image('return', 'assets/menus/BotonVolver.png');
     }
 
     create() {
@@ -116,7 +116,7 @@ export class MenuScene extends Phaser.Scene {
                 window.close();
             });
         */
-////////////////////// API REST //////////////////////
+        ////////////////////// API REST //////////////////////
         // Indicador de conexión al servidor
         this.connectionText = this.add.text(400, 550, 'Servidor: Comprobando...', {
             fontSize: '18px',
@@ -147,7 +147,7 @@ export class MenuScene extends Phaser.Scene {
         //     this.deathsText.setText('Muertes: Error');
         // });
 
-/////////////////////////// WebSocket //////////////////////////
+        /////////////////////////// WebSocket //////////////////////////
         this.onlineBtn = this.add.text(500, 300, 'Jugar Online', {
             fontSize: '18px',
             color: '#ffff00'
@@ -159,7 +159,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('MatchMakingScene');
             });
 
-//////////WebSocket//////////
+        //////////WebSocket//////////
     }
 
 
