@@ -60,7 +60,7 @@ export class Player {
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.allowGravity = true;
         this.sprite.body.setGravityY(this.gravity);
-        this.sprite.body.setSize(this.sprite.width - 160, this.sprite.height - 140);
+        this.sprite.body.setSize(this.sprite.width - 180, this.sprite.height - 140);
         this.sprite.body.setOffset(75, 135);
         this.sprite.setDepth(5);
         this.sprite.play(`idle-${this.id}`);

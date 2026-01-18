@@ -150,6 +150,14 @@ wss.on('connection', (ws) => {
         case 'Loaded':
           gameRoomService.handleLoaded(ws);
           break;
+        
+        case 'PlayerDisconnected':
+          gameRoomService.handleDisconnect(ws);
+          break;
+
+        case 'EnemyKilled':
+          gameRoomService.handleEnemyKilled(ws, data);
+          break;
 
         default:
           console.log('Mensaje desconocido:', data.type);

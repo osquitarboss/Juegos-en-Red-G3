@@ -158,6 +158,10 @@ export class MultiplayerScene extends GameScene {
                 this.handleRestart();
                 break;
 
+            case 'EnemyKilled':
+                this.handleEnemyKilled(data);
+                break;
+
             default:
                 console.log('Unknown message type:', data.type);
         }
@@ -207,9 +211,15 @@ export class MultiplayerScene extends GameScene {
             // Player attacks enemy
             this.physics.add.overlap(enemy.sprite, this.lucy.attackHitbox, () => {
                 if (enemy?.weakened && this.lucy.isAttacking) {
+                    const enemyId = enemy.id;
                     enemy.die();
                     enemy.isDead = true;
                     enemy = null;
+                    this.enemies.delete(enemyId);
+                    this.sendMessage({
+                        type: 'EnemyKilled',
+                        enemyId: enemyId,
+                    });
                 }
             });
         });
@@ -223,6 +233,7 @@ export class MultiplayerScene extends GameScene {
                 type: 'PlayersWin',
             });
             this.scene.stop();
+            this.ws.close();
             this.scene.start('EndScene');
         });
     }
@@ -241,6 +252,15 @@ export class MultiplayerScene extends GameScene {
         }
     }
 
+    handleEnemyKilled(data) {
+        if (this.enemies?.get(data.enemyId)) {
+            let enemy = this.enemies.get(data.enemyId);
+            enemy.die();
+            enemy.isDead = true;
+            enemy = null;
+            this.enemies.delete(data.enemyId);
+        }
+    }
     handleDisconnection() {
         this.gameEnded = true;
         this.physics.pause();
@@ -306,8 +326,8 @@ export class MultiplayerScene extends GameScene {
                     this.sendMessage({
                         type: 'PlayerDisconnected',
                     });
-                    this.ws.close();
                 }
+                this.ws.close();
                 this.scene.start('MenuScene');
             });
     }
@@ -320,6 +340,11 @@ export class MultiplayerScene extends GameScene {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify(data));
         }
+    }
+
+    onConnectionLost() {
+        this.scene.pause();
+        this.scene.launch('ConnectionLostScene', { previousScene: 'MultiplayerScene' });
     }
 
     shutdown() {

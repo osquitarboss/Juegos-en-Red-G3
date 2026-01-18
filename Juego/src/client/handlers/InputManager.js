@@ -77,11 +77,7 @@ export class InputManager {
         });
     }
 
-    setUpRemoteInputs(playerRole) {
-
-        this.input.keyboard.on('keydown-ESC', () => {
-            this.pause();
-        });
+    setUpRemoteInputs() {
 
 
         const InputConfig = [
