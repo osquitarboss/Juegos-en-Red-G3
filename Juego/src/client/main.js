@@ -23,8 +23,8 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { x: 0, y: 1 },
-            debug: true,
-            debugShowBody: true,
+            debug: false,
+            debugShowBody: false,
             debugShowStaticBody: false,
         }
     },

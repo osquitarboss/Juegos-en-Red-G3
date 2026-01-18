@@ -52,7 +52,7 @@ export class MultiplayerScene extends GameScene {
 
         this.arthur.light.update();
 
-        if (this.playerRole === 'player') {  // Jugador 1 actualiza enemigos y reenvia movimientos a jugador 2
+        if (this.playerRole === 'player1') {  // Jugador 1 actualiza enemigos y reenvia movimientos a jugador 2
 
             this.enemies.forEach((enemy) => {
                 if (!enemy || enemy.isDead) {

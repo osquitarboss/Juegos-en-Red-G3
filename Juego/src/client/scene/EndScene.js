@@ -6,10 +6,10 @@ export class EndScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('p1', 'assets/p1p2foto.png');
-        this.load.image('p2', 'assets/p1p2Partido.png');
-        this.load.image('p3', 'assets/p1p2yfantasma.png');
-        this.load.image('p4', 'assets/p1p2eSCAPANDO.png');
+        this.load.image('img1', 'assets/p1p2foto.png');
+        this.load.image('img2', 'assets/p1p2Partido.png');
+        this.load.image('img3', 'assets/p1p2yfantasma.png');
+        this.load.image('img4', 'assets/p1p2eSCAPANDO.png');
     }
 
     create() {
@@ -22,10 +22,10 @@ export class EndScene extends Phaser.Scene {
         this.textIndex = 0;
         this.inProgress = false;
 
-        this.endImage1 = this.add.image(400, 200, 'p1');
-        this.endImage2 = this.add.image(400, 200, 'p2');
-        this.endImage3 = this.add.image(400, 200, 'p3');
-        this.endImage4 = this.add.image(400, 200, 'p4');
+        this.endImage1 = this.add.image(400, 200, 'img1');
+        this.endImage2 = this.add.image(400, 200, 'img2');
+        this.endImage3 = this.add.image(400, 200, 'img3');
+        this.endImage4 = this.add.image(400, 200, 'img4');
         this.endImages = [this.endImage2, this.endImage3, this.endImage4];
         this.endImages.forEach(image => image.setVisible(false));
 
