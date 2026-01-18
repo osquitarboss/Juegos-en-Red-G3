@@ -170,11 +170,11 @@ export class GameScene extends Phaser.Scene {
         this.libreria.sprite.setDepth(2);
         this.physics.add.overlap(this.libreria.sprite, this.arthur.sprite, () => {
             this.scene.stop();
-            this.scene.start('EndScene');
+            this.scene.start('ScoreBoardScene');
         });
         this.physics.add.overlap(this.libreria.sprite, this.lucy.sprite, () => {
             this.scene.stop();
-            this.scene.start('EndScene');
+            this.scene.start('ScoreBoardScene');
         });
     }
 

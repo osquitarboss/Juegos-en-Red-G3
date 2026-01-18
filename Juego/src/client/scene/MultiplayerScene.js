@@ -1,5 +1,6 @@
 import { GameScene } from "./GameScene.js";
 import { Platform } from "../entities/Platform.js";
+import { clientDataManager } from "../services/clientDataManager.js";
 
 export class MultiplayerScene extends GameScene {
     constructor() {
@@ -18,9 +19,8 @@ export class MultiplayerScene extends GameScene {
         this.roomId = data.roomId;
         this.localPlayer = null;
         this.remotePlayer = null;
+        this.clientDataManager = clientDataManager;
         this.setupWebSocketListeners();
-
-
     }
 
     create() {
@@ -31,7 +31,9 @@ export class MultiplayerScene extends GameScene {
         this.inputManager.setWebSocket(this.ws);
         this.inputManager.setPlayerRole(this.playerRole);
         this.inputManager.setUpInputs();
-
+        this.game.events.on('RequestScoreBoard', () => {
+            this.sendMessage({ type: 'RequestScoreBoard' });
+        });
 
         this.sendMessage({
             type: 'Loaded',
@@ -137,13 +139,31 @@ export class MultiplayerScene extends GameScene {
                 this.loaded = true;
                 break;
 
+            case 'PlayerDied':
+                this.players[data.playerId].deaths++;
+                break;
+
             case 'GameOver':
                 this.handleGameOver();
                 break;
 
-            case 'PlayersWin':
-                this.handlePlayersWin();
+            case 'PlayerDied':
+                this.players[data.playerId].deaths++;
                 break;
+
+            case 'PlayersWin':
+                this.scene.stop();
+                this.scene.start('EndScene');
+                break;
+
+            /*case 'RequestScoreBoard':
+                this.sendScoreBoard(); 
+                break;*/
+
+            case 'ScoreBoard':
+                this.scene.stop();
+                this.scene.start('ScoreBoardScene', { scoreboard: data.data });
+                break;  
 
             case 'Restart':
                 this.handleRestart();
@@ -179,7 +199,7 @@ export class MultiplayerScene extends GameScene {
                 }
             });
 
-            // Repote player hit
+            // Remote player hit
             this.physics.add.overlap(enemy.sprite, this.remotePlayer.sprite);
 
             // Player lights enemy
@@ -223,6 +243,22 @@ export class MultiplayerScene extends GameScene {
     }
 
     checkPlayerStatus() { // This will be broadcasted to both players 
+        // detectar muerte individual
+    this.players.forEach(async (player, id) => {
+        if (player.health <= 0 && !player.isDead) {
+            player.isDead = true;
+
+            // actualizar contador local
+            let currentDeaths = await this.clientDataManager.getClientDeaths();
+            await this.clientDataManager.updateClientDeaths(currentDeaths + 1);
+
+            // avisar al servidor websocket
+            this.sendMessage({
+                type: 'PlayerDied',
+                playerId: id
+            });
+        }
+    });
         if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
             this.sendMessage({
                 type: 'GameOver',
@@ -256,10 +292,36 @@ export class MultiplayerScene extends GameScene {
         this.createRetryButton();
     }
 
+    /*sendScoreBoard() {
+        const scoreboard = Object.values(this.players).map(p => ({
+            name: p.name,
+            deaths: p.deaths
+        }));
+
+        const msg = JSON.stringify({
+            type: 'ScoreBoard',
+            data: scoreboard
+        });
+
+        Object.values(this.players).forEach(p => {
+            p.socket.send(msg);
+        });
+    }
+
     handlePlayersWin() {
         this.scene.stop();
-        this.scene.start('EndScene');
-    }
+        const scoreboard = Object.entries(this.players).map(([id,p])=>({
+        playerId: id,
+        name: p.name,
+        deaths: p.deaths
+    }));
+
+    this.ws.send({
+        type: 'Scoreboard',
+        data: scoreboard
+    });
+
+    }*/
 
     createRetryButton() {
         const retryBtn = this.add.text(400, 350, 'Retry', {

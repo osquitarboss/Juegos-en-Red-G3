@@ -10,8 +10,6 @@ export class EndScene extends Phaser.Scene {
         this.load.image('p2', 'assets/p1p2Partido.png');
         this.load.image('p3', 'assets/p1p2yfantasma.png');
         this.load.image('p4', 'assets/p1p2eSCAPANDO.png');
-
-
     }
 
     create() {
@@ -40,7 +38,11 @@ export class EndScene extends Phaser.Scene {
             .on('pointerover', () => nextBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => nextBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                if (!this.inProgress) { this.nextText(); }
+                if (!this.inProgress) { 
+                    this.nextText(); 
+                }else{
+                    this.game.events.emit('RequestScoreBoard');
+                }
                 switch (this.textIndex) {
                     case 1:
                         this.endImage1.setVisible(false);
@@ -61,7 +63,6 @@ export class EndScene extends Phaser.Scene {
                         this.endImage4.setVisible(false);
                         break;
                 }
-
             });
         this.texto = this.add.text(400, 460, '', {
             fontSize: '24px',
@@ -80,7 +81,7 @@ export class EndScene extends Phaser.Scene {
             .on('pointerover', () => skipBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => skipBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                this.scene.start('GameScene2');
+                this.game.events.emit('RequestScoreBoard');
             });
 
         this.showText();
@@ -91,7 +92,7 @@ export class EndScene extends Phaser.Scene {
         if (this.textIndex < this.introText.length) {
             this.textIn(this.introText[this.textIndex]);
         } else {
-            this.scene.start('GameScene2');
+            this.scene.start('ScoreBoardScene');
         }
     }
 
