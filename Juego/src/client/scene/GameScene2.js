@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { InputManager } from "../handlers/InputManager.js";
 import { Enemy } from "../entities/Enemy.js";
 import { CommandProcessor } from "../command-pattern/CommandProcessor.js";
-import { Camera } from "../Components/Camera.js";
+import { Camera } from "../components/Camera.js";
 import { Platform } from "../entities/Platform.js";
 import { Lucy } from "../entities/Lucy.js";
 import { Arthur } from "../entities/Arthur.js";
@@ -40,20 +40,8 @@ export class GameScene2 extends Phaser.Scene {
         this.arthur = new Arthur(this, 'player1', 600, 100, 500, 'spritesheet-arthur');
         this.lucy = new Lucy(this, 'player2', 450, 300, 500, 'spritesheet-lucy');
 
-        /*this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.players);
-        this.enemy2 = new Enemy(this, 'enemy2', 1200, 100, this.players);
-        this.enemy3 = new Enemy(this, 'enemy3', 2000, 100, this.players);
-        this.enemy4 = new Enemy(this, 'enemy4', 2800, 100, this.players);
-        this.enemy5 = new Enemy(this, 'enemy5', 3500, 100, this.players);*/
-
 
         this.camera = new Camera(this, this.players);
-
-        /*this.enemies.set(this.enemy1.id, this.enemy1);
-        this.enemies.set(this.enemy2.id, this.enemy2);
-        this.enemies.set(this.enemy3.id, this.enemy3);
-        this.enemies.set(this.enemy4.id, this.enemy4);
-        this.enemies.set(this.enemy5.id, this.enemy5);*/
     }
 
     create() {

@@ -29,7 +29,7 @@ export class MultiplayerScene extends GameScene {
 
         // Configurar InputManager para multiplayer
         this.inputManager.setWebSocket(this.ws);
-        this.inputManager.setPlayerRole(this.playerRole);
+        this.inputManager.setLocalPlayerRole(this.playerRole);
         this.inputManager.setUpInputs();
         this.game.events.on('RequestScoreBoard', () => {
             this.sendMessage({ type: 'RequestScoreBoard' });

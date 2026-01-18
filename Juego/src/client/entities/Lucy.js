@@ -34,6 +34,11 @@ export class Lucy extends Player {
         // En el create de la escena configurar los OVERLAPS con los enemigos
     }
 
+    getHit(damage) {
+        super.getHit(damage);
+        this.isAttacking = false;
+    }
+
     updateHitbox() {
         const offsetX = this.sprite.flipX ? -20 : 20;
         this.attackHitbox.setPosition(
@@ -43,7 +48,7 @@ export class Lucy extends Player {
     }
 
     attack() {
-        if (this.isAttacking ) return; // evita spameo
+        if (this.isAttacking) return; // evita spameo
 
         this.updateHitbox();
         this.isAttacking = true;

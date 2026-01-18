@@ -6,7 +6,7 @@ import { PlayerAttackCommand } from '../command-pattern/PlayerAttackCommand';
 
 export class InputManager {
     // Clase que maneja los inputs del jugador y los envia al command processor 
-    constructor(scene, sceneManager, input, commandProcessor, playerRole = null, ws = null) {
+    constructor(scene, sceneManager, input, commandProcessor, localPlayerRole = null, ws = null) {
         this.commandProcessor = new CommandProcessor();
         this.scene = scene;
         this.sceneManager = sceneManager;
@@ -17,17 +17,17 @@ export class InputManager {
         this.isPaused = false;
 
         /////////// INPUT MANAGER CON WEBSOCKET ///////////
-        this.playerRole = playerRole;
+        this.localPlayerRole = localPlayerRole;
         this.ws = ws;
         this.setUpInputs();
     }
 
     setUpInputs() {
         this.players = this.scene.players;
-        if (!this.playerRole) {
+        if (this.localPlayerRole === null) {
             this.setUpLocalInputs();
         } else {
-            this.setUpRemoteInputs(this.playerRole);
+            this.setUpRemoteInputs(this.localPlayerRole);
         }
     }
 
@@ -35,8 +35,8 @@ export class InputManager {
         this.ws = ws;
     }
 
-    setPlayerRole(role) {
-        this.playerRole = role;
+    setLocalPlayerRole(role) {
+        this.localPlayerRole = role;
     }
 
     setUpLocalInputs() {
@@ -86,7 +86,7 @@ export class InputManager {
 
         const InputConfig = [
             {
-                playerId: playerRole,
+                playerId: this.localPlayerRole,
                 leftKey: 'A',
                 rightKey: 'D',
                 upKey: 'W',
@@ -117,8 +117,8 @@ export class InputManager {
     update() {
 
         this.inputsMapping.forEach(mapping => {
-            let player = this.players.get(this.playerRole);
-            player.id = this.playerRole;
+            let player = this.players.get(mapping.playerId);
+            player.id = mapping.playerId;
 
             let localCommand = new Command();
 
