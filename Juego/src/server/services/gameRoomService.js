@@ -45,7 +45,6 @@ export function createGameRoomService() {
   const handlePlayerAttack = (ws, data) => relayToOpponent(ws, data);
   const handlePlayerHit = (ws, data) => relayToOpponent(ws, data);
   const handleEnemyMove = (ws, data) => relayToOpponent(ws, data);
-  /* const handleLoaded = (ws, data) => relayToOpponent(ws, data); */ // Replaced by logic below
 
   function handleLoaded(ws) {
     const roomId = ws.roomId;

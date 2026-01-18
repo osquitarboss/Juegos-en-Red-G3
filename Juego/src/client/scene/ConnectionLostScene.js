@@ -23,6 +23,7 @@ export class ConnectionLostScene extends Phaser.Scene {
         // Título
         this.add.text(400, 200, 'CONEXIÓN PERDIDA', {
             fontSize: '48px',
+            fontFamily: 'LinLibertine',
             color: '#ff0000',
             fontStyle: 'bold'
         }).setOrigin(0.5);
@@ -30,6 +31,7 @@ export class ConnectionLostScene extends Phaser.Scene {
         // Mensaje
         this.statusText = this.add.text(400, 300, 'Intentando reconectar...', {
             fontSize: '24px',
+            fontFamily: 'LinLibertine',
             color: '#ffff00'
         }).setOrigin(0.5);
 
@@ -37,6 +39,7 @@ export class ConnectionLostScene extends Phaser.Scene {
         this.attemptCount = 0;
         this.attemptText = this.add.text(400, 350, 'Intentos: 0', {
             fontSize: '18px',
+            fontFamily: 'LinLibertine',
             color: '#ffffff'
         }).setOrigin(0.5);
 

@@ -10,6 +10,7 @@ export class MultiplayerScene extends GameScene {
 
     preload() {
         super.preload();
+        this.load.image('gameover', 'assets/menus/GameOver.png');
     }
 
     init(data) {
@@ -139,16 +140,8 @@ export class MultiplayerScene extends GameScene {
                 this.loaded = true;
                 break;
 
-            case 'PlayerDied':
-                this.players[data.playerId].deaths++;
-                break;
-
             case 'GameOver':
                 this.handleGameOver();
-                break;
-
-            case 'PlayerDied':
-                this.players[data.playerId].deaths++;
                 break;
 
             case 'PlayersWin':
@@ -159,7 +152,7 @@ export class MultiplayerScene extends GameScene {
             case 'ScoreBoard':
                 this.scene.stop();
                 this.scene.start('ScoreBoardScene', { scoreboard: data.data });
-                break;  
+                break;
 
             case 'Restart':
                 this.handleRestart();
@@ -185,13 +178,14 @@ export class MultiplayerScene extends GameScene {
             this.physics.add.overlap(enemy.sprite, this.localPlayer.sprite, () => {
                 if (enemy && this.localPlayer.health > 0) {
                     let damage = 50;
-                    this.localPlayer.getHit(damage);
-                    this.checkPlayerStatus();
                     this.sendMessage({
                         type: 'PlayerHit',
                         damage: damage,
                         playerId: this.playerRole,
                     });
+                    console.log(`Sending message of player hit: ${this.playerRole}`)
+                    this.localPlayer.getHit(damage);
+                    this.checkPlayerStatus();
                 }
             });
 
@@ -238,23 +232,8 @@ export class MultiplayerScene extends GameScene {
         this.checkPlayerStatus();
     }
 
-    checkPlayerStatus() { // This will be broadcasted to both players 
+    checkPlayerStatus() { // Esto hara broadcast de la muerte de un jugador
         // detectar muerte individual
-    this.players.forEach(async (player, id) => {
-        if (player.health <= 0 && !player.isDead) {
-            player.isDead = true;
-
-            // actualizar contador local
-            let currentDeaths = await this.clientDataManager.getClientDeaths();
-            await this.clientDataManager.updateClientDeaths(currentDeaths + 1);
-
-            // avisar al servidor websocket
-            this.sendMessage({
-                type: 'PlayerDied',
-                playerId: id
-            });
-        }
-    });
         if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
             this.sendMessage({
                 type: 'GameOver',
@@ -266,9 +245,10 @@ export class MultiplayerScene extends GameScene {
         this.gameEnded = true;
         this.physics.pause();
 
-        this.add.text(400, 250, 'Partner Disconnected', {
+        this.add.text(400, 250, 'Compañero desconectado', {
             fontSize: '48px',
-            color: '#ff0000'
+            color: '#ff0000',
+            fontFamily: 'LinLibertine',
         }).setOrigin(0.5).setScrollFactor(0);
 
         this.createMenuButton();
@@ -279,51 +259,21 @@ export class MultiplayerScene extends GameScene {
         this.gameEnded = true;
         this.physics.pause();
 
-        this.add.text(400, 250, 'Game Over', {
-            fontSize: '48px',
-            color: '#ff0000'
-        }).setOrigin(0.5).setScrollFactor(0);
+        this.add.image(400, 300, 'gameover').setOrigin(0.5).setScrollFactor(0).setDepth(100);
 
         this.createMenuButton();
         this.createRetryButton();
     }
 
-    /*sendScoreBoard() {
-        const scoreboard = Object.values(this.players).map(p => ({
-            name: p.name,
-            deaths: p.deaths
-        }));
-
-        const msg = JSON.stringify({
-            type: 'ScoreBoard',
-            data: scoreboard
-        });
-
-        Object.values(this.players).forEach(p => {
-            p.socket.send(msg);
-        });
-    }
-
-    handlePlayersWin() {
-        this.scene.stop();
-        const scoreboard = Object.entries(this.players).map(([id,p])=>({
-        playerId: id,
-        name: p.name,
-        deaths: p.deaths
-    }));
-
-    this.ws.send({
-        type: 'Scoreboard',
-        data: scoreboard
-    });
-
-    }*/
 
     createRetryButton() {
-        const retryBtn = this.add.text(400, 350, 'Retry', {
+        const retryBtn = this.add.text(400, 350, 'Volver a intentar', {
             fontSize: '32px',
             color: '#ffffff',
+            backgroundColor: '#000000',
+            fontFamily: 'LinLibertine',
         }).setOrigin(0.5)
+            .setDepth(101)
             .setScrollFactor(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => retryBtn.setColor('#cccccc'))
@@ -340,10 +290,13 @@ export class MultiplayerScene extends GameScene {
     }
 
     createMenuButton() {
-        const menuBtn = this.add.text(400, 400, 'Return to Main Menu', {
+        const menuBtn = this.add.text(400, 400, 'Volver al menu', {
             fontSize: '32px',
             color: '#ffffff',
+            backgroundColor: '#000000',
+            fontFamily: 'LinLibertine',
         }).setOrigin(0.5)
+            .setDepth(101)
             .setScrollFactor(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => menuBtn.setColor('#cccccc'))

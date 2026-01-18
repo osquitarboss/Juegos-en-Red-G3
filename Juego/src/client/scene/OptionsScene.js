@@ -16,6 +16,7 @@ export class OptionsScene extends Phaser.Scene {
         // Title
         this.add.text(400, 100, 'Opciones', {
             fontSize: '48px',
+            fontFamily: 'LinLibertine',
             color: '#ffffffff',
             fontStyle: 'bold'
         }).setOrigin(0.5);
@@ -24,6 +25,7 @@ export class OptionsScene extends Phaser.Scene {
         const volumeText = this.sound.mute ? 'Activar Sonido' : 'Desactivar Sonido';
         const volumeBtn = this.add.text(400, 300, volumeText, {
             fontSize: '32px',
+            fontFamily: 'LinLibertine',
             color: '#ffffffff',
             backgroundColor: '#000000ff',
             padding: { x: 20, y: 10 }
@@ -40,6 +42,7 @@ export class OptionsScene extends Phaser.Scene {
         //boton de volver
         const backBtn = this.add.text(400, 500, 'Volver', {
             fontSize: '32px',
+            fontFamily: 'LinLibertine',
             color: '#ffffffff',
             backgroundColor: '#000000ff',
             padding: { x: 20, y: 10 }

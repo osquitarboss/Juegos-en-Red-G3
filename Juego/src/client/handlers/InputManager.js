@@ -151,7 +151,6 @@ export class InputManager {
 
     sendMessage(message) {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-            console.log('Sending message:', message);
             this.ws.send(JSON.stringify(message));
         } else {
             console.warn('WebSocket is not open. Message not sent:', message);
@@ -167,7 +166,7 @@ export class InputManager {
 
     updateRemotePlayerAttack(data) {
         if (data.type === 'PlayerAttackCommand') {
-            console.log('MultiplayerScene received in input manager msg:', data);
+            //console.log('MultiplayerScene received in input manager msg:', data);
             this.commandProcessor.receiveCommand(data);
         }
     }

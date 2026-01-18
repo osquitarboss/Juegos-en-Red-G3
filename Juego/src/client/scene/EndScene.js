@@ -18,7 +18,7 @@ export class EndScene extends Phaser.Scene {
             "De pronto, todo encaja en la mente de Arthur.\nSu obsesión sin sentido con el caso\n y la conexión con Lucy...\nella es...",
             "Sin embargo, no hay tiempo para reflexiones.",
             "Deben huir.",
-            ];
+        ];
         this.textIndex = 0;
         this.inProgress = false;
 
@@ -38,9 +38,9 @@ export class EndScene extends Phaser.Scene {
             .on('pointerover', () => nextBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => nextBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                if (!this.inProgress) { 
-                    this.nextText(); 
-                }else{
+                if (!this.inProgress) {
+                    this.nextText();
+                } else {
                     this.game.events.emit('RequestScoreBoard');
                 }
                 switch (this.textIndex) {

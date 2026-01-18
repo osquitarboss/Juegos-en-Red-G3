@@ -15,12 +15,14 @@ export class PauseScene extends Phaser.Scene {
 
         this.add.text(400, 100, 'Menú de pausa', {
             fontSize: '48px',
+            fontFamily: 'LinLibertine',
             color: '#3e2606ff',
             backgroundColor: '#ffffff'
         }).setOrigin(0.5);
 
         const playBtn = this.add.text(400, 250, 'Continuar', {
             fontSize: '24px',
+            fontFamily: 'LinLibertine',
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
         }).setOrigin(0.5)
@@ -35,19 +37,21 @@ export class PauseScene extends Phaser.Scene {
         const volumeText = this.sound.mute ? 'Activar Sonido' : 'Desactivar Sonido';
         const volumeBtn = this.add.text(400, 400, volumeText, {
             fontSize: '24px',
+            fontFamily: 'LinLibertine',
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
         }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerover', () => volumeBtn.setStyle({ fill: '#00000037' }))
-        .on('pointerout', () => volumeBtn.setStyle({ fill: '#000000' }))
-        .on('pointerdown', () => {
-            this.sound.mute = !this.sound.mute;
-            volumeBtn.setText(this.sound.mute ? 'Activar Sonido' : 'Desactivar Sonido');
-        });
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => volumeBtn.setStyle({ fill: '#00000037' }))
+            .on('pointerout', () => volumeBtn.setStyle({ fill: '#000000' }))
+            .on('pointerdown', () => {
+                this.sound.mute = !this.sound.mute;
+                volumeBtn.setText(this.sound.mute ? 'Activar Sonido' : 'Desactivar Sonido');
+            });
 
         const exitBtn = this.add.text(400, 550, 'Volver al Menu', {
             fontSize: '24px',
+            fontFamily: 'LinLibertine',
             color: '#3e2606ff',
             backgroundColor: '#ffffff',
         }).setOrigin(0.5)

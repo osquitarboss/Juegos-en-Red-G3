@@ -11,7 +11,7 @@ export class LoginScene extends Phaser.Scene {
     }
 
     create() {
-        const text = this.add.text(400, 52, 'Login', { fontSize: '32px', fill: '#fff' });
+        const text = this.add.text(400, 52, 'Login', { fontSize: '32px', fontFamily: 'LinLibertine', color: '#ffffffff' }).setOrigin(0.5);
 
         const element = this.add.dom(400, 300).createFromCache('login');
 

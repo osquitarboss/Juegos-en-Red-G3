@@ -6,7 +6,8 @@ export class IntroScene extends Phaser.Scene {
         super('IntroScene')
     }
 
-    init() {
+    init(data) {
+        this.sceneToPlay = data.sceneToPlay;
         this.arthur1 = new Puppet(this, "ca1", 130, 120, "spritesheet-arthur-reescalado-mitad", true);
         this.arthur2 = new Puppet(this, "ca2", 340, 120, "spritesheet-arthur-reescalado-mitad", true);
         this.arthur3 = new Puppet(this, "ca3", 500, 120, "spritesheet-arthur-reescalado-mitad", true);
@@ -172,7 +173,7 @@ export class IntroScene extends Phaser.Scene {
             .on('pointerover', () => skipBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => skipBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                this.scene.start('GameScene');
+                this.scene.start(this.sceneToPlay);
             });
 
         this.showText();
@@ -182,7 +183,7 @@ export class IntroScene extends Phaser.Scene {
         if (this.textIndex < this.introText.length) {
             this.textIn(this.introText[this.textIndex]);
         } else {
-            this.scene.start('GameScene');
+            this.scene.start(this.sceneToPlay);
         }
     }
 

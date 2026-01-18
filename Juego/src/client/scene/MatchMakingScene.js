@@ -53,7 +53,7 @@ export class MatchMakingScene extends Phaser.Scene {
       this.scene.start('MenuScene');
     });
 
-  // Connect to WebSocket server
+    // Connect to WebSocket server
     this.connectToServer();
   }
 

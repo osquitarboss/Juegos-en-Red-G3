@@ -6,15 +6,16 @@ export class ScoreBoardScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('p1', 'assets/p1p2eSCAPANDO.png');
+        this.load.image('p1p2eSCAPANDO', 'assets/p1p2eSCAPANDO.png');
     }
 
-    create(data) {
+    create() {
 
-        this.add.image(400, 200, 'p1');
+        this.add.image(400, 300, 'p1p2eSCAPANDO').setOrigin(0.5);
         this.add.text(400, 100, 'SCOREBOARD', {
             fontSize: '48px',
-            color: '#ffff00',
+            color: '#ffffffff',
+            backgroundColor: '#000000',
             fontFamily: 'LinLibertine'
         }).setOrigin(0.5);
 
@@ -23,19 +24,21 @@ export class ScoreBoardScene extends Phaser.Scene {
         //Texto de muertes
         this.deathsText = this.add.text(400, y, 'Muertes: Cargando... ', {
             fontSize: '18px',
-            color: '#ffff00'
+            fontFamily: 'LinLibertine',
+            color: '#ffffffff',
+            backgroundColor: '#000000',
         }).setOrigin(0.5);
 
         clientDataManager.getClientDeaths().then(deaths => {
             console.log('Received deaths:', deaths);
             if (deaths !== null && deaths !== undefined) {
-                this.deathsText.setText('Muertes: ' + deaths);
+                this.deathsText.setText('Muertes Totales: ' + deaths);
             } else {
-                this.deathsText.setText('Muertes: Error');
+                this.deathsText.setText('Muertes Totales: Error');
             }
         }).catch(error => {
             console.error('Error fetching deaths:', error);
-            this.deathsText.setText('Muertes: Error');
+            this.deathsText.setText('Muertes Totales: Error');
         });
     }
 
