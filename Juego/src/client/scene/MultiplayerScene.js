@@ -156,10 +156,6 @@ export class MultiplayerScene extends GameScene {
                 this.scene.start('EndScene');
                 break;
 
-            /*case 'RequestScoreBoard':
-                this.sendScoreBoard(); 
-                break;*/
-
             case 'ScoreBoard':
                 this.scene.stop();
                 this.scene.start('ScoreBoardScene', { scoreboard: data.data });

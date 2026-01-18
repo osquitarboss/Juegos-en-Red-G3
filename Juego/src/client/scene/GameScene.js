@@ -170,11 +170,11 @@ export class GameScene extends Phaser.Scene {
         this.libreria.sprite.setDepth(2);
         this.physics.add.overlap(this.libreria.sprite, this.arthur.sprite, () => {
             this.scene.stop();
-            this.scene.start('ScoreBoardScene');
+            this.scene.start('EndScene');
         });
         this.physics.add.overlap(this.libreria.sprite, this.lucy.sprite, () => {
             this.scene.stop();
-            this.scene.start('ScoreBoardScene');
+            this.scene.start('EndScene');
         });
     }
 
@@ -222,10 +222,8 @@ export class GameScene extends Phaser.Scene {
     checkPlayerStatus() {
         if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
             clientDataManager.updateClientDeaths(clientDataManager.deaths + 1);
-            clientDataManager.updateClientData({ deaths: clientDataManager.deaths });
             this.scene.stop();
             this.scene.start('GameScene');
-
         }
     }
 

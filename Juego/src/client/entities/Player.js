@@ -122,6 +122,9 @@ export class Player {
             this.invulnerable = false;
             this.isDead = true;
             this.isAttacking = false;
+            this.numDeaths++;
+            this.updateDeaths();
+            clientDataManager.updateClientDeaths(this.numDeaths);
             return;
         }
 

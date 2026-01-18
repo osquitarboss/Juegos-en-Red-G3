@@ -81,7 +81,7 @@ export class EndScene extends Phaser.Scene {
             .on('pointerover', () => skipBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => skipBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                this.game.events.emit('RequestScoreBoard');
+                this.scene.start('ScoreBoardScene');
             });
 
         this.showText();
