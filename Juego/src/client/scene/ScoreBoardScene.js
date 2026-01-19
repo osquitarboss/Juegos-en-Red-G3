@@ -11,7 +11,7 @@ export class ScoreBoardScene extends Phaser.Scene {
 
     create() {
 
-        this.add.image(400, 300, 'p1p2eSCAPANDO').setOrigin(0.5);
+        this.add.image(400, 200, 'p1p2eSCAPANDO').setOrigin(0.5);
         this.add.text(400, 100, 'SCOREBOARD', {
             fontSize: '48px',
             color: '#ffffffff',
