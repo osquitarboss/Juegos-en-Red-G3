@@ -190,7 +190,7 @@ export class IntroScene extends Phaser.Scene {
     textIn(text) {
         this.inProgress = true;
         let index = 0;
-        const speed = 75; // Velocidad de escritura en ms
+        const speed = 35; // Velocidad de escritura en ms
 
         const writeText = () => {
             if (index < text.length) {

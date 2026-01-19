@@ -11,7 +11,7 @@ export class LoginScene extends Phaser.Scene {
     }
 
     create() {
-        const text = this.add.text(400, 52, 'Login', { fontSize: '32px', fontFamily: 'LinLibertine', color: '#ffffffff' }).setOrigin(0.5);
+        const text = this.add.text(400, 52, 'Iniciar sesión', { fontSize: '32px', fontFamily: 'LinLibertine', color: '#ffffffff' }).setOrigin(0.5);
 
         const element = this.add.dom(400, 300).createFromCache('login');
 
@@ -38,10 +38,10 @@ export class LoginScene extends Phaser.Scene {
                     if (loggedIn === 201) {
                         //  Turn off the click events
                         element.removeListener('click');
-                        text.setText('Login successful');
+                        text.setText('Login exitoso');
                         this.scene.start('MenuScene');
                     } else {
-                        text.setText('Login failed');
+                        text.setText('Login fallido');
                     }
                 }
             }
