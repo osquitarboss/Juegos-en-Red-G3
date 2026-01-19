@@ -61,7 +61,9 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 
 - __Escenario:__ El juego estará ambientado en una mansión de los años 50 en la que habrá varias plataformas y enemigos..
 
-- __Gameplay Loop:__ Por todo esto, el gameplay loop sería entrar en la casa y exporar los alrederdores en un scroll lateral que progresa de izquierda a derecha. Mientras tanto, irán apareciendo enemigos por el mapa que atacarán a los jugadores. Además al acabar el nivel se harán descubrimientos que irán alimentando la historia y la relación de los personajes. 
+- __Gameplay Loop:__ Por todo esto, el gameplay loop sería entrar en la casa y exporar los alrederdores en un scroll lateral que progresa de izquierda a derecha. Mientras tanto, irán apareciendo enemigos por el mapa que atacarán a los jugadores. Además al acabar el nivel se harán descubrimientos que irán alimentando la historia y la relación de los personajes.
+  
+- __Juego Online:__ Utilizando Web Sockets se ha implementado un modo de juego en línea.
 
 ### Diseño
 - __Estilo Visual:__ El juego tendrá un estilo visual 2D cartoon inspirado en los primeros dibujos animados, con una estetica tétrica siguiendo la temática del juego. 
@@ -84,15 +86,23 @@ Tras guiar a su hijo por la mansión y a su vez, por los sucesos de la noche en 
 <img src="Imagenes/logoJuegosEnRedFondoBlanco.png" width = "300" height = "300">
 <img src="Imagenes/menuJR.png" width = "400" height = "300">
 
+### Menú de inicio:
+![Menu de Inicio](Juego/public/assets/menus/menuSinLetras.png)
+### Créditos:
+![Creditos](Juego/public/assets/menus/MenuCreditos.png)
 ### Introducción:
 #### Escena 1:
-![Escena 1](Imagenes/p1entrando.png)
+![Escena1](Juego/public/assets/mansion.png)
 #### Escena 2:
-![Escena 2](Imagenes/p1yp2.png)
-#### Escenario:
+![Escena 2](Imagenes/p1entrando.png)
+#### Escena 3:
+![Escena 3](Juego/public/assets/lucyPeeking.png)
+#### Escena 4:
+![Escena 4](Imagenes/p1yp2.png)
+### Escenario:
 <img src="Imagenes/FondoHorizontal.png" width = "1000" height = "562">
 
-#### Diseño de personajes: Detective y fantasma
+### Diseño de personajes: Arthur y Lucy
 ![Diseño Personajes](Imagenes/Detective_y_Fantasma.jpg)
 ### Sprites:
 #### Sprites del Detective: 
@@ -115,10 +125,13 @@ Diagrama de flujo sobre las diferentes pantallas y menús que dispondrá el jueg
     [*] --> MenuInicial
     MenuInicial --> Ajustes
     MenuInicial --> Créditos
-    MenuInicial --> SeleccionNivel
-    SeleccionNivel --> Nivel
+    MenuInicial --> JuegoLocal
+    MenuInicial --> JuegoEnLinea
+    JuegoLocal --> Nivel
+    JuegoEnLinea --> Nivel
     Nivel --> MenuPausa
-    Nivel --> Nivel: GameOver
+    Nivel --> PantallaDerrota: GameOver
+    PantallaDerrota --> MenuInicial
     Nivel --> PantallaVictoria: CondicionVictoria
     PantallaVictoria --> MenuInicial
     MenuPausa --> Nivel
