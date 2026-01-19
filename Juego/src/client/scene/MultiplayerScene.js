@@ -253,7 +253,7 @@ export class MultiplayerScene extends GameScene {
     }
 
     handleEnemyKilled(data) {
-        if (this.enemies?.get(data.enemyId)) {
+        if (this.enemies?.get(data.enemyId) && this.enemies.get(data.enemyId).isDead === false) {
             let enemy = this.enemies.get(data.enemyId);
             enemy.die();
             enemy.isDead = true;
