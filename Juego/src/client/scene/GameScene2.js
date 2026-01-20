@@ -14,8 +14,8 @@ export class GameScene2 extends Phaser.Scene {
     }
 
     preload() {
-        this.arthur.preload(600, 800);
-        this.lucy.preload(600, 800);
+        this.arthur.preload(300, 400);
+        this.lucy.preload(300, 400);
         this.load.audio('ambient', 'assets/sound/ambient-theme.mp3');
 
 
@@ -37,8 +37,8 @@ export class GameScene2 extends Phaser.Scene {
         this.platforms = new Map();
         this.isPaused = false;
         this.inputManager = new InputManager(this, this.scene, this.input, this.commandProcessor);
-        this.arthur = new Arthur(this, 'player1', 600, 100, 500, 'spritesheet-arthur');
-        this.lucy = new Lucy(this, 'player2', 450, 300, 500, 'spritesheet-lucy');
+        this.arthur = new Arthur(this, 'player1', 600, 100, 500, 'spritesheet-arthur-reescalado-mitad');
+        this.lucy = new Lucy(this, 'player2', 450, 300, 500, 'spritesheet-lucy-reescalado-mitad');
 
 
         this.camera = new Camera(this, this.players);
@@ -75,8 +75,8 @@ export class GameScene2 extends Phaser.Scene {
         this.setUpEnemyCollisions();
         this.setUpReviveCollision();
 
-        this.physics.world.setBounds(0, 0, 4175, 600);
-        this.camera.camera.setBounds(0, 0, 4175, 600);
+        this.physics.world.setBounds(0, 0, 3000, 600);
+        this.camera.camera.setBounds(0, 0, 3000, 600);
 
         this.camera.camera.setLerp(0.1, 0.1);
 
@@ -96,38 +96,37 @@ export class GameScene2 extends Phaser.Scene {
     setUpWorldCollisions() {
         //Set up platforms and collisions
 
-        this.suelo1 = new Platform(this, 's1', 2500, 590, 5000, 40, 'suelo');
-        /*this.plat1 = new Platform(this, 'p1', 200, 450, 200, 30, 'p1');
-        this.plat2 = new Platform(this, 'p2', 450, 300, 200, 30, 'p1');
-        this.suelo2 = new Platform(this, 's2', 1200, 550, 500, 200, 'p2');
-        this.col1 = new Platform(this, 'c1', 700, 450, 70, 300, 'c1');
-        this.col2 = new Platform(this, 'c2', 2200, 450, 70, 400, 'c1');
+        this.suelo1 = new Platform(this, 's1', 1500, 590, 3010, 40, 'suelo');
+        this.plat1 = new Platform(this, 'p1', 450, 450, 200, 30, 'p1');
+        this.plat2 = new Platform(this, 'p2', 200, 300, 200, 30, 'p1');
+        this.suelo2 = new Platform(this, 's2', 1000, 400, 800, 400, 'p2');
+
         this.plat3 = new Platform(this, 'p3', 1800, 450, 150, 30, 'p1');
         this.plat4 = new Platform(this, 'p4', 1500, 300, 150, 30, 'p1');
         this.plat5 = new Platform(this, 'p5', 2000, 200, 150, 30, 'p1');
-        this.suelo3 = new Platform(this, 's3', 2200, 550, 230, 100, 'p2');
+        this.suelo3 = new Platform(this, 's3', 2500, 450, 400, 300, 'p2');
+        this.plat6 = new Platform(this, 'p6', 2775, 400, 150, 30, 'p1');
+
+        /*this.col1 = new Platform(this, 'c1', 700, 450, 70, 300, 'c1');
+        this.col2 = new Platform(this, 'c2', 2200, 450, 70, 400, 'c1');
+        
+        
         this.suelo4 = new Platform(this, 's4', 2800, 500, 550, 250, 'p2');
-        this.plat6 = new Platform(this, 'p6', 3150, 250, 150, 30, 'p1');
         this.plat7 = new Platform(this, 'p7', 3500, 250, 150, 30, 'p1');
         this.plat8 = new Platform(this, 'p8', 3150, 450, 150, 30, 'p1');
         this.suelo5 = new Platform(this, 's5', 4001, 450, 350, 350, 'p2');*/
 
 
         this.platforms.set('s1', this.suelo1);
-        /*this.platforms.set('p1', this.plat1);
+        this.platforms.set('p1', this.plat1);
         this.platforms.set('p2', this.plat2);
         this.platforms.set('s2', this.suelo2);
-        this.platforms.set('c1', this.col1);
-        this.platforms.set('c2', this.col2);
         this.platforms.set('p3', this.plat3);
         this.platforms.set('p4', this.plat4);
         this.platforms.set('p5', this.plat5);
         this.platforms.set('s3', this.suelo3);
-        this.platforms.set('s4', this.suelo4);
-        this.platforms.set('s5', this.suelo5);
         this.platforms.set('p6', this.plat6);
-        this.platforms.set('p7', this.plat7);
-        this.platforms.set('p8', this.plat8);*/
+
 
         this.platforms.forEach(p => {
             this.players.forEach(personaje => {
@@ -138,12 +137,12 @@ export class GameScene2 extends Phaser.Scene {
             });
         });
 
-        /*this.libreria = new Platform(this, 'lib', 4000, 208, 100, 150, 'lib');
+        this.libreria = new Platform(this, 'lib', 2775, 500, 100, 150, 'lib');
         this.libreria.sprite.setDepth(2);
         this.physics.add.overlap(this.libreria.sprite, this.arthur.sprite, () => {
             this.scene.stop();
-            this.scene.start('EndScene');
-        });*/
+            this.scene.start('EndScene2');
+        });
     }
 
     setUpEnemyCollisions() {

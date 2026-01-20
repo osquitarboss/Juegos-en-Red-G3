@@ -37,7 +37,8 @@ export class MenuScene extends Phaser.Scene {
             setOrigin(0).
             setInteractive({ useHandCursor: true }).
             on('pointerdown', () => {
-                this.scene.start('IntroScene', { sceneToPlay: 'GameScene' });
+                //this.scene.start('IntroScene', { sceneToPlay: 'GameScene' });
+                this.scene.start('GameScene2');
             });
 
         this.creditsButton = this.add.image(241, 320, 'id3').
