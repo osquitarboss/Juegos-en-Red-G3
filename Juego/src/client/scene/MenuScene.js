@@ -64,6 +64,7 @@ export class MenuScene extends Phaser.Scene {
         this.buttons = [this.startButton, this.creditsButton, this.optionsButton, this.exitButton];
         this.music = this.sound.add('music');
         this.music.play();
+        this.music.setVolume(0.1);
     }
 
 
