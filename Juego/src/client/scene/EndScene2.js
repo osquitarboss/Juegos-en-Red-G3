@@ -14,6 +14,12 @@ export class EndScene2 extends Phaser.Scene {
     create() {
 
         this.introText = new Array(20).fill(""); // 20 textos
+        this.introText[0] = "Una vez pasado el peligro \nambos llegaron a una habitación especial.";
+        this.introText[1] = "Se trataba de la habitación de un crío pequeño \nque le resultaba extrañamente familiar a Arthur.";
+        this.introText[2] = "Viendo la confusión de su compañero \n Lucy se vió obligada a contar la verdad sobre el caso.";
+        this.introText[14] = "Los fantasmas son seres incapaces \n de abandonar este mundo hasta que salden alguna \ncuenta pendiente que dejaron en vida."
+        this.introText[15] = "Y finalmente el caso está resuelto \n Para ambos.";
+        this.introText[19] = "Fin.";
         this.textIndex = 0;
         this.inProgress = false;
 
@@ -51,7 +57,7 @@ export class EndScene2 extends Phaser.Scene {
             backgroundColor: '#00000000',
         }).setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('ScoreBoardScene'));
+            .on('pointerdown', () => this.scene.start('MenuScene'));
 
         this.showText();
     }
@@ -60,41 +66,46 @@ export class EndScene2 extends Phaser.Scene {
         if (this.textIndex < this.introText.length) {
             this.textIn(this.introText[this.textIndex]);
         } else {
-            this.scene.start('ScoreBoardScene');
+            this.scene.start('MenuScene');
         }
     }
 
     advanceScene() {
 
-        // Si está escribiendo texto, no avanza
         if (this.inProgress) return;
 
-        // Avanza texto
         this.textIndex++;
         this.showText();
 
-        // Cambia imagen
         this.endImages[this.currentImageIndex].setVisible(false);
         this.currentImageIndex++;
 
         if (this.currentImageIndex < this.endImages.length) {
             this.endImages[this.currentImageIndex].setVisible(true);
-        } if (this.currentImageIndex === 3) {
+        }
+
+
+        if (this.currentImageIndex === 3) {
+            this.texto.setText('');
             this.startAutoAdvance();
-        } else {
-            // Terminó cinemática
-            //this.scene.start('MenuScene');
+        }
+
+        if (this.currentImageIndex === 13) {
+            if (this.autoTimer) {
+                this.autoTimer.remove(false);
+                this.autoTimer = null;
+            }
         }
     }
 
     startAutoAdvance() {
+        if (this.autoTimer) return;
+
         this.autoTimer = this.time.addEvent({
-            delay: 2000, //segundos entre imágenes
+            delay: 2500,
             callback: () => {
-                if (this.currentImageIndex < this.endImages.length - 1) {
+                if (this.currentImageIndex < 13) {
                     this.advanceScene();
-                } else {
-                    this.scene.start('MenuScene');
                 }
             },
             loop: true
@@ -102,6 +113,13 @@ export class EndScene2 extends Phaser.Scene {
     }
 
     textIn(text) {
+
+        this.texto.setText('');
+
+        if (text === "") {
+            this.inProgress = false;
+            return;
+        }
         this.inProgress = true;
         let idx = 0;
         const speed = 75; // speed of writing in ms

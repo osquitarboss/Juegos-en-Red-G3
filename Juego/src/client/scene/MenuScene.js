@@ -107,46 +107,45 @@ export class MenuScene extends Phaser.Scene {
 
     openMiniMenu() {
 
-    this.buttons.forEach(btn => btn.removeInteractive());
+        this.buttons.forEach(btn => btn.removeInteractive());
 
-    const bg = this.add.image(400, 300, 'menu').setDepth(10);
+        const bg = this.add.image(400, 300, 'menu').setDepth(10);
 
-    const lvl1 = this.add.image(350, 230, 'n1')
-        .setDepth(11)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerdown', () => {
-            this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
-            this.scene.start('IntroScene'); 
-        });
-
-    // 👉 comprobamos progreso
-    const level1Done = localStorage.getItem('level1Completed') === 'true';
-
-    let lvl2;
-
-    if (level1Done) {
-        // botón normal
-        lvl2 = this.add.image(350, 310, 'n2')
+        const lvl1 = this.add.image(350, 230, 'n1')
             .setDepth(11)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
                 this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
-                this.scene.start('GameScene');
+                this.scene.start('IntroScene');
             });
-    } else {
-        // botón bloqueado
-        lvl2 = this.add.image(350, 310, 'n2t')
-            .setDepth(11);
-        // sin setInteractive → no se puede pulsar
-    }
 
-    const returnBtn = this.add.image(320, 400, 'return')
-        .setDepth(11)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerdown', () => {
-            this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
-        });
-}
+        const level1Done = localStorage.getItem('level1Completed') === 'true';
+
+        let lvl2;
+
+        if (level1Done) {
+            // botón normal
+            lvl2 = this.add.image(350, 310, 'n2')
+                .setDepth(11)
+                .setInteractive({ useHandCursor: true })
+                .on('pointerdown', () => {
+                    this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+                    this.scene.start('GameScene');
+                });
+        } else {
+            // botón bloqueado
+            lvl2 = this.add.image(350, 310, 'n2t')
+                .setDepth(11);
+            // sin setInteractive → no se puede pulsar
+        }
+
+        const returnBtn = this.add.image(320, 400, 'return')
+            .setDepth(11)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => {
+                this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+            });
+    }
 
     closeMiniMenu(elements) {
 
