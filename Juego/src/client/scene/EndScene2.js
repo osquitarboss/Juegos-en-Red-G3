@@ -140,4 +140,5 @@ export class EndScene2 extends Phaser.Scene {
         this.textIndex++;
         this.showText();
     }
+
 }

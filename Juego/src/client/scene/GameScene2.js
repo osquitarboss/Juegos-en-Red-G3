@@ -26,7 +26,7 @@ export class GameScene2 extends Phaser.Scene {
         this.load.image('c1', 'assets/props/columna1.png');
         this.load.image('lib', 'assets/props/libreria.png');
 
-        
+
 
         this.enemies.forEach(enemy => enemy.preload());
     }
@@ -217,7 +217,7 @@ export class GameScene2 extends Phaser.Scene {
                 this.enemies.delete(enemy.id);
                 return;
             }
-            //enemy.update();
+            enemy.update();
         })
     }
 

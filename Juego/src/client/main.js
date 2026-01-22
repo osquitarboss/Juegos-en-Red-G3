@@ -7,11 +7,6 @@ import { CreditsScene } from './scene/CreditsScene.js';
 import { IntroScene } from './scene/IntroScene.js';
 import { EndScene } from './scene/EndScene.js';
 import { GameScene2 } from './scene/GameScene2.js';
-import { ConnectionLostScene } from './scene/ConnectionLostScene.js';
-import { LoginScene } from './scene/LoginScene.js';
-import { MatchMakingScene } from './scene/MatchMakingScene.js';
-import { MultiplayerScene } from './scene/MultiplayerScene.js';
-import { ScoreBoardScene } from './scene/ScoreBoardScene.js';
 import { EndScene2 } from './scene/EndScene2.js';
 
 const config = {
@@ -34,7 +29,7 @@ const config = {
     },
 
     // LoginScene poner como escena inicial, ahora esta quitado pq es un coñazo para hacer pruebas
-    scene: [LoginScene, MenuScene, MatchMakingScene, CreditsScene, OptionsScene, IntroScene, GameScene, MultiplayerScene, EndScene, GameScene2, ConnectionLostScene, ScoreBoardScene, EndScene2, PauseScene],
+    scene: [MenuScene, CreditsScene, OptionsScene, IntroScene, GameScene, EndScene, GameScene2, EndScene2, PauseScene],
     backgroundColor: '#360246ff'
 }
 

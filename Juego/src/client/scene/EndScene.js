@@ -41,7 +41,7 @@ export class EndScene extends Phaser.Scene {
                 if (!this.inProgress) {
                     this.nextText();
                 } else {
-                    this.game.events.emit('RequestScoreBoard');
+                    this.scene.start('MenuScene');
                 }
                 switch (this.textIndex) {
                     case 1:
@@ -81,7 +81,7 @@ export class EndScene extends Phaser.Scene {
             .on('pointerover', () => skipBtn.setStyle({ backgroundColor: '#737373ff' }))
             .on('pointerout', () => skipBtn.setStyle({ backgroundColor: '#000000ff' }))
             .on('pointerdown', () => {
-                this.scene.start('GameScene');
+                this.scene.start('MenuScene');
             });
 
         this.showText();
@@ -92,7 +92,7 @@ export class EndScene extends Phaser.Scene {
         if (this.textIndex < this.introText.length) {
             this.textIn(this.introText[this.textIndex]);
         } else {
-            this.scene.start('GameScene');
+            this.scene.start('MenuScene');
         }
     }
 

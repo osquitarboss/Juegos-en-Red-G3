@@ -1,6 +1,4 @@
 import Phaser from "phaser";
-import { connectionManager } from "../services/ConnectionManager.js";
-import { clientDataManager } from "../services/clientDataManager.js";
 
 export class MenuScene extends Phaser.Scene {
     constructor() {
@@ -34,12 +32,10 @@ export class MenuScene extends Phaser.Scene {
             setOrigin(0);
 
 
-        this.startButton = this.add.image(196, 200, 'id2').
+        this.startButton = this.add.image(196, 250, 'id2').
             setOrigin(0).
             setInteractive({ useHandCursor: true }).
             on('pointerdown', () => {
-                //this.scene.start('IntroScene', { sceneToPlay: 'GameScene' });
-                //this.scene.start('GameScene2');
                 this.openMiniMenu();
             });
 
@@ -68,39 +64,6 @@ export class MenuScene extends Phaser.Scene {
         this.buttons = [this.startButton, this.creditsButton, this.optionsButton, this.exitButton];
         this.music = this.sound.add('music');
         this.music.play();
-        this.music.setVolume(0);
-
-
-        ////////////////////// API REST //////////////////////
-        // Indicador de conexión al servidor
-
-        this.numPlayers = this.add.image(320, 550, 'numPlayers').setOrigin(0.5);
-        this.serverDown = this.add.image(400, 550, 'serverDown').setOrigin(0.5).setVisible(false);
-
-        this.connectionText = this.add.text(450, 550, '', {
-            fontSize: '18px',
-            fontFamily: 'LinLibertine',
-            color: '#ffffffff',
-            backgroundColor: '#000000ff'
-        }).setOrigin(0.5);
-
-        // Listener para cambios de conexión
-        this.connectionListener = (data) => {
-            this.updateConnectionDisplay(data);
-        };
-        connectionManager.addListener(this.connectionListener);
-
-
-        /////////////////////////// Online con WebSocket //////////////////////////
-        this.onlineBtn = this.add.image(196, 265, 'juegoLinea').setOrigin(0)
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => this.onlineBtn.setStyle({ backgroundColor: '#737373ff' }))
-            .on('pointerout', () => this.onlineBtn.setStyle({ backgroundColor: '#000000ff' }))
-            .on('pointerdown', () => {
-                this.scene.start('IntroScene', { sceneToPlay: 'MatchMakingScene' });
-            });
-
-        //////////WebSocket//////////
     }
 
 
@@ -154,35 +117,6 @@ export class MenuScene extends Phaser.Scene {
 
         // ✔️ Reactivar los botones de la escena
         this.buttons.forEach(btn => btn.setInteractive({ useHandCursor: true }));
-    }
-
-    //////////////// FUNCION API REST NUM JUGADORES //////////////////////
-
-    updateConnectionDisplay(data) {
-        // Solo actualizar si el texto existe (la escena está creada)
-        if (!this.connectionText || !this.scene || !this.scene.isActive('MenuScene')) {
-            return;
-        }
-
-        try {
-            if (data.connected) {
-                this.connectionText.setText(data.count);
-                this.connectionText.setColor('#ffffffff');
-            } else {
-                this.connectionText.setText('');
-                this.serverDown.setVisible(true);
-                this.numPlayers.setVisible(false);
-            }
-        } catch (error) {
-            console.error('[MenuScene] Error updating connection display:', error);
-        }
-    }
-
-    shutdown() {
-        // Remover el listener
-        if (this.connectionListener) {
-            connectionManager.removeListener(this.connectionListener);
-        }
     }
 
 }
