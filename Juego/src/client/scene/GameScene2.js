@@ -200,7 +200,7 @@ export class GameScene2 extends Phaser.Scene {
     checkPlayerStatus() {
         if (this.players.get('player1').health <= 0 && this.players.get('player2').health <= 0) {
             this.scene.stop();
-            this.scene.start('GameScene');
+            this.scene.start('GameOverScene', { originalScene: 'GameScene2' });
         }
     }
 

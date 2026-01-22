@@ -8,6 +8,7 @@ import { IntroScene } from './scene/IntroScene.js';
 import { EndScene } from './scene/EndScene.js';
 import { GameScene2 } from './scene/GameScene2.js';
 import { EndScene2 } from './scene/EndScene2.js';
+import { GameOverScene } from './scene/GameOverScene.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -29,7 +30,7 @@ const config = {
     },
 
     // LoginScene poner como escena inicial, ahora esta quitado pq es un coñazo para hacer pruebas
-    scene: [MenuScene, CreditsScene, OptionsScene, IntroScene, GameScene, EndScene, GameScene2, EndScene2, PauseScene],
+    scene: [MenuScene, CreditsScene, OptionsScene, IntroScene, GameScene, GameOverScene, EndScene, GameScene2, EndScene2, PauseScene],
     backgroundColor: '#360246ff'
 }
 
