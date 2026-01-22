@@ -98,6 +98,8 @@ export class GameScene extends Phaser.Scene {
 
         this.camera.camera.setLerp(0.1, 0.1);
 
+
+
         this.connectionListener = (data) => {
             if (!data.connected && this.scene.isActive()) {
                 this.onConnectionLost();
@@ -170,11 +172,11 @@ export class GameScene extends Phaser.Scene {
         this.libreria.sprite.setDepth(2);
         this.physics.add.overlap(this.libreria.sprite, this.arthur.sprite, () => {
             this.scene.stop();
-            this.scene.start('EndScene');
+            this.scene.start('EndScene2');
         });
         this.physics.add.overlap(this.libreria.sprite, this.lucy.sprite, () => {
             this.scene.stop();
-            this.scene.start('EndScene');
+            this.scene.start('EndScene2');
         });
     }
 

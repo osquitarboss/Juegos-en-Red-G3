@@ -34,7 +34,7 @@ const config = {
     },
 
     // LoginScene poner como escena inicial, ahora esta quitado pq es un coñazo para hacer pruebas
-    scene: [LoginScene, MenuScene, MatchMakingScene, CreditsScene, OptionsScene, IntroScene, GameScene, MultiplayerScene, PauseScene, EndScene, GameScene2, ConnectionLostScene, ScoreBoardScene, EndScene2],
+    scene: [LoginScene, MenuScene, MatchMakingScene, CreditsScene, OptionsScene, IntroScene, GameScene, MultiplayerScene, EndScene, GameScene2, ConnectionLostScene, ScoreBoardScene, EndScene2, PauseScene],
     backgroundColor: '#360246ff'
 }
 

@@ -23,6 +23,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('menu', 'assets/menus/libretaNivelesConSombra.png');
         this.load.image('n1', 'assets/menus/BotonNivel1.png');
         this.load.image('n2', 'assets/menus/BotonNivel2.png');
+        this.load.image('n2t', 'assets/menus/BotonNivel2Tachado.png');
         this.load.image('return', 'assets/menus/BotonVolver.png');
     }
 
@@ -38,7 +39,8 @@ export class MenuScene extends Phaser.Scene {
             setInteractive({ useHandCursor: true }).
             on('pointerdown', () => {
                 //this.scene.start('IntroScene', { sceneToPlay: 'GameScene' });
-                this.scene.start('GameScene2');
+                //this.scene.start('GameScene2');
+                this.openMiniMenu();
             });
 
         this.creditsButton = this.add.image(241, 320, 'id3').
@@ -103,40 +105,57 @@ export class MenuScene extends Phaser.Scene {
 
 
 
-    // openMiniMenu() {
+    openMiniMenu() {
 
-    //     //Desactivar todos los botones de abajo del menú
-    //     this.buttons.forEach(btn => btn.removeInteractive());
+    this.buttons.forEach(btn => btn.removeInteractive());
 
-    //     // Fondo del menú
-    //     const bg = this.add.image(400, 300, 'menu')
-    //         .setDepth(10);
+    const bg = this.add.image(400, 300, 'menu').setDepth(10);
 
-    //     // Botón Nivel 1
-    //     const lvl1 = this.add.image(350, 230, 'n1')
-    //         .setDepth(11)
-    //         .setInteractive({ useHandCursor: true })
-    //         .on('pointerdown', () => {
-    //             this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
-    //             this.scene.start('IntroScene');
-    //         });
+    const lvl1 = this.add.image(350, 230, 'n1')
+        .setDepth(11)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerdown', () => {
+            this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+            this.scene.start('IntroScene'); 
+        });
 
-    //     // Botón Nivel 2
-    //     const lvl2 = this.add.image(350, 310, 'n2')
-    //         .setDepth(11)
-    //         .setInteractive({ useHandCursor: true })
-    //         .on('pointerdown', () => {
-    //             this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
-    //             this.scene.start('EndScene');
-    //         });
+    // 👉 comprobamos progreso
+    const level1Done = localStorage.getItem('level1Completed') === 'true';
 
-    //     const returnBtn = this.add.image(320, 400, 'return')
-    //         .setDepth(11)
-    //         .setInteractive({ useHandCursor: true })
-    //         .on('pointerdown', () => {
-    //             this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
-    //         });
-    // }
+    let lvl2;
+
+    if (level1Done) {
+        // botón normal
+        lvl2 = this.add.image(350, 310, 'n2')
+            .setDepth(11)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => {
+                this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+                this.scene.start('GameScene');
+            });
+    } else {
+        // botón bloqueado
+        lvl2 = this.add.image(350, 310, 'n2t')
+            .setDepth(11);
+        // sin setInteractive → no se puede pulsar
+    }
+
+    const returnBtn = this.add.image(320, 400, 'return')
+        .setDepth(11)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerdown', () => {
+            this.closeMiniMenu([bg, lvl1, lvl2, returnBtn]);
+        });
+}
+
+    closeMiniMenu(elements) {
+
+        // Eliminar los elementos del minimenu
+        elements.forEach(e => e.destroy());
+
+        // ✔️ Reactivar los botones de la escena
+        this.buttons.forEach(btn => btn.setInteractive({ useHandCursor: true }));
+    }
 
     //////////////// FUNCION API REST NUM JUGADORES //////////////////////
 

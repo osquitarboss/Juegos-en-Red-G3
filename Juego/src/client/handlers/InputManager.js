@@ -105,8 +105,10 @@ export class InputManager {
     }
 
     pause() {
-        this.sceneManager.launch('PauseScene', { originalScene: 'GameScene' });
-        this.sceneManager.pause('GameScene');
+        const sceneKey = this.scene.sys.settings.key;
+        console.log('InputManager: Pausing scene', sceneKey);
+        this.sceneManager.launch('PauseScene', { originalScene: sceneKey });
+        this.sceneManager.pause(sceneKey);
         this.isPaused = true;
     }
 

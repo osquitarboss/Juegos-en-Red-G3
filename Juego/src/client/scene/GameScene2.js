@@ -26,6 +26,8 @@ export class GameScene2 extends Phaser.Scene {
         this.load.image('c1', 'assets/props/columna1.png');
         this.load.image('lib', 'assets/props/libreria.png');
 
+        
+
         this.enemies.forEach(enemy => enemy.preload());
     }
 
@@ -40,8 +42,15 @@ export class GameScene2 extends Phaser.Scene {
         this.arthur = new Arthur(this, 'player1', 600, 100, 500, 'spritesheet-arthur-reescalado-mitad');
         this.lucy = new Lucy(this, 'player2', 450, 300, 500, 'spritesheet-lucy-reescalado-mitad');
 
+        this.enemy1 = new Enemy(this, 'enemy1', 400, 100, this.players);
+        this.enemy2 = new Enemy(this, 'enemy2', 1200, 100, this.players);
+        this.enemy3 = new Enemy(this, 'enemy3', 2000, 100, this.players);
 
         this.camera = new Camera(this, this.players);
+
+        this.enemies.set(this.enemy1.id, this.enemy1);
+        this.enemies.set(this.enemy2.id, this.enemy2);
+        this.enemies.set(this.enemy3.id, this.enemy3);
     }
 
     create() {
@@ -70,6 +79,7 @@ export class GameScene2 extends Phaser.Scene {
         this.enemies.forEach((enemy) => {
             enemy.create();
         });
+
 
         this.setUpWorldCollisions();
         this.setUpEnemyCollisions();
@@ -140,8 +150,9 @@ export class GameScene2 extends Phaser.Scene {
         this.libreria = new Platform(this, 'lib', 2775, 500, 100, 150, 'lib');
         this.libreria.sprite.setDepth(2);
         this.physics.add.overlap(this.libreria.sprite, this.arthur.sprite, () => {
+            localStorage.setItem('level1Completed', 'true');
             this.scene.stop();
-            this.scene.start('EndScene2');
+            this.scene.start('EndScene');
         });
     }
 
@@ -206,7 +217,7 @@ export class GameScene2 extends Phaser.Scene {
                 this.enemies.delete(enemy.id);
                 return;
             }
-            enemy.update();
+            //enemy.update();
         })
     }
 

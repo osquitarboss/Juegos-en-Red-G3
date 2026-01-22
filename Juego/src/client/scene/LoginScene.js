@@ -10,6 +10,10 @@ export class LoginScene extends Phaser.Scene {
         this.load.html('login', 'assets/html/form.html');
     }
 
+    init() {
+        localStorage.setItem('level1Completed', 'false');
+    }
+
     create() {
         const text = this.add.text(400, 52, 'Iniciar sesión', { fontSize: '32px', fontFamily: 'LinLibertine', color: '#ffffffff' }).setOrigin(0.5);
 

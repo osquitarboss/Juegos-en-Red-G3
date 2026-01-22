@@ -51,7 +51,7 @@ export class EndScene2 extends Phaser.Scene {
             backgroundColor: '#00000000',
         }).setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scene.start('MenuScene'));
+            .on('pointerdown', () => this.scene.start('ScoreBoardScene'));
 
         this.showText();
     }
@@ -60,7 +60,7 @@ export class EndScene2 extends Phaser.Scene {
         if (this.textIndex < this.introText.length) {
             this.textIn(this.introText[this.textIndex]);
         } else {
-            this.scene.start('MenuScene');
+            this.scene.start('ScoreBoardScene');
         }
     }
 

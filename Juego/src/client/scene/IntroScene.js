@@ -7,7 +7,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.sceneToPlay = data.sceneToPlay;
+        this.sceneToPlay = 'GameScene2';
         this.arthur1 = new Puppet(this, "ca1", 130, 120, "spritesheet-arthur-reescalado-mitad", true);
         this.arthur2 = new Puppet(this, "ca2", 340, 120, "spritesheet-arthur-reescalado-mitad", true);
         this.arthur3 = new Puppet(this, "ca3", 500, 120, "spritesheet-arthur-reescalado-mitad", true);
